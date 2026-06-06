@@ -1,3 +1,4 @@
+/* --- Global Styles --- */
 body {
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('1780706873437.png');
     background-size: cover;
@@ -12,25 +13,28 @@ body {
     min-height: 100vh;
     margin: 0;
     padding: 20px;
-}
-
-.card {
-    background: rgba(0, 0, 0, 0.6);
-    padding: 25px;
-    border-radius: 15px;
-    max-width: 500px;
-    margin-bottom: 20px;
     text-align: center;
 }
 
+/* --- Remove Box Backgrounds --- */
+.card {
+    background: transparent; /* Makes the 'About' section blend with the image */
+    padding: 20px;
+    max-width: 500px;
+    margin-bottom: 20px;
+}
+
+/* --- Green Active Indicator --- */
 .dot { 
     height: 10px; 
     width: 10px; 
     background-color: #22c55e; 
     border-radius: 50%; 
     display: inline-block; 
+    margin-right: 5px;
 }
 
+/* --- Button Styling --- */
 .button-container { 
     display: flex; 
     flex-direction: column; 
@@ -46,12 +50,17 @@ body {
     font-weight: bold; 
     text-align: center; 
     transition: 0.3s;
+    background: transparent; /* Transparent button background */
+    border: 2px solid #ffffff; /* White border outline */
+    color: #ffffff;
 }
 
-.hire-btn { background-color: #38bdf8; color: #000; }
-.website-btn { background-color: transparent; border: 1px solid #fff; color: #fff; }
+/* --- Hover Effects --- */
+.action-btn:hover { 
+    background: #ffffff; 
+    color: #000000; 
+}
 
-.action-btn:hover { transform: scale(1.05); opacity: 0.9; }
 
 
 
