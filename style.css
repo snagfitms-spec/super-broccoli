@@ -129,3 +129,71 @@ footer {
     text-align: center;
     padding: 20px;
 }
+/* =========================
+   RESPONSIVE DESIGN SYSTEM
+   ========================= */
+
+/* TABLETS */
+@media (max-width: 900px) {
+
+    .hero h1 {
+        font-size: 36px;
+    }
+
+    .section {
+        padding: 60px 20px;
+    }
+
+    .grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .contact {
+        grid-template-columns: 1fr;
+    }
+
+    .nav {
+        padding: 15px 20px;
+    }
+}
+
+/* PHONES */
+@media (max-width: 600px) {
+
+    .hero {
+        height: auto;
+        padding: 100px 20px;
+    }
+
+    .hero h1 {
+        font-size: 30px;
+    }
+
+    .nav {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .nav-items {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .buttons {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    input, textarea {
+        font-size: 16px;
+    }
