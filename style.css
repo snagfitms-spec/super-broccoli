@@ -1,7 +1,7 @@
+/* Background with Image Overlay */
 body {
-    /* The overlay is the first part (linear-gradient), the image is the second part */
     background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(30, 41, 59, 0.85)), 
-                url('[attachment_0](attachment)');
+                url('http://googleusercontent.com/image_collection/image_retrieval/42238133502511563');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -16,5 +16,47 @@ body {
     flex-direction: column;
     align-items: center;
 }
+
+/* Header & Status */
+.hero { margin-bottom: 40px; text-align: center; }
+.hero h1 { font-size: 3rem; color: #38bdf8; margin: 0; }
+.status { display: inline-flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #94a3b8; margin: 10px 0; }
+.dot { height: 8px; width: 8px; background-color: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e; }
+
+/* Content Wrapper */
+.content-wrapper { max-width: 600px; width: 90%; margin: 0 auto; }
+
+/* About Card */
+.card {
+    background: rgba(30, 41, 59, 0.5);
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.1);
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+/* Tech Stack Badges */
+.tech-stack { display: flex; justify-content: center; gap: 10px; margin-top: 25px; flex-wrap: wrap; }
+.tech-stack span { background: rgba(56, 189, 248, 0.1); color: #38bdf8; padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; border: 1px solid rgba(56, 189, 248, 0.2); }
+
+/* Corner-Anchored Buttons */
+.corner-actions { display: flex; justify-content: space-between; gap: 20px; width: 100%; }
+.btn { 
+    padding: 14px 20px; 
+    border-radius: 8px; 
+    font-weight: 600; 
+    text-decoration: none; 
+    transition: 0.3s; 
+    font-size: 0.85rem; 
+    flex: 1; 
+    max-width: 45%; 
+    text-align: center; 
+}
+.hire-btn { background-color: #38bdf8; color: #000; }
+.website-btn { border: 1px solid #38bdf8; color: #38bdf8; }
+.btn:hover { transform: scale(1.05); box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3); }
+
 
 
