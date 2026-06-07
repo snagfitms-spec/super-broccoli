@@ -50,7 +50,6 @@ app.get("/bookings", async (req, res) => {
 });
 
 
-
 /* =========================
    START SERVER
    ========================= */
@@ -58,4 +57,18 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 const Booking = require("./Booking");
+
+// DELETE route to remove a booking by ID
+app.delete("/bookings/:id", async (req, res) => {
+  try {
+    const deletedBooking = await Booking.findByIdAndDelete(req.params.id);
+    if (!deletedBooking) {
+      return res.status(404).send("Booking not found");
+    }
+    res.status(200).send("Booking deleted successfully!");
+  } catch (err) {
+    res.status(500).send("Error deleting booking: " + err.message);
+  }
+});
+
 
