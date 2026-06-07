@@ -1,76 +1,312 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Millie.kai1 | Portfolio</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="style.css">
+<title>Pro Portfolio Booking System</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #070A12;
+  --card: #11182a;
+  --primary: #6C63FF;
+  --text: #ffffff;
+  --muted: rgba(255,255,255,0.7);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* NAV */
+nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 60px;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+}
+
+nav h2 {
+  color: var(--primary);
+}
+
+nav ul {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+
+nav ul li {
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+nav ul li:hover {
+  opacity: 1;
+  color: var(--primary);
+}
+
+/* HERO */
+.hero {
+  display: flex;
+  justify-content: space-between;
+  padding: 90px 60px;
+  gap: 40px;
+}
+
+.hero-text {
+  max-width: 55%;
+}
+
+.hero-text h1 {
+  font-size: 52px;
+}
+
+.hero-text span {
+  color: var(--primary);
+}
+
+.hero-text p {
+  margin-top: 15px;
+  color: var(--muted);
+}
+
+.btn {
+  margin-top: 20px;
+  padding: 12px 20px;
+  background: var(--primary);
+  border: none;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* STATS */
+.stats {
+  display: flex;
+  justify-content: space-around;
+  padding: 50px;
+  background: rgba(255,255,255,0.03);
+}
+
+.stat h3 {
+  color: var(--primary);
+}
+
+/* SERVICES */
+.section {
+  padding: 60px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 12px;
+}
+
+/* TESTIMONIALS */
+.testimonials {
+  padding: 60px;
+}
+
+.test-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.test {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 12px;
+  color: var(--muted);
+}
+
+/* FORM */
+.form {
+  margin: 60px;
+  padding: 40px;
+  background: var(--card);
+  border-radius: 12px;
+}
+
+.form input,
+.form textarea {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: #0b0f1a;
+  color: white;
+}
+
+.form button {
+  width: 100%;
+  margin-top: 15px;
+  padding: 14px;
+  background: var(--primary);
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+/* RESPONSE */
+#response {
+  margin-top: 10px;
+  color: var(--muted);
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    padding: 40px 20px;
+  }
+
+  nav {
+    padding: 15px 20px;
+  }
+
+  .stats {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .form {
+    margin: 20px;
+  }
+}
+</style>
+
 </head>
 
 <body>
 
-    <!-- HERO SECTION HERE-->
-    <header class="hero">
-        <div class="hero-content">
-            <h1>Millie.kai1</h1>
-            <p class="tagline">Software Developer | Web Systems & Booking Applications</p>
-            <p class="status">🟢 Available for new projects</p>
+<nav>
+  <h2>MillieDev</h2>
+  <ul>
+    <li>Home</li>
+    <li>Services</li>
+    <li>Work</li>
+    <li>Contact</li>
+  </ul>
+</nav>
 
-            <div class="buttons">
-                <a href="#projects" class="btn primary">View Projects</a>
-                <a href="#contact" class="btn secondary">Contact Me</a>
-            </div>
-        </div>
-    </header>
+<div class="hero">
+  <div class="hero-text">
+    <h1>I Build Websites That <span>Convert</span></h1>
+    <p>High-performance digital systems designed to turn visitors into paying clients.</p>
+    <button class="btn">Book a Service</button>
+  </div>
+</div>
 
-    <!-- ABOUT SECTION -->
-    <section class="section" id="about">
-        <h2>About Me</h2>
-        <p>
-            I am a Computer Science student focused on building real-world web applications.
-            I am currently learning software development and improving my skills through practical projects.
-        </p>
-    </section>
+<div class="stats">
+  <div class="stat"><h3>50+</h3><p>Projects</p></div>
+  <div class="stat"><h3>100%</h3><p>Satisfaction</p></div>
+  <div class="stat"><h3>24h</h3><p>Response</p></div>
+</div>
 
-    <!-- PROJECTS SECTION -->
-    <section class="section" id="projects">
-        <h2>Projects</h2>
+<div class="section">
+  <h2>Services</h2>
+  <div class="grid">
+    <div class="card">Website Design</div>
+    <div class="card">Web Applications</div>
+    <div class="card">Backend APIs</div>
+  </div>
+</div>
 
-        <div class="grid">
+<div class="testimonials">
+  <h2>Testimonials</h2>
+  <div class="test-grid">
+    <div class="test">"Very professional work."</div>
+    <div class="test">"Fast delivery and clean design."</div>
+    <div class="test">"Highly recommend this developer."</div>
+  </div>
+</div>
 
-            <div class="card">
-                <h3>First HTML Project</h3>
-                <p>A simple introduction webpage built using HTML structure.</p>
-            </div>
+<div class="form">
+  <h2>Book a Service</h2>
 
-            <div class="card">
-                <h3>Portfolio Website</h3>
-                <p>This portfolio is currently being developed and improved.</p>
-            </div>
+  <input id="name" placeholder="Name" required>
+  <input id="email" placeholder="Email" required>
+  <input id="service" placeholder="Service" required>
+  <textarea id="message" placeholder="Message" required></textarea>
 
-            <div class="card">
-                <h3>Booking System (Planned)</h3>
-                <p>A future system for managing appointments and scheduling.</p>
-            </div>
+  <button onclick="sendBooking()" id="btn">Submit Booking</button>
 
-        </div>
-    </section>
+  <p id="response"></p>
+</div>
 
-    <!-- CONTACT SECTION -->
-    <section class="section" id="contact">
-        <h2>Contact</h2>
-        <p>Let’s collaborate or work together on projects.</p>
+<footer style="text-align:center;padding:30px;opacity:0.5;">
+  © 2026 Pro Portfolio System
+</footer>
 
-        <p><strong>Email:</strong> snagfitms@gmail.com</p>
+<script>
 
-        <a href="mailto:snagfitms@gmail.com" class="btn primary">Send Email</a>
-    </section>
+const API = "https://millie-dav.onrender.com/bookings";
 
-    <!-- FOOTER -->
-    <footer>
-        <p>© 2026 Millie.kai1. All rights reserved.</p>
-    </footer>
+async function sendBooking() {
+
+  const btn = document.getElementById("btn");
+  const resBox = document.getElementById("response");
+
+  const data = {
+    name: document.getElementById("name").value,
+    email: document.getElementById("email").value,
+    service: document.getElementById("service").value,
+    message: document.getElementById("message").value
+  };
+
+  // loading state
+  btn.innerText = "Sending...";
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+
+    if (!res.ok) throw new Error("Request failed");
+
+    const result = await res.json();
+
+    resBox.innerText = "Booking sent successfully!";
+    btn.innerText = "Submit Booking";
+
+  } catch (err) {
+    resBox.innerText = "Error sending booking. Try again.";
+  }
+
+  btn.disabled = false;
+}
+</script>
 
 </body>
 </html>
