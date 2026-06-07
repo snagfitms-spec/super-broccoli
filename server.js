@@ -29,6 +29,16 @@ app.get("/", (req, res) => {
 app.get("/health", (req, res) => {
   res.status(200).send("OK");
 });
+app.post("/bookings", async (req, res) => {
+  try {
+    const newBooking = new Booking(req.body);
+    await newBooking.save();
+    res.status(201).send("Booking saved successfully!");
+  } catch (err) {
+    res.status(500).send("Error saving booking: " + err.message);
+  }
+});
+
 
 /* =========================
    START SERVER
