@@ -70,5 +70,22 @@ app.delete("/bookings/:id", async (req, res) => {
     res.status(500).send("Error deleting booking: " + err.message);
   }
 });
+// PATCH route to update a specific field of a booking by ID
+app.patch("/bookings/:id", async (req, res) => {
+  try {
+    const updatedBooking = await Booking.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body }, // Only updates the fields you send in the body
+      { new: true }       // Returns the updated version of the document
+    );
+    if (!updatedBooking) {
+      return res.status(404).send("Booking not found");
+    }
+    res.status(200).json(updatedBooking);
+  } catch (err) {
+    res.status(500).send("Error updating booking: " + err.message);
+  }
+});
+
 
 
