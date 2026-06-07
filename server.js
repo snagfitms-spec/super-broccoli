@@ -70,6 +70,7 @@ app.delete("/bookings/:id", async (req, res) => {
     res.status(500).send("Error deleting booking: " + err.message);
   }
 });
+
 // PATCH route to update a specific field of a booking by ID
 app.patch("/bookings/:id", async (req, res) => {
   try {
