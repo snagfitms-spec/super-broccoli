@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 const app = express();
@@ -12,17 +13,22 @@ const PORT = process.env.PORT || 3000;
 const Booking = require("./Booking");
 
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("Connected"))
-  .catch((err) => console.log(err));
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.error("Database connection error:", err));
 
-app.get("/", (req, res) => {
-  res.send("Server is running");
+// Admin Login Route
+app.post("/admin/login", async (req, res) => {
+  const { username, password } = req.body;
+  // Replace these hardcoded values with your database check logic later
+  if (username === "admin" && password === "1234") {
+    const token = jwt.sign({ username: username }, "your_secret_key", { expiresIn: "1h" });
+    res.status(200).json({ token: token });
+  } else {
+    res.status(401).json({ message: "Invalid credentials" });
+  }
 });
 
-app.get("/health", (req, res) => {
-  res.status(200).send("OK");
-});
-
+// Booking Routes
 app.post("/bookings", async (req, res) => {
   try {
     const newBooking = new Booking(req.body);
@@ -44,68 +50,25 @@ app.get("/bookings", async (req, res) => {
 
 app.delete("/bookings/:id", async (req, res) => {
   try {
-    const deletedBooking = await Booking.findByIdAndDelete(req.params.id);
-    if (!deletedBooking) return res.status(404).send("Booking not found");
-    res.status(200).send("Booking deleted successfully");
+    await Booking.findByIdAndDelete(req.params.id);
+    res.status(200).send("Deleted");
   } catch (err) {
-    res.status(500).send("Error deleting booking");
+    res.status(500).send("Error deleting");
   }
 });
 
 app.patch("/bookings/:id", async (req, res) => {
   try {
-    const updatedBooking = await Booking.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!updatedBooking) return res.status(404).send("Booking not found");
-    res.status(200).json(updatedBooking);
+    const updated = await Booking.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.status(200).json(updated);
   } catch (err) {
-    res.status(500).send("Error updating booking");
+    res.status(500).send("Error updating");
   }
 });
+
+app.get("/", (req, res) => res.send("Server is running"));
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
 
-app.post("/admin/login", async (req, res) => {
-  const { username, password } = req.body;
-
-  if (username !== "admin") {
-    return res.status(401).json({ message: "Wrong username" });
-  }
-
-  const validPassword = bcrypt.compareSync(password, bcrypt.hashSync("1234", 10));
-
-  if (!validPassword) {
-    return res.status(401).json({ message: "Wrong password" });
-  }
-
-  const token = jwt.sign(
-    { user: "admin" },
-    "SECRET_KEY_123",
-    { expiresIn: "1h" }
-  );
-
-  res.json({ token });
-});
-function authMiddleware(req, res, next) {
-  const authHeader = req.headers.authorization;
-
-  if (!authHeader) {
-    return res.status(403).json({ message: "No token" });
-  }
-
-  const token = authHeader.split(" ")[1];
-
-  try {
-    jwt.verify(token, "SECRET_KEY_123");
-    next();
-  } catch (err) {
-    return res.status(403).json({ message: "Invalid token" });
-  }
-}
-
-app.get("/bookings", authMiddleware, async (req, res) => {
-  // your existing database fetch code here
-});
