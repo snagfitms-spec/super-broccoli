@@ -1,86 +1,67 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
+require("dotenv").config();
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
-// PORT (Render gives its own port, so we use this fallback)
 const PORT = process.env.PORT || 3000;
+const Booking = require("./Booking");
 
-/* =========================
-   MONGOOSE / MONGODB CONNECT
-   ========================= */
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log("MongoDB connected successfully");
-  })
-  .catch((err) => {
-    console.log("MongoDB connection error:", err);
-  });
+  .then(() => console.log("Connected"))
+  .catch((err) => console.log(err));
 
-/* =========================
-   BASIC TEST ROUTES
-   ========================= */
 app.get("/", (req, res) => {
-  res.send("Server is running 🚀");
+  res.send("Server is running");
 });
 
 app.get("/health", (req, res) => {
   res.status(200).send("OK");
 });
+
 app.post("/bookings", async (req, res) => {
   try {
     const newBooking = new Booking(req.body);
     await newBooking.save();
-    res.status(201).send("Booking saved successfully!");
+    res.status(201).json(newBooking);
   } catch (err) {
-    res.status(500).send("Error saving booking: " + err.message);
+    res.status(500).send("Error saving booking");
   }
 });
 
-// GET route to view all bookings
 app.get("/bookings", async (req, res) => {
   try {
     const allBookings = await Booking.find();
     res.status(200).json(allBookings);
   } catch (err) {
-    res.status(500).send("Error fetching bookings: " + err.message);
+    res.status(500).send("Error fetching bookings");
   }
 });
 
-/* =========================
-   START SERVER
-   ========================= */
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-const Booking = require("./Booking");
-
-// DELETE route to remove a booking by ID
 app.delete("/bookings/:id", async (req, res) => {
   try {
     const deletedBooking = await Booking.findByIdAndDelete(req.params.id);
-    if (!deletedBooking) {
-      return res.status(404).send("Booking not found");
-    }
-    res.status(200).send("Booking deleted successfully!");
+    if (!deletedBooking) return res.status(404).send("Booking not found");
+    res.status(200).send("Booking deleted successfully");
   } catch (err) {
-    res.status(500).send("Error deleting booking: " + err.message);
+    res.status(500).send("Error deleting booking");
   }
 });
 
-// PATCH route to update a specific field of a booking by ID
 app.patch("/bookings/:id", async (req, res) => {
   try {
-    const updatedBooking = await Booking.findByIdAndUpdate(
-      req.params.id,
-      { $set: req.body }, // Only updates the fields you send in the body
-      { new: true }       // Returns the updated version of the document
-    );
-    if (!updatedBooking) {
-      return res.status(404).send("Booking not found");
-    }
+    const updatedBooking = await Booking.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updatedBooking) return res.status(404).send("Booking not found");
     res.status(200).json(updatedBooking);
   } catch (err) {
-    res.status(500).send("Error updating booking: " 
+    res.status(500).send("Error updating booking");
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
