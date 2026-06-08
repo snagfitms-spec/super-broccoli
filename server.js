@@ -1,74 +1,116 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const jwt = require("jsonwebtoken");
-require("dotenv").config();
 
 const app = express();
 
-app.use(cors());
 app.use(express.json());
+app.use(cors());
 
-const PORT = process.env.PORT || 3000;
-const Booking = require("./Booking");
-
+// =========================
+// DATABASE
+// =========================
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("Database connection error:", err));
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.log("MongoDB error:", err));
 
-// Admin Login Route
-app.post("/admin/login", async (req, res) => {
-  const { username, password } = req.body;
-  // Replace these hardcoded values with your database check logic later
-  if (username === "admin" && password === "1234") {
-    const token = jwt.sign({ username: username }, "your_secret_key", { expiresIn: "1h" });
-    res.status(200).json({ token: token });
-  } else {
-    res.status(401).json({ message: "Invalid credentials" });
+// =========================
+// BOOKING MODEL
+// =========================
+const Booking = mongoose.model("Booking", {
+  name: String,
+  email: String,
+  service: String,
+  message: String,
+  createdAt: {
+    type: Date,
+    default: Date.now
   }
 });
 
-// Booking Routes
+// =========================
+// SIMPLE ADMIN AUTH (STABLE VERSION)
+// =========================
+const ADMIN_USER = "admin";
+const ADMIN_PASS = "1234";
+const ADMIN_TOKEN = "secure-token-123";
+
+// LOGIN ROUTE
+app.post("/admin/login", (req, res) => {
+  const { username, password } = req.body;
+
+  if (username === ADMIN_USER && password === ADMIN_PASS) {
+    return res.json({
+      success: true,
+      token: ADMIN_TOKEN
+    });
+  }
+
+  return res.status(401).json({
+    success: false,
+    message: "Invalid login"
+  });
+});
+
+// =========================
+// AUTH MIDDLEWARE
+// =========================
+function authMiddleware(req, res, next) {
+  const auth = req.headers.authorization;
+
+  if (!auth) {
+    return res.status(403).json({ message: "No token" });
+  }
+
+  const token = auth.split(" ")[1];
+
+  if (token !== ADMIN_TOKEN) {
+    return res.status(403).json({ message: "Invalid token" });
+  }
+
+  next();
+}
+
+// =========================
+// BOOKING ROUTES
+// =========================
+
+// CREATE BOOKING (PUBLIC)
 app.post("/bookings", async (req, res) => {
   try {
-    const newBooking = new Booking(req.body);
-    await newBooking.save();
-    res.status(201).json(newBooking);
+    const booking = await Booking.create(req.body);
+    res.json({ success: true, booking });
   } catch (err) {
-    res.status(500).send("Error saving booking");
+    res.status(500).json({ message: "Error saving booking" });
   }
 });
 
-app.get("/bookings", async (req, res) => {
+// GET BOOKINGS (PROTECTED)
+app.get("/bookings", authMiddleware, async (req, res) => {
   try {
-    const allBookings = await Booking.find();
-    res.status(200).json(allBookings);
+    const bookings = await Booking.find().sort({ createdAt: -1 });
+    res.json(bookings);
   } catch (err) {
-    res.status(500).send("Error fetching bookings");
+    res.status(500).json({ message: "Error fetching bookings" });
   }
 });
 
-app.delete("/bookings/:id", async (req, res) => {
+// DELETE BOOKING (PROTECTED)
+app.delete("/bookings/:id", authMiddleware, async (req, res) => {
   try {
     await Booking.findByIdAndDelete(req.params.id);
-    res.status(200).send("Deleted");
+    res.json({ success: true, message: "Deleted" });
   } catch (err) {
-    res.status(500).send("Error deleting");
+    res.status(500).json({ message: "Delete failed" });
   }
 });
 
-app.patch("/bookings/:id", async (req, res) => {
-  try {
-    const updated = await Booking.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    res.status(200).json(updated);
-  } catch (err) {
-    res.status(500).send("Error updating");
-  }
-});
-
-app.get("/", (req, res) => res.send("Server is running"));
+// =========================
+// SERVER START
+// =========================
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log("Server running on port " + PORT);
 });
 
