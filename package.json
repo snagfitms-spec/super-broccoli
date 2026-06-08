@@ -17,3 +17,5 @@
     "node": ">=18.x"
   }
 }
+"jsonwebtoken": "^9.0.2",
+"bcryptjs": "^2.4.3"
