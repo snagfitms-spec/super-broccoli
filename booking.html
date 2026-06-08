@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Book a Service</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #070A12;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .box {
+      background: #11182a;
+      padding: 25px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 350px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 6px;
+      outline: none;
+    }
+
+    textarea {
+      resize: none;
+      height: 80px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 15px;
+      padding: 12px;
+      background: #6C63FF;
+      border: none;
+      color: white;
+      cursor: pointer;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+    button:disabled {
+      background: gray;
+      cursor: not-allowed;
+    }
+
+    #msg {
+      margin-top: 10px;
+      font-size: 14px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="box">
+    <h2>Book a Service</h2>
+
+    <input id="name" placeholder="Your Name">
+    <input id="email" placeholder="Your Email">
+
+    <select id="service">
+      <option>Website Design</option>
+      <option>Landing Page</option>
+      <option>Full Website</option>
+      <option>SEO Setup</option>
+    </select>
+
+    <textarea id="message" placeholder="Describe your project..."></textarea>
+
+    <button id="btn" onclick="bookService()">Submit Booking</button>
+
+    <p id="msg"></p>
+  </div>
+
+<script>
+
+async function bookService() {
+  const btn = document.getElementById("btn");
+  const msg = document.getElementById("msg");
+
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const service = document.getElementById("service").value;
+  const message = document.getElementById("message").value;
+
+  if (!name || !email || !message) {
+    msg.innerText = "Please fill all fields";
+    return;
+  }
+
+  btn.disabled = true;
+  msg.innerText = "Sending booking...";
+
+  try {
+    const res = await fetch("https://millie-dav.onrender.com/bookings", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        service,
+        message
+      })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      msg.innerText = "Booking successful!";
+      document.getElementById("name").value = "";
+      document.getElementById("email").value = "";
+      document.getElementById("message").value = "";
+    } else {
+      msg.innerText = data.message || "Booking failed";
+    }
+
+  } catch (err) {
+    msg.innerText = "Server error. Try again.";
+  }
+
+  btn.disabled = false;
+}
+
+</script>
+
+</body>
+</html>
