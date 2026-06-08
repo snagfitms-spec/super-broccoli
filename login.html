@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Login</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #070A12;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.box {
+  background: #11182a;
+  padding: 30px;
+  border-radius: 10px;
+  width: 300px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 6px;
+}
+
+button {
+  width: 100%;
+  margin-top: 15px;
+  padding: 10px;
+  background: #6C63FF;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 6px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>Admin Login</h2>
+
+  <input id="user" placeholder="Username">
+  <input id="pass" type="password" placeholder="Password">
+
+  <button onclick="login()">Login</button>
+
+  <p id="msg"></p>
+</div>
+
+<script>
+
+function login() {
+  const user = document.getElementById("user").value;
+  const pass = document.getElementById("pass").value;
+
+  // SIMPLE PROTECTION (we upgrade later)
+  if (user === "admin" && pass === "1234") {
+    localStorage.setItem("auth", "true");
+    window.location.href = "admin.html";
+  } else {
+    document.getElementById("msg").innerText = "Wrong credentials";
+  }
+}
+
+</script>
+
+</body>
+</html>
