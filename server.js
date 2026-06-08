@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const jwt = require("jsonwebtoken"); // Added this!
+const jwt = require("jsonwebtoken");
 
 const app = express();
 
@@ -32,8 +32,10 @@ const Booking = mongoose.model("Booking", {
 const ADMIN_USER = "admin";
 const ADMIN_PASS = "1234";
 
-// LOGIN ROUTE (Generates real JWT)
 app.post("/admin/login", (req, res) => {
+  // DIAGNOSTIC LOG: This shows up in your Render Logs dashboard
+  console.log("Login attempt received:", req.body);
+
   const { username, password } = req.body;
 
   if (username === ADMIN_USER && password === ADMIN_PASS) {
@@ -44,10 +46,9 @@ app.post("/admin/login", (req, res) => {
   return res.status(401).json({ success: false, message: "Invalid login" });
 });
 
-// AUTH MIDDLEWARE (Verifies real JWT)
 function authMiddleware(req, res, next) {
   const auth = req.headers.authorization;
-  if (!auth) return res.status(403).json({ message: "No token" });
+  if (!auth) return res.status(403).json({ message: "No token provided" });
 
   const token = auth.split(" ")[1];
 
@@ -65,7 +66,7 @@ app.post("/bookings", async (req, res) => {
     const booking = await Booking.create(req.body);
     res.json({ success: true, booking });
   } catch (err) {
-    res.status(500).json({ message: "Error saving" });
+    res.status(500).json({ message: "Error saving booking" });
   }
 });
 
@@ -74,21 +75,22 @@ app.get("/bookings", authMiddleware, async (req, res) => {
     const bookings = await Booking.find().sort({ createdAt: -1 });
     res.json(bookings);
   } catch (err) {
-    res.status(500).json({ message: "Error fetching" });
+    res.status(500).json({ message: "Error fetching bookings" });
   }
 });
 
 app.delete("/bookings/:id", authMiddleware, async (req, res) => {
   try {
     await Booking.findByIdAndDelete(req.params.id);
-    res.json({ success: true, message: "Deleted" });
+    res.json({ success: true, message: "Deleted successfully" });
   } catch (err) {
-    res.status(500).json({ message: "Delete failed" });
+    res.status(500).json({ message: "Delete operation failed" });
   }
 });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log("Server running on port " + PORT));
+
 
 
 
