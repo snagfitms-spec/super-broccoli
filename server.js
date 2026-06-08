@@ -29,11 +29,11 @@ const Booking = mongoose.model("Booking", {
 });
 
 // =========================
-// SIMPLE ADMIN AUTH (STABLE VERSION)
+// SIMPLE ADMIN AUTH
 // =========================
 const ADMIN_USER = "admin";
 const ADMIN_PASS = "1234";
-const ADMIN_TOKEN = "secure-token-123";
+const ADMIN_TOKEN = process.env.JWT_SECRET; // This grabs your long key from Render
 
 // LOGIN ROUTE
 app.post("/admin/login", (req, res) => {
@@ -106,13 +106,12 @@ app.delete("/bookings/:id", authMiddleware, async (req, res) => {
 });
 
 // =========================
-
 // SERVER START
 // =========================
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log("Server running on port " + PORT);
-}
 });
+
 
