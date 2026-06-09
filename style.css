@@ -87,4 +87,19 @@ button {
         padding-top: 20px; 
     }
 }
+/* Add this to style.css to make the portfolio cards look like a professional grid */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Automatically fits cards to screen */
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.card {
+    background: var(--card); /* Uses your defined theme color */
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}
+
 
