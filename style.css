@@ -70,3 +70,21 @@ button {
 
 /* ... Keep all your existing HERO, GRID, CARDS, and MEDIA QUERIES below here ... */
 
+/* Add this inside your @media (max-width: 600px) block in style.css */
+
+@media (max-width: 600px) {
+    /* ... existing styles ... */
+
+    /* This shrinks the big headline on mobile */
+    .hero h1 {
+        font-size: 2.2rem; /* Much better than 48px fixed */
+        line-height: 1.1;  /* Keeps the lines tighter */
+        margin-top: 10px;
+    }
+
+    /* This adds space between the Nav and the Hero section */
+    .hero {
+        padding-top: 20px; 
+    }
+}
+
