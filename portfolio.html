@@ -1,31 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Portfolio</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | MillieDev</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<nav>
-  <a href="index.html">Home</a>
-  <a href="services.html">Services</a>
-  <a href="portfolio.html">Portfolio</a>
-  <a href="courses.html">Courses</a>
-  <a href="about.html">About</a>
-  <a href="bookings.html">Booking</a>
-</nav>
+    <nav>
+        <div class="logo">MillieDev</div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="courses.html">Courses</a></li>
+            <li><a href="portfolio.html" class="active">Portfolio</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="booking.html">Book Now</a></li>
+        </ul>
+    </nav>
 
-<section class="hero">
-  <h1>Portfolio</h1>
-  <p>Some of my recent projects.</p>
-</section>
+    <section class="section">
+        <h1>Portfolio</h1>
+        <p>Technical projects, software architecture, and web solutions.</p>
+        
+        <br>
 
-<section class="grid">
-  <div class="card">E-commerce Website</div>
-  <div class="card">Booking System</div>
-  <div class="card">Portfolio Website</div>
-</section>
+        <div class="courses-container">
+            <div class="feed-card">
+                <h3>Digital Booking System API</h3>
+                <p>Backend system developed to manage client appointments using Node.js and API management tools.</p>
+            </div>
+            <div class="feed-card">
+                <h3>Web Development Projects</h3>
+                <p>Responsive, high-performance web applications built during my Computer Science degree program.</p>
+            </div>
+            <div class="feed-card">
+                <h3>Software Architecture Testing</h3>
+                <p>Functional testing of CRUD operations using Hoppscotch and Render to ensure system reliability.</p>
+            </div>
+        </div>
+    </section>
 
 </body>
 </html>
