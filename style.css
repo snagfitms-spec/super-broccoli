@@ -1,4 +1,7 @@
-/* 1. Global Reset & Variables */
+/* =========================
+   1. GLOBAL SYSTEM
+========================= */
+
 :root {
     --bg: #0b1220;
     --text: #e5e7eb;
@@ -8,17 +11,25 @@
     --border: #1f2937;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
 body {
     font-family: 'Inter', sans-serif;
     background: var(--bg);
     color: var(--text);
     line-height: 1.6;
-    min-height: 100vh; /* Ensures page can always grow */
+    min-height: 100vh;
+    scroll-behavior: smooth;
 }
 
-/* 2. Navigation (Standardized) */
+/* =========================
+   2. NAVIGATION SYSTEM
+========================= */
+
 nav {
     display: flex;
     justify-content: space-between;
@@ -29,83 +40,29 @@ nav {
     top: 0;
     z-index: 1000;
     border-bottom: 1px solid var(--border);
-}
 
-nav ul { display: flex; list-style: none; gap: 15px; }
-nav a { text-decoration: none; color: var(--text); font-size: 0.85rem; font-weight: 500; }
-
-/* 3. Hero Section (Prevents overlap) */
-.hero {
-    padding: 60px 5%;
-    text-align: center;
-}
-
-.hero h1 { font-size: 2.2rem; line-height: 1.1; margin-bottom: 15px; }
-
-/* 4. The "Box" Container (Fixed for Booking & Cards) */
-.container { 
-    width: 90%; 
-    max-width: 600px; 
-    margin: 20px auto; 
-    padding: 20px; 
-}
-
-.box { 
-    background: var(--card); 
-    padding: 25px; 
-    border-radius: 12px; 
-    border: 1px solid var(--border);
-}
-
-/* 5. Responsive Grid (For Portfolio & Services) */
-.grid { 
-    display: grid; 
-    grid-template-columns: 1fr; /* Stacked on mobile */
-    gap: 20px; 
-    padding: 20px 0;
-}
-
-.card { 
-    background: var(--card); 
-    padding: 20px; 
-    border-radius: 12px; 
-    border: 1px solid var(--border); 
-}
-
-/* 6. Form Elements */
-input, textarea { 
-    width: 100%; 
-    padding: 12px; 
-    margin: 10px 0; 
-    border: 1px solid var(--border);
-    border-radius: 8px; 
-    background: var(--bg); 
-    color: white; 
-}
-
-button { 
-    width: 100%; 
-    padding: 12px; 
-    background: var(--primary); 
-    border: none; 
-    color: white; 
-    border-radius: 8px; 
-    font-weight: bold; 
-    cursor: pointer; 
-}
-
-/* 7. Mobile Optimization */
-@media (max-width: 600px) {
-    nav { flex-direction: column; gap: 10px; }
-    .hero h1 { font-size: 1.8rem; }
-}
-/* APP-LIKE NAV SYSTEM */
-nav {
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
 }
 
-/* Active page highlight */
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 15px;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: 0.3s ease;
+}
+
+nav a:hover {
+    color: var(--primary);
+}
+
 nav a.active {
     color: var(--primary);
     position: relative;
@@ -122,20 +79,99 @@ nav a.active::after {
     border-radius: 10px;
 }
 
-/* Smooth transitions (app feel) */
-body {
-    scroll-behavior: smooth;
+/* =========================
+   3. HERO SECTION
+========================= */
+
+.hero {
+    padding: 60px 5%;
+    text-align: center;
 }
 
-/* Page fade-in effect */
-.section, .hero, .container {
-    animation: fadeIn 0.4s ease-in;
+.hero h1 {
+    font-size: 2.2rem;
+    line-height: 1.1;
+    margin-bottom: 15px;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+/* =========================
+   4. LAYOUT SYSTEM
+========================= */
+
+.section {
+    padding: 80px 5%;
 }
+
+.container {
+    width: 90%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+/* GRID SYSTEM */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 20px 0;
+}
+
+/* CARD SYSTEM */
+.card {
+    background: var(--card);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    transition: 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+}
+
+/* =========================
+   5. FORMS (BOOKING / LOGIN)
+========================= */
+
+.box {
+    background: var(--card);
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}
+
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--text);
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: var(--primary);
+    border: none;
+    color: white;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+/* =========================
+   6. ABOUT SECTION (FIXED + STABLE)
+========================= */
+
 .about-grid {
     display: grid;
     grid-template-columns: 1.2fr 0.8fr;
@@ -144,15 +180,68 @@ body {
     padding: 80px 5%;
 }
 
-/* Headings */
-.about-grid h2 {
-    text-align: center;
-    margin-bottom: 40px;
+.about-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
-/* Cards layout inside about */
 .about-cards {
     display: grid;
     gap: 15px;
 }
 
+.about-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.about-image {
+    width: 100%;
+    max-width: 350px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+}
+
+/* =========================
+   7. ANIMATIONS
+========================= */
+
+.section,
+.hero,
+.container {
+    animation: fadeIn 0.4s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================
+   8. MOBILE RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+    nav {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .about-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+}
