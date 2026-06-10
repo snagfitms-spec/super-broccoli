@@ -230,6 +230,63 @@ button {
     transition: 0.25s ease;
 }
 
+/* =========================
+   MAKE ENTIRE CARD CLICKABLE FEEL
+========================= */
+
+.card {
+    cursor: pointer;
+    position: relative;
+}
+
+/* Expand clickable area to full card */
+.card a {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    align-items: flex-end;
+
+    padding: 20px;
+
+    font-size: 0.85rem;
+    font-weight: 500;
+
+    color: transparent; /* hides text visually but keeps link active */
+
+    text-decoration: none;
+}
+
+/* Visible CTA badge (floating button) */
+.card a::after {
+    content: "View More →";
+
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+
+    padding: 6px 10px;
+
+    font-size: 0.8rem;
+    font-weight: 500;
+
+    color: var(--text);
+
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    transition: 0.25s ease;
+}
+
+/* Hover effect */
+.card:hover a::after {
+    background: rgba(255, 79, 216, 0.12);
+    border-color: rgba(255, 79, 216, 0.4);
+    color: var(--accent);
+   }
+
 .menu-container a:hover {
     color: var(--accent);
     transform: translateX(6px);
