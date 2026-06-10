@@ -221,3 +221,39 @@ section {
         text-align: center;
     }
 }
+
+.hamburger {
+    display: none;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+/* MOBILE ONLY */
+@media (max-width: 768px) {
+
+    nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+    }
+
+    .hamburger {
+        display: block;
+    }
+
+    nav ul {
+        position: absolute;
+        top: 70px;
+        right: 0;
+        width: 200px;
+        background: white;
+        flex-direction: column;
+        padding: 10px;
+        display: none;
+    }
+
+    nav ul.show {
+        display: flex;
+    }
+       }
