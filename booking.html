@@ -6,6 +6,7 @@
     <title>Booking</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <nav>
@@ -22,63 +23,68 @@
 </section>
 
 <section class="box">
+
     <input type="text" id="name" placeholder="Your Name">
     <input type="email" id="email" placeholder="Your Email">
     <textarea id="message" placeholder="Your Message"></textarea>
-    
+
     <button id="btn" onclick="bookService()">Submit Booking</button>
+
     <p id="msg"></p>
+
 </section>
 
 <script>
-    async function bookService() {
-        const btn = document.getElementById("btn");
-        const msg = document.getElementById("msg");
+async function bookService() {
 
-        const name = document.getElementById("name").value;
-        const email = document.getElementById("email").value;
-        const message = document.getElementById("message").value;
+    const btn = document.getElementById("btn");
+    const msg = document.getElementById("msg");
 
-        if (!name || !email || !message) {
-            msg.innerText = "Please fill all fields.";
-            msg.style.color = "red";
-            return;
-        }
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const message = document.getElementById("message").value;
 
-        btn.innerText = "Sending...";
-        btn.disabled = true;
-
-        try {
-            const res = await fetch("https://millie-dav.onrender.com/booking", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ name, email, message })
-            });
-
-            const data = await res.json().catch(() => ({}));
-
-            if (res.ok) {
-                msg.innerText = "Booking sent successfully!";
-                msg.style.color = "lightgreen";
-
-                document.getElementById("name").value = "";
-                document.getElementById("email").value = "";
-                document.getElementById("message").value = "";
-            } else {
-                msg.innerText = data.message || "Failed to send booking.";
-                msg.style.color = "red";
-            }
-
-        } catch (error) {
-            msg.innerText = "Server error. Try again.";
-            msg.style.color = "red";
-        }
-
-        btn.innerText = "Submit Booking";
-        btn.disabled = false;
+    if (!name || !email || !message) {
+        msg.innerText = "Please fill all fields.";
+        msg.style.color = "red";
+        return;
     }
+
+    btn.innerText = "Sending...";
+    btn.disabled = true;
+
+    try {
+        const res = await fetch("https://millie-dav.onrender.com/bookings", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ name, email, message })
+        });
+
+        const data = await res.json().catch(() => ({}));
+
+        if (res.ok) {
+            msg.innerText = "Booking sent successfully!";
+            msg.style.color = "lightgreen";
+
+            document.getElementById("name").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("message").value = "";
+
+        } else {
+            msg.innerText = data.message || "Failed to send booking.";
+            msg.style.color = "red";
+        }
+
+    } catch (error) {
+        msg.innerText = "Server error. Try again.";
+        msg.style.color = "red";
+    }
+
+    btn.innerText = "Submit Booking";
+    btn.disabled = false;
+}
 </script>
 
 </body>
