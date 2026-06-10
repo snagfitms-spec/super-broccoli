@@ -1,37 +1,31 @@
 /* =========================
-   DESIGN SYSTEM (FINAL CLEAN BUILD)
+   DESIGN SYSTEM (FINAL CLEAN)
 ========================= */
 
 :root {
 
-    /* BACKGROUND SYSTEM */
     --bg: #070B14;
     --panel: #0F172A;
     --surface: #0B1220;
 
-    /* TEXT */
     --text: #E6EDF7;
     --muted: #94A3B8;
 
-    /* BRAND COLORS */
     --primary: #38BDF8;
     --accent: #FF4FD8;
     --accent-soft: #C084FC;
 
-    /* SUPPORT */
     --success: #22C55E;
     --warning: #F59E0B;
 
-    /* UI */
     --card: rgba(255,255,255,0.04);
     --border: rgba(255,255,255,0.10);
 
-    /* GRADIENT */
     --gradient: linear-gradient(135deg, #38BDF8, #6366F1, #FF4FD8);
 }
 
 /* =========================
-   GLOBAL RESET
+   RESET
 ========================= */
 
 * {
@@ -96,7 +90,7 @@ a:hover {
 }
 
 /* =========================
-   GRID SYSTEM
+   GRID
 ========================= */
 
 .grid {
@@ -109,7 +103,7 @@ a:hover {
 }
 
 /* =========================
-   CARDS (FIXED STRUCTURE)
+   CARDS
 ========================= */
 
 .card {
@@ -131,44 +125,10 @@ a:hover {
 
 .card h3 {
     color: var(--primary);
-    transition: 0.25s ease;
 }
 
 .card:hover h3 {
     color: var(--accent);
-}
-
-/* =========================
-   CLEAN CTA (NO OVERLAP, NO CONFLICTS)
-========================= */
-
-.card a {
-    display: inline-flex;
-    align-self: flex-start;
-
-    margin-top: 12px;
-
-    padding: 6px 10px;
-
-    font-size: 0.85rem;
-    font-weight: 500;
-
-    color: var(--text);
-    text-decoration: none;
-
-    border-radius: 999px;
-
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-
-    transition: 0.25s ease;
-}
-
-.card a:hover {
-    color: var(--accent);
-    background: rgba(255, 79, 216, 0.12);
-    border-color: rgba(255, 79, 216, 0.4);
-    transform: translateY(-2px);
 }
 
 /* =========================
@@ -200,7 +160,7 @@ button {
 }
 
 /* =========================
-   HAMBURGER BUTTON
+   HAMBURGER BUTTON (CLEAN)
 ========================= */
 
 .menu-btn {
@@ -226,69 +186,26 @@ button {
 }
 
 /* =========================
-   HAMBURGER MENU (CLEAN FLOAT)
+   HAMBURGER MENU (FINAL FIXED)
 ========================= */
 
 .menu-container {
     position: fixed;
-    top: 70px;
+    top: 60px;
     right: 20px;
 
     display: none;
     flex-direction: column;
 
-    z-index: 9998;
+    min-width: 170px;
 
-    background: rgba(15, 23, 42, 0.95);
-    border: 1px solid var(--border);
-    padding: 12px;
+    padding: 12px 14px;
     border-radius: 12px;
 
-    min-width: 160px;
-}
+    background: rgba(15, 23, 42, 0.92);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(12px);
 
-.menu-container.active {
-    display: flex;
-}
-
-.menu-container a {
-    padding: 10px 0;
-    font-size: 14px;
-}
-
-/* =========================
-   MOBILE FIX
-========================= */
-
-@media (max-width: 768px) {
-
-    .hero h1 {
-        font-size: 1.8rem;
-    }
-
-    .grid {
-        grid-template-columns: 1fr;
-    }
-   }
-
-/* =========================
-   FINAL HAMBURGER RESET FIX
-========================= */
-
-/* FORCE REMOVE ANY OLD BACKGROUNDS OR BORDERS */
-.menu-container {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-}
-
-/* CLOSED STATE = NEVER VISIBLE */
-.menu-container {
-    display: none;
-    flex-direction: column;
-    position: fixed;
-    top: 70px;
-    right: 20px;
     z-index: 9998;
 }
 
@@ -297,28 +214,37 @@ button {
     display: flex;
 }
 
-/* MENU LINKS = PURE FLOATING TEXT STYLE */
+/* LINKS */
 .menu-container a {
     color: var(--text);
     font-size: 14px;
     font-weight: 500;
 
     padding: 8px 0;
-    background: transparent !important;
-    border: none !important;
-
     transition: 0.2s ease;
 }
 
-/* HOVER = ONLY COLOR SHIFT (NO BACKGROUND) */
+/* HOVER */
 .menu-container a:hover {
     color: var(--accent);
     transform: translateX(4px);
 }
 
-/* HAMBURGER ICON ALWAYS CLEAN */
-.menu-btn {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
+/* =========================
+   MOBILE FIX
+========================= */
+
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .menu-container {
+        right: 10px;
+        min-width: 150px;
+    }
 }
