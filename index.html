@@ -22,13 +22,13 @@
     </div>
 
     <!-- Floating Menu -->
-    <div class="menu-container">
-        <a href="index.html">Home</a>
-        <a href="services.html">Services</a>
-        <a href="portfolio.html">Portfolio</a>
-        <a href="courses.html">Courses</a>
-        <a href="about.html">About</a>
-        <a href="booking.html">Booking</a>
+    <div class="menu-container" id="menu">
+        <a href="index.html" onclick="closeMenu()">Home</a>
+        <a href="services.html" onclick="closeMenu()">Services</a>
+        <a href="portfolio.html" onclick="closeMenu()">Portfolio</a>
+        <a href="courses.html" onclick="closeMenu()">Courses</a>
+        <a href="about.html" onclick="closeMenu()">About</a>
+        <a href="booking.html" onclick="closeMenu()">Booking</a>
     </div>
 
 </nav>
@@ -79,15 +79,39 @@
 <script>
 
 /* =========================
-   HAMBURGER TOGGLE
+   MENU CONTROL (FIXED STATE)
 ========================= */
+
 function toggleMenu() {
-    document.querySelector(".menu-container").classList.toggle("active");
+    const menu = document.getElementById("menu");
+    menu.classList.toggle("active");
 }
 
+function closeMenu() {
+    const menu = document.getElementById("menu");
+    menu.classList.remove("active");
+}
+
+/* RESET MENU ON PAGE LOAD (FIX STUCK STATE BUG) */
+document.addEventListener("DOMContentLoaded", () => {
+    const menu = document.getElementById("menu");
+    if (menu) menu.classList.remove("active");
+});
+
+/* CLICK OUTSIDE TO CLOSE (PREVENT STICKY UI) */
+document.addEventListener("click", function(event) {
+    const menu = document.getElementById("menu");
+    const button = document.querySelector(".menu-btn");
+
+    if (!menu.contains(event.target) && !button.contains(event.target)) {
+        menu.classList.remove("active");
+    }
+});
+
 /* =========================
-   BOOKING SYSTEM (SAFE)
+   BOOKING SYSTEM (UNCHANGED BUT SAFE)
 ========================= */
+
 async function sendBooking() {
 
     const btn = document.getElementById("btn");
