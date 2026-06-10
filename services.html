@@ -21,7 +21,7 @@
     <a href="booking.html" onclick="closeMenu()">Booking</a>
 </div>
 
-</nav><!-- ================= SERVICES SECTION ================= --><section class="container" style="padding:60px 5%;"><h1 style="
+</nav><!-- ================= SERVICES SECTION ================= --><section class="container"><h1 style="
     text-align:center;
     margin-bottom:50px;
     color:var(--accent);
@@ -33,7 +33,7 @@
 
     <div class="card">
         <h3>Custom Web Design</h3>
-        <p>Modern, responsive, and high-converting websites.</p>
+        <p>Modern, responsive, high-converting websites.</p>
     </div>
 
     <div class="card">
@@ -53,7 +53,7 @@
 
     <div class="card">
         <h3>UI/UX Design</h3>
-        <p>Beautiful and user-friendly experiences.</p>
+        <p>Beautiful, user-friendly experiences.</p>
     </div>
 
     <div class="card">
@@ -82,21 +82,22 @@
 </footer><!-- ================= MENU SCRIPT ================= --><script>
 
 function toggleMenu() {
-    document.getElementById("menu").classList.toggle("active");
+    const menu = document.getElementById("menu");
+    menu.classList.toggle("active");
 }
 
 function closeMenu() {
-    document.getElementById("menu").classList.remove("active");
+    const menu = document.getElementById("menu");
+    menu.classList.remove("active");
 }
 
-window.onload = () => {
+/* FORCE CLEAN STATE ON LOAD */
+window.addEventListener("load", () => {
     const menu = document.getElementById("menu");
+    if (menu) menu.classList.remove("active");
+});
 
-    if (menu) {
-        menu.classList.remove("active");
-    }
-};
-
+/* CLICK OUTSIDE TO CLOSE */
 document.addEventListener("click", function(e) {
 
     const menu = document.getElementById("menu");
@@ -104,13 +105,9 @@ document.addEventListener("click", function(e) {
 
     if (!menu || !btn) return;
 
-    if (
-        !menu.contains(e.target) &&
-        !btn.contains(e.target)
-    ) {
+    if (!menu.contains(e.target) && !btn.contains(e.target)) {
         menu.classList.remove("active");
     }
-
 });
 
 </script></body>
