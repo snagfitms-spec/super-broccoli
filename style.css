@@ -280,28 +280,45 @@ button {
     transition: 0.25s ease;
 }
 
-/* Hover effect */
-.card:hover a::after {
-    background: rgba(255, 79, 216, 0.12);
-    border-color: rgba(255, 79, 216, 0.4);
-    color: var(--accent);
-   }
-
-.menu-container a:hover {
-    color: var(--accent);
-    transform: translateX(6px);
-}
-
 /* =========================
-   MOBILE
+   FIXED CARD CTA (NO OVERLAP)
 ========================= */
 
-@media (max-width: 768px) {
-    .navbar ul {
-        display: none;
-    }
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
 
-    .hero h1 {
-        font-size: 1.8rem;
-    }
+/* CTA link always at bottom */
+.card a {
+    display: inline-flex;
+    align-self: flex-start;
+
+    margin-top: 15px;
+
+    padding: 6px 10px;
+
+    font-size: 0.85rem;
+    font-weight: 500;
+
+    color: var(--text);
+    text-decoration: none;
+
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    transition: 0.25s ease;
+}
+
+/* hover effect */
+.card a:hover {
+    color: var(--accent);
+
+    background: rgba(255, 79, 216, 0.12);
+    border-color: rgba(255, 79, 216, 0.4);
+
+    transform: translateY(-2px);
 }
