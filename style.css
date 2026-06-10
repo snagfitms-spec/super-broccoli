@@ -274,3 +274,38 @@ section {
         font-size: 1.8rem;
     }
 }
+
+.menu-container {
+    position: fixed !important;
+    top: 70px !important;
+    right: 20px !important;
+
+    display: none !important;
+    flex-direction: column !important;
+
+    width: auto !important;
+    height: auto !important;
+
+    z-index: 99999 !important;
+
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+
+    align-items: flex-end !important;
+}
+
+.menu-container.active {
+    display: flex !important;
+}
+
+.menu-container a {
+    display: block !important;
+
+    padding: 10px 0 !important;
+    text-align: right !important;
+
+    color: var(--text) !important;
+
+    white-space: nowrap !important;
+}
