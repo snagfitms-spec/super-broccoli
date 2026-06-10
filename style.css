@@ -230,46 +230,47 @@ section {
     position: relative;
 }
 
-/* Hamburger ALWAYS visible on mobile */
-.hamburger {
-    display: none;
-    font-size: 30px;
+/* Hamburger Button */
+.menu-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
     cursor: pointer;
-    color: #00bcd4; /* accent color */
-    z-index: 1000;
 }
 
-/* MOBILE */
-@media (max-width: 768px) {
-
-    .hamburger {
-        display: block;
-    }
-
-    nav ul {
-        position: absolute;
-        top: 60px;
-        right: 10px;
-
-        width: 200px;
-        background: rgba(0,0,0,0.85); /* transparent premium look */
-        backdrop-filter: blur(10px);
-
-        flex-direction: column;
-        padding: 10px;
-        border-radius: 10px;
-
-        display: none;
-    }
-
-    nav ul.show {
-        display: flex;
-    }
-
-    nav ul li a {
-        color: white;
-        padding: 10px;
-        display: block;
-    }
+.menu-btn span {
+    display: block;
+    width: 25px;
+    height: 2px;
+    background: white;
+    margin: 5px 0;
 }
+
+/* Menu */
+.menu-container {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    z-index: 9998;
+
+    display: none;
+    flex-direction: column;
+
+    background: transparent;
+}
+
+.menu-container.active {
+    display: flex;
+}
+
+.menu-container a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 0;
+}
+
+.menu-container a:hover {
+    color: #00bcd4;
+   }
 
