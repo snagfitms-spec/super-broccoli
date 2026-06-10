@@ -1,3 +1,7 @@
+/* =========================
+   GLOBAL RESET
+========================= */
+
 :root {
     --bg: #0b1220;
     --text: #e5e7eb;
@@ -13,21 +17,21 @@
     box-sizing: border-box;
 }
 
-/* APP CORE */
-html {
-    scroll-behavior: smooth;
-}
-
-body {
+html, body {
+    width: 100%;
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
     font-family: 'Inter', sans-serif;
     background: var(--bg);
     color: var(--text);
     line-height: 1.6;
-    min-height: 100vh;
-    overflow-x: hidden;
 }
 
-/* NAVIGATION */
+/* =========================
+   NAVIGATION (STABLE)
+========================= */
+
 nav {
     display: flex;
     justify-content: space-between;
@@ -50,56 +54,76 @@ nav ul {
 nav a {
     text-decoration: none;
     color: var(--text);
-    font-size: 0.85rem;
-    font-weight: 500;
+    font-size: 0.9rem;
+    transition: 0.3s;
 }
 
 nav a:hover {
     color: var(--primary);
 }
 
-/* APP SCROLL SYSTEM */
-.section {
-    min-height: 100vh;
+/* =========================
+   GLOBAL LAYOUT SYSTEM
+========================= */
+
+section {
+    width: 100%;
+    display: block;
     padding: 80px 5%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: fadeIn 0.4s ease-in;
 }
 
-/* GRID FEED SYSTEM */
+/* =========================
+   HERO (NO FLEX BREAKS)
+========================= */
+
+.hero {
+    width: 100%;
+    display: block;
+    text-align: center;
+    padding: 80px 5%;
+}
+
+.hero h1 {
+    font-size: 2.2rem;
+}
+
+/* =========================
+   GRID FEED SYSTEM
+   (Instagram / TikTok style)
+========================= */
+
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
     width: 100%;
     max-width: 1100px;
+    margin: auto;
 }
 
-/* CARD SYSTEM (FEED POSTS) */
+/* =========================
+   CARD SYSTEM
+========================= */
+
 .card {
     background: var(--card);
     padding: 20px;
     border-radius: 14px;
     border: 1px solid var(--border);
-    transition: 0.3s ease;
+    transition: 0.3s;
 }
 
 .card:hover {
-    transform: translateY(-6px);
+    transform: translateY(-5px);
     border-color: var(--primary);
 }
 
-/* HERO */
-.hero {
-    text-align: center;
-    padding: 80px 5%;
-}
+/* =========================
+   FORMS (BOOKING SYSTEM)
+========================= */
 
-/* FORMS */
 .container {
-    width: 90%;
+    width: 100%;
     max-width: 600px;
     margin: auto;
 }
@@ -131,13 +155,17 @@ button {
     cursor: pointer;
 }
 
-/* ABOUT SYSTEM */
+/* =========================
+   ABOUT SECTION (SAFE GRID)
+========================= */
+
 .about-wrapper {
     display: grid;
     grid-template-columns: 1.2fr 0.8fr;
     gap: 40px;
-    max-width: 1100px;
     width: 100%;
+    max-width: 1100px;
+    margin: auto;
     align-items: center;
 }
 
@@ -154,11 +182,14 @@ button {
     border: 1px solid var(--border);
 }
 
-/* ANIMATION */
+/* =========================
+   ANIMATION (CLEAN)
+========================= */
+
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(12px);
+        transform: translateY(10px);
     }
     to {
         opacity: 1;
@@ -166,15 +197,19 @@ button {
     }
 }
 
-/* MOBILE */
+section {
+    animation: fadeIn 0.4s ease-in;
+}
+
+/* =========================
+   MOBILE FIX
+========================= */
+
 @media (max-width: 768px) {
+
     nav {
         flex-direction: column;
         gap: 10px;
-    }
-
-    .section {
-        padding: 60px 20px;
     }
 
     .hero h1 {
