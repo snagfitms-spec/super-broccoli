@@ -1,25 +1,72 @@
-<section class="section">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | MillieDev</title>
 
-    <h1>Portfolio</h1>
-    <p>Technical projects, software architecture, and web solutions.</p>
+    <!-- GLOBAL CSS LINK (DO NOT REMOVE) -->
+    <link rel="stylesheet" href="style.css">
+</head>
 
-    <div class="grid">
+<body>
 
-        <div class="card">
-            <h3>Digital Booking System API</h3>
-            <p>Backend system developed to manage client appointments using Node.js and API management tools.</p>
+    <!-- ================= NAVIGATION ================= -->
+    <nav>
+        <div class="logo">MillieDev</div>
+
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="courses.html">Courses</a></li>
+            <li><a href="portfolio.html" class="active">Portfolio</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="booking.html">Book Now</a></li>
+        </ul>
+    </nav>
+
+    <!-- ================= PORTFOLIO SECTION ================= -->
+    <section class="section">
+
+        <!-- HEADER -->
+        <div class="hero">
+            <h1>Portfolio</h1>
+            <p>Technical projects, software architecture, and web solutions built for real-world impact.</p>
         </div>
 
-        <div class="card">
-            <h3>Web Development Projects</h3>
-            <p>Responsive, high-performance web applications built during my Computer Science degree program.</p>
+        <!-- FEED GRID (Instagram / TikTok style system) -->
+        <div class="grid">
+
+            <!-- CARD 1 -->
+            <div class="card">
+                <h3>Digital Booking System API</h3>
+                <p>
+                    Backend system built using Node.js to manage client appointments,
+                    bookings, and API routing with structured validation.
+                </p>
+            </div>
+
+            <!-- CARD 2 -->
+            <div class="card">
+                <h3>Web Development Projects</h3>
+                <p>
+                    Responsive websites and landing pages focused on performance,
+                    conversion, and mobile-first UI design.
+                </p>
+            </div>
+
+            <!-- CARD 3 -->
+            <div class="card">
+                <h3>Software Architecture Testing</h3>
+                <p>
+                    System testing for CRUD operations using API tools to ensure
+                    reliability, scalability, and backend stability.
+                </p>
+            </div>
+
         </div>
 
-        <div class="card">
-            <h3>Software Architecture Testing</h3>
-            <p>Functional testing of CRUD operations using API tools to ensure system reliability.</p>
-        </div>
+    </section>
 
-    </div>
-
-</section>
+</body>
+</html>
