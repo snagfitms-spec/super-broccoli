@@ -9,9 +9,16 @@
 
 <body>
 
-<nav>
-    <h2>MillieDev</h2>
-    <ul>
+<!-- ================= NAVIGATION ================= -->
+<nav class="navbar">
+    <h2 class="logo">MillieDev</h2>
+
+    <!-- Hamburger (mobile only) -->
+    <div class="hamburger" onclick="toggleMenu()">
+        ☰
+    </div>
+
+    <ul id="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="services.html">Services</a></li>
         <li><a href="portfolio.html">Portfolio</a></li>
@@ -21,24 +28,32 @@
     </ul>
 </nav>
 
+<!-- ================= HERO SECTION ================= -->
 <section class="hero" id="home">
     <div class="hero-text">
         <h1>I Build Websites That <span>Convert</span></h1>
         <p>Modern, fast, and responsive digital solutions for your business.</p>
     </div>
 
+    <!-- Booking Form -->
     <div id="booking-section" class="form-container">
         <h3>Book a Service</h3>
+
         <input id="name" placeholder="Your Name">
         <input id="email" placeholder="Your Email">
         <textarea id="message" placeholder="Project details..."></textarea>
+
         <button onclick="sendBooking()" id="btn">Submit Booking</button>
         <p id="response"></p>
     </div>
 </section>
 
+<!-- ================= SERVICES PREVIEW ================= -->
 <section id="services" class="section">
-    <h2 style="text-align:center; margin-bottom:40px;">My Premium Services</h2>
+    <h2 style="text-align:center; margin-bottom:40px;">
+        My Premium Services
+    </h2>
+
     <div class="grid">
         <div class="card"><h3>Web Design</h3><p>Professional layouts.</p></div>
         <div class="card"><h3>E-Commerce</h3><p>Sell online globally.</p></div>
@@ -46,11 +61,24 @@
     </div>
 </section>
 
+<!-- ================= FOOTER ================= -->
 <footer style="text-align:center; padding:40px; opacity:0.6;">
     © 2026 MillieDev Portfolio System
 </footer>
 
+<!-- ================= SCRIPTS ================= -->
 <script>
+/* =========================
+   HAMBURGER MENU TOGGLE
+========================= */
+function toggleMenu() {
+    const nav = document.getElementById("nav-links");
+    nav.classList.toggle("show");
+}
+
+/* =========================
+   BOOKING SYSTEM
+========================= */
 async function sendBooking() {
     const btn = document.getElementById("btn");
     const resBox = document.getElementById("response");
@@ -61,11 +89,18 @@ async function sendBooking() {
         message: document.getElementById("message").value
     };
 
+    // Validation
+    if (!data.name || !data.email || !data.message) {
+        resBox.innerText = "Please fill all fields.";
+        resBox.style.color = "red";
+        return;
+    }
+
     btn.innerText = "Sending...";
     btn.disabled = true;
 
     try {
-        const res = await fetch("https://millie-dav.onrender.com/booking", {
+        const res = await fetch("https://millie-dav.onrender.com/bookings", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
@@ -74,25 +109,19 @@ async function sendBooking() {
         if (res.ok) {
             resBox.innerText = "Sent successfully!";
             resBox.style.color = "lightgreen";
+
+            document.getElementById("name").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("message").value = "";
         } else {
             resBox.innerText = "Failed to send.";
             resBox.style.color = "red";
         }
+
     } catch (err) {
         resBox.innerText = "Error. Try again.";
         resBox.style.color = "red";
     }
-    <nav>
-    <h2>MillieDev</h2>
-    <ul>
-        <li><a href="index.html" class="active">Home</a></li>
-        <li><a href="services.html">Services</a></li>
-        <li><a href="portfolio.html">Portfolio</a></li>
-        <li><a href="courses.html">Courses</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="booking.html">Booking</a></li>
-    </ul>
-</nav>
 
     btn.innerText = "Submit Booking";
     btn.disabled = false;
