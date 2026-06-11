@@ -131,6 +131,47 @@ app.delete("/bookings/:id", authMiddleware, async (req, res) => {
 });
 
 /* =========================
+   REVENUE + ANALYTICS API
+========================= */
+app.get("/api/revenue", authMiddleware, async (req, res) => {
+
+  try {
+
+    const bookings = await Booking.find();
+
+    let totalRevenue = 0;
+
+    const serviceMap = {};
+
+    bookings.forEach(b => {
+
+      const amount = b.amount || 0;
+      totalRevenue += amount;
+
+      if (!serviceMap[b.service]) {
+        serviceMap[b.service] = 0;
+      }
+
+      serviceMap[b.service] += amount;
+    });
+
+    const breakdown = Object.keys(serviceMap).map(key => ({
+      service: key,
+      total: serviceMap[key]
+    }));
+
+    res.json({
+      totalRevenue,
+      breakdown
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Analytics error" });
+  }
+});
+
+/* =========================
    8. START SERVER (IMPORTANT)
 ========================= */
 const PORT = process.env.PORT || 5000;
