@@ -1,125 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About | MillieDev</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MillieDev Admin</title>
 
-    <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
+<style>
+
+/* ================= BASE ================= */
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #0a0f1f;
+    color: #fff;
+}
+
+/* ================= TOP BAR ================= */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 18px;
+    background: #0f1629;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.menu-btn {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.title {
+    font-weight: bold;
+}
+
+/* ================= OVERLAY MENU (HAMBURGER) ================= */
+.menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(15, 22, 41, 0.98);
+    display: none;
+    flex-direction: column;
+    padding: 60px 20px;
+    z-index: 999;
+}
+
+.menu a {
+    color: #aaa;
+    text-decoration: none;
+    padding: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.menu a:hover {
+    color: #fff;
+}
+
+/* ================= STATS ================= */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 15px;
+}
+
+.card {
+    background: #111a2e;
+    padding: 15px;
+    border-radius: 12px;
+}
+
+/* ================= BOOKINGS GRID ================= */
+.section {
+    padding: 15px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+/* ================= BOOKING CARD (CLEAN PREMIUM) ================= */
+.booking {
+    background: #0f1629;
+    padding: 14px;
+    border-radius: 12px;
+    border-left: 3px solid #6C63FF;
+}
+
+.name {
+    font-weight: bold;
+}
+
+.meta {
+    font-size: 12px;
+    color: #aaa;
+}
+
+.service {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 6px;
+    background: rgba(108,99,255,0.2);
+    color: #6C63FF;
+}
+
+.msg {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #ccc;
+}
+
+/* ================= DESKTOP IMPROVEMENT ================= */
+@media (min-width: 768px) {
+
+    .stats {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+</style>
 </head>
 
 <body>
 
-<!-- ================= NAVIGATION ================= -->
-<nav class="navbar">
+<!-- TOP BAR -->
+<div class="topbar">
+    <div class="menu-btn" onclick="toggleMenu()">☰</div>
+    <div class="title">Dashboard</div>
+</div>
 
-    <div class="logo">MillieDev</div>
+<!-- MENU -->
+<div class="menu" id="menu">
+    <a href="#">Dashboard</a>
+    <a href="#">Bookings</a>
+    <a href="#">Analytics</a>
+    <a href="#">Settings</a>
+    <a href="#" onclick="toggleMenu()">Close</a>
+</div>
 
-    <div class="menu-btn" onclick="toggleMenu()">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-
-    <div class="menu-container" id="menu">
-        <a href="index.html" onclick="closeMenu()">Home</a>
-        <a href="services.html" onclick="closeMenu()">Services</a>
-        <a href="portfolio.html" onclick="closeMenu()">Portfolio</a>
-        <a href="courses.html" onclick="closeMenu()">Courses</a>
-        <a href="about.html" onclick="closeMenu()">About</a>
-        <a href="booking.html" onclick="closeMenu()">Booking</a>
-    </div>
-
-</nav>
-
-<!-- ================= HERO ================= -->
-<section class="hero">
-
-    <h1>About MillieDev</h1>
-
-    <p style="text-align:center; opacity:0.7; max-width:650px; margin:15px auto;">
-        Building modern digital systems that are fast, scalable, and designed for real impact.
-    </p>
-
-</section>
-
-<!-- ================= ABOUT SECTION ================= -->
-<section style="padding:40px 5%;">
+<!-- STATS -->
+<div class="stats">
 
     <div class="card">
-        <h3>Who We Are</h3>
-        <p>
-            MillieDev is a modern digital development brand focused on building clean,
-            high-performance websites, applications, and digital systems.
-        </p>
+        <h3>156</h3>
+        <p>Total</p>
     </div>
 
-    <!-- ================= LINK CARDS (CLICKABLE SYSTEM) ================= -->
-    <div class="grid" style="margin-top:20px;">
-
-        <a href="services.html" class="card">
-            <h3>Our Process</h3>
-            <p>Discover → Design → Develop → Test → Deploy</p>
-        </a>
-
-        <a href="portfolio.html" class="card">
-            <h3>Our Goal</h3>
-            <p>Building conversion-focused, secure, scalable systems.</p>
-        </a>
-
-        <a href="courses.html" class="card">
-            <h3>Why Choose Us</h3>
-            <p>Clean UI, mobile-first design, strong structure, reliability.</p>
-        </a>
-
+    <div class="card">
+        <h3>28</h3>
+        <p>New</p>
     </div>
 
-    <!-- ================= FINAL CTA CARD ================= -->
-    <a href="booking.html" class="card" style="margin-top:20px; text-align:center;">
+    <div class="card">
+        <h3>102</h3>
+        <p>Clients</p>
+    </div>
 
-        <h3>Let’s Build Something</h3>
+    <div class="card">
+        <h3>68%</h3>
+        <p>Rate</p>
+    </div>
 
-        <p>
-            Need a website, system or digital product? Tap here to start your project.
-        </p>
+</div>
 
-    </a>
+<!-- BOOKINGS -->
+<div class="section">
 
-</section>
+    <h3>Bookings</h3>
 
-<!-- ================= FOOTER ================= -->
-<footer style="text-align:center; padding:40px; opacity:0.6;">
-    © 2026 MillieDev Portfolio System
-</footer>
+    <div class="grid" id="cards">
+        <!-- MongoDB data goes here -->
+    </div>
 
-<!-- ================= MENU SCRIPT ================= -->
+</div>
+
 <script>
 
 function toggleMenu() {
-    document.getElementById("menu").classList.toggle("active");
-}
-
-function closeMenu() {
-    document.getElementById("menu").classList.remove("active");
-}
-
-window.addEventListener("load", () => {
-    document.getElementById("menu").classList.remove("active");
-});
-
-document.addEventListener("click", function(e) {
-
     const menu = document.getElementById("menu");
-    const btn = document.querySelector(".menu-btn");
-
-    if (!menu || !btn) return;
-
-    if (!menu.contains(e.target) && !btn.contains(e.target)) {
-        menu.classList.remove("active");
-    }
-
-});
+    menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+}
 
 </script>
 
