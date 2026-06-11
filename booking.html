@@ -6,7 +6,6 @@
     <title>Booking | MillieDev</title>
 
     <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
 </head>
 
 <body>
@@ -39,12 +38,12 @@
     <h1>Book a Service</h1>
 
     <p style="text-align:center; opacity:0.7; max-width:650px; margin:15px auto;">
-        Select a service below and I’ll automatically guide you to the booking form.
+        Fill in the form below and I’ll get back to you as soon as possible.
     </p>
 
 </section>
 
-<!-- ================= SERVICE SELECTION ================= -->
+<!-- ================= SERVICE OPTIONS ================= -->
 <section style="padding:40px 5%;">
 
     <h2 style="text-align:center; margin-bottom:20px; color:var(--primary);">
@@ -77,22 +76,28 @@
 
 </section>
 
-<!-- ================= FORM ================= -->
-<section id="booking-form" style="padding:40px 5%;">
+<!-- ================= BOOKING FORM ================= -->
+<section style="padding:40px 5%;">
 
     <div class="card">
 
         <h3>Send Your Request</h3>
 
-        <input type="text" placeholder="Your Name">
-        <input type="email" placeholder="Your Email">
+        <form id="bookingForm">
 
-        <!-- AUTO FILLED FIELD -->
-        <input type="text" id="serviceInput" placeholder="Selected Service">
+            <input type="text" id="name" placeholder="Your Name" required>
 
-        <textarea placeholder="Describe your project in detail..."></textarea>
+            <input type="email" id="email" placeholder="Your Email" required>
 
-        <button>Submit Booking</button>
+            <input type="text" id="service" placeholder="Selected Service" required>
+
+            <textarea id="message" placeholder="Describe your project in detail..." required></textarea>
+
+            <button type="submit">Submit Booking</button>
+
+        </form>
+
+        <p id="msg" style="margin-top:10px;"></p>
 
     </div>
 
@@ -122,9 +127,10 @@
     © 2026 MillieDev Portfolio System
 </footer>
 
-<!-- ================= SCRIPTS ================= -->
+<!-- ================= SCRIPT ================= -->
 <script>
 
+/* MENU */
 function toggleMenu() {
     document.getElementById("menu").classList.toggle("active");
 }
@@ -133,40 +139,66 @@ function closeMenu() {
     document.getElementById("menu").classList.remove("active");
 }
 
+/* CLOSE ON LOAD */
 window.addEventListener("load", () => {
     document.getElementById("menu").classList.remove("active");
 });
 
-/* CLOSE MENU ON OUTSIDE CLICK */
+/* CLOSE OUTSIDE CLICK */
 document.addEventListener("click", function(e) {
-
     const menu = document.getElementById("menu");
     const btn = document.querySelector(".menu-btn");
-
-    if (!menu || !btn) return;
 
     if (!menu.contains(e.target) && !btn.contains(e.target)) {
         menu.classList.remove("active");
     }
 });
 
-/* SERVICE CLICK LOGIC (THE IMPORTANT PART) */
-function selectService(serviceName) {
+/* SERVICE AUTO FILL */
+function selectService(service) {
+    document.getElementById("service").value = service;
 
-    // fill form field
-    document.getElementById("serviceInput").value = serviceName;
-
-    // smooth scroll to form
-    document.getElementById("booking-form").scrollIntoView({
-        behavior: "smooth",
-        block: "start"
+    document.getElementById("bookingForm").scrollIntoView({
+        behavior: "smooth"
     });
-
 }
+
+/* FORM SUBMIT → BACKEND CONNECTION */
+document.getElementById("bookingForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const data = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        message: document.getElementById("message").value
+    };
+
+    const msg = document.getElementById("msg");
+
+    try {
+        const res = await fetch("http://localhost:5000/bookings", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+
+        msg.innerText = "Booking sent successfully!";
+        msg.style.color = "#3b82f6";
+
+        this.reset();
+
+    } catch (error) {
+        msg.innerText = "Error sending booking.";
+        msg.style.color = "#ef4444";
+        console.log(error);
+    }
+});
 
 </script>
 
 </body>
 </html>
-
-
