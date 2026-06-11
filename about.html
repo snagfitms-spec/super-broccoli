@@ -1,32 +1,138 @@
-<section id="about" class="section">
+<!DOCTYPE html>
+<html lang="en">
 
-    <div class="hero">
-        <h1>About MillieDev</h1>
-        <p style="opacity:0.7; max-width:600px; margin:auto;">
-            We build modern digital systems that help businesses grow online through design, performance, and automation.
-        </p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | MillieDev</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar">
+
+    <div class="logo">MillieDev</div>
+
+    <div class="menu-btn" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
     </div>
+
+    <div class="menu-container" id="menu">
+        <a href="index.html" onclick="closeMenu()">Home</a>
+        <a href="services.html" onclick="closeMenu()">Services</a>
+        <a href="portfolio.html" onclick="closeMenu()">Portfolio</a>
+        <a href="courses.html" onclick="closeMenu()">Courses</a>
+        <a href="about.html" onclick="closeMenu()">About</a>
+        <a href="booking.html" onclick="closeMenu()">Booking</a>
+    </div>
+
+</nav>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+
+    <h1>About MillieDev</h1>
+
+    <p style="opacity:0.7; max-width:650px; margin:15px auto;">
+        We design and build high-performance digital systems that help businesses grow, scale, and convert users into customers.
+    </p>
+
+</section>
+
+<!-- ================= CORE GRID ================= -->
+<section class="section">
 
     <div class="grid">
 
         <div class="card">
             <h3>What We Do</h3>
-            <p>We design and develop websites, booking systems, and custom digital platforms.</p>
+            <p>We build websites, booking systems, e-commerce platforms, and custom digital solutions.</p>
             <a href="services.html">Explore Services</a>
         </div>
 
         <div class="card">
             <h3>Our Approach</h3>
-            <p>We focus on mobile-first design, speed optimization, and clean scalable code.</p>
+            <p>We use clean architecture, mobile-first design, and performance-driven development.</p>
             <a href="services.html#approach">Learn More</a>
         </div>
 
         <div class="card">
             <h3>Our Goal</h3>
-            <p>To turn ideas into functional digital products that generate real results.</p>
+            <p>To transform ideas into scalable digital products that generate real business value.</p>
             <a href="services.html#goal">View Goal</a>
         </div>
 
     </div>
 
 </section>
+
+<!-- ================= QUOTE SECTION ================= -->
+<section class="section">
+
+    <div class="grid">
+
+        <div class="card">
+            <h3>Vision</h3>
+            <p>
+                “We don’t just build websites — we build systems that scale businesses.”
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Mission</h3>
+            <p>
+                “To create digital experiences that are fast, modern, and conversion-focused.”
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Mindset</h3>
+            <p>
+                “Every pixel, every line of code, must serve a purpose.”
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Standard</h3>
+            <p>
+                “We don’t ship average. We ship performance.”
+            </p>
+        </div>
+
+        <!-- ⭐ 5TH QUOTE (YOU REQUESTED) -->
+        <div class="card">
+            <h3>Promise</h3>
+            <p>
+                “We turn ideas into digital products that actually work in the real world.”
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer style="text-align:center; padding:40px; opacity:0.6;">
+    © 2026 MillieDev Digital System
+</footer>
+
+<!-- ================= MENU SCRIPT ================= -->
+<script>
+
+function toggleMenu() {
+    document.getElementById("menu").classList.toggle("active");
+}
+
+function closeMenu() {
+    document.getElementById("menu").classList.remove("active");
+}
+
+</script>
+
+</body>
+</html>
