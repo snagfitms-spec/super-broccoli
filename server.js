@@ -2,55 +2,61 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const http = require("http");
+const { Server } = require("socket.io");
 
 const app = express();
+const server = http.createServer(app);
+
+/* ================= SOCKET.IO SETUP ================= */
+const io = new Server(server, {
+  cors: {
+    origin: "*", // we will lock this later for security
+    methods: ["GET", "POST"]
+  }
+});
 
 app.use(express.json());
 app.use(cors());
 
-/* =========================
-   1. DEBUG START
-========================= */
-console.log("=== SERVER STARTING ===");
-console.log("PORT:", process.env.PORT);
-console.log("MONGO_URI exists:", !!process.env.MONGO_URI);
-console.log("JWT_SECRET exists:", !!process.env.JWT_SECRET);
+/* ================= SOCKET CONNECTION ================= */
+io.on("connection", (socket) => {
+  console.log("⚡ Client connected:", socket.id);
 
-/* =========================
-   2. DATABASE CONNECTION
-========================= */
+  socket.on("disconnect", () => {
+    console.log("❌ Client disconnected:", socket.id);
+  });
+});
+
+/* ================= ENV DEBUG ================= */
+console.log("=== SERVER STARTING ===");
+
+/* ================= DATABASE ================= */
 const mongoURI = process.env.MONGO_URI;
 
 if (!mongoURI) {
-  console.error("❌ MONGO_URI is missing. Server cannot start.");
+  console.error("❌ MONGO_URI missing");
   process.exit(1);
 }
 
 mongoose.connect(mongoURI)
   .then(() => console.log("MongoDB connected"))
-  .catch((err) => {
-    console.error("❌ MongoDB connection failed:", err);
+  .catch(err => {
+    console.error(err);
     process.exit(1);
   });
 
-/* =========================
-   3. BOOKING MODEL
-========================= */
+/* ================= MODEL ================= */
 const Booking = mongoose.model("Booking", {
   name: String,
   email: String,
   service: String,
   message: String,
-
-  // IMPORTANT for revenue system
   amount: { type: Number, default: 0 },
-
   createdAt: { type: Date, default: Date.now }
 });
 
-/* =========================
-   4. ADMIN LOGIN
-========================= */
+/* ================= LOGIN ================= */
 const ADMIN_USER = "admin";
 const ADMIN_PASS = "1234";
 
@@ -59,7 +65,6 @@ app.post("/admin/login", (req, res) => {
   const { username, password } = req.body;
 
   if (username === ADMIN_USER && password === ADMIN_PASS) {
-
     const token = jwt.sign(
       { user: "admin" },
       process.env.JWT_SECRET || "dev_secret",
@@ -69,142 +74,85 @@ app.post("/admin/login", (req, res) => {
     return res.json({ success: true, token });
   }
 
-  return res.status(401).json({ success: false, message: "Invalid login" });
+  res.status(401).json({ success: false });
 });
 
-/* =========================
-   5. AUTH MIDDLEWARE
-========================= */
-function authMiddleware(req, res, next) {
+/* ================= MIDDLEWARE ================= */
+function auth(req, res, next) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) return res.status(403).json({ message: "No token" });
 
-  const auth = req.headers.authorization;
-
-  if (!auth) {
-    return res.status(403).json({ message: "No token provided" });
-  }
-
-  const token = auth.split(" ")[1];
+  const token = authHeader.split(" ")[1];
 
   jwt.verify(token, process.env.JWT_SECRET || "dev_secret", (err) => {
-    if (err) return res.status(403).json({ message: "Invalid or expired token" });
+    if (err) return res.status(403).json({ message: "Invalid token" });
     next();
   });
 }
 
-/* =========================
-   6. CREATE BOOKING
-========================= */
+/* ================= CREATE BOOKING ================= */
 app.post("/bookings", async (req, res) => {
-
   try {
 
-    const { name, email, message, service, amount } = req.body;
+    const booking = await Booking.create(req.body);
 
-    if (!name || !email || !message) {
-      return res.status(400).json({ message: "Missing fields" });
-    }
+    /* 🔥 REAL TIME UPDATE */
+    io.emit("booking-created", booking);
 
-    const booking = await Booking.create({
-      name,
-      email,
-      message,
-      service: service || "General",
-      amount: amount || 0
-    });
-
-    res.json({ success: true, booking });
+    res.json(booking);
 
   } catch (err) {
-    console.error("BOOKING ERROR:", err);
-    res.status(500).json({ message: "Error saving booking" });
+    res.status(500).json({ error: err.message });
   }
 });
 
-/* =========================
-   7. GET BOOKINGS (ADMIN)
-========================= */
-app.get("/bookings", authMiddleware, async (req, res) => {
-
-  try {
-
-    const bookings = await Booking.find().sort({ createdAt: -1 });
-
-    res.json(bookings);
-
-  } catch (err) {
-
-    res.status(500).json({ message: "Error fetching bookings" });
-
-  }
+/* ================= GET BOOKINGS ================= */
+app.get("/bookings", auth, async (req, res) => {
+  const data = await Booking.find().sort({ createdAt: -1 });
+  res.json(data);
 });
 
-/* =========================
-   8. DELETE BOOKING
-========================= */
-app.delete("/bookings/:id", authMiddleware, async (req, res) => {
+/* ================= DELETE BOOKING ================= */
+app.delete("/bookings/:id", auth, async (req, res) => {
 
-  try {
+  await Booking.findByIdAndDelete(req.params.id);
 
-    await Booking.findByIdAndDelete(req.params.id);
+  /* 🔥 REAL TIME UPDATE */
+  io.emit("booking-deleted", req.params.id);
 
-    res.json({ success: true, message: "Deleted successfully" });
-
-  } catch (err) {
-
-    res.status(500).json({ message: "Delete operation failed" });
-
-  }
+  res.json({ success: true });
 });
 
-/* =========================
-   9. REVENUE API (FIXED + CLEAN)
-========================= */
-app.get("/api/revenue", authMiddleware, async (req, res) => {
+/* ================= REVENUE API (LIVE) ================= */
+app.get("/api/revenue", auth, async (req, res) => {
 
-  try {
+  const bookings = await Booking.find();
 
-    const bookings = await Booking.find();
+  let totalRevenue = 0;
+  const serviceMap = {};
 
-    let totalRevenue = 0;
-    const serviceMap = {};
+  bookings.forEach(b => {
 
-    bookings.forEach(b => {
+    const amount = b.amount || 0;
+    totalRevenue += amount;
 
-      const amount = b.amount || 0;
+    serviceMap[b.service] = (serviceMap[b.service] || 0) + amount;
+  });
 
-      totalRevenue += amount;
+  const breakdown = Object.keys(serviceMap).map(key => ({
+    service: key,
+    total: serviceMap[key]
+  }));
 
-      if (!serviceMap[b.service]) {
-        serviceMap[b.service] = 0;
-      }
-
-      serviceMap[b.service] += amount;
-    });
-
-    const breakdown = Object.keys(serviceMap).map(service => ({
-      service,
-      total: serviceMap[service]
-    }));
-
-    res.json({
-      totalRevenue,
-      breakdown
-    });
-
-  } catch (err) {
-
-    console.error("Revenue API error:", err);
-
-    res.status(500).json({ message: "Analytics error" });
-
-  }
+  res.json({
+    totalRevenue,
+    breakdown
+  });
 });
 
-/* =========================
-   10. START SERVER
-========================= */
+/* ================= START SERVER ================= */
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log("Server running on port " + PORT);
+server.listen(PORT, () => {
+  console.log("🚀 Server running on", PORT);
 });
