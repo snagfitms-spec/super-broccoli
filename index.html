@@ -4,24 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home | MillieDev</title>
-
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
 </head>
-
 <body>
 
-<!-- ================= NAVIGATION ================= -->
 <nav class="navbar">
-
     <div class="logo">MillieDev</div>
-
     <div class="menu-btn" onclick="toggleMenu()">
         <span></span>
         <span></span>
         <span></span>
     </div>
-
     <div class="menu-container" id="menu">
         <a href="index.html" onclick="closeMenu()">Home</a>
         <a href="services.html" onclick="closeMenu()">Services</a>
@@ -30,218 +24,77 @@
         <a href="about.html" onclick="closeMenu()">About</a>
         <a href="booking.html" onclick="closeMenu()">Booking</a>
     </div>
-
 </nav>
 
-<!-- ================= HERO SECTION ================= -->
 <section class="hero" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; padding:80px 5%; gap:40px;">
 
-    <!-- LEFT -->
     <div style="flex:1; min-width:280px;">
         <h1 style="font-size:2.5rem; margin-bottom:15px;">
             Building Digital Solutions That Drive Real Results
         </h1>
-
         <p style="opacity:0.75; margin-bottom:25px; max-width:500px;">
             Modern websites, powerful systems, and digital experiences designed to grow your business and convert visitors into clients.
         </p>
-
-        <a href="booking.html">
-            <button style="width:auto; padding:12px 20px; margin-right:10px;">
-                Book a Service
-            </button>
-        </a>
-
-        <a href="portfolio.html">
-            <button style="width:auto; padding:12px 20px; background:transparent; border:1px solid var(--border);">
-                View Work
-            </button>
-        </a>
+        <a href="booking.html"><button style="width:auto; padding:12px 20px; margin-right:10px;">Book a Service</button></a>
+        <a href="portfolio.html"><button style="width:auto; padding:12px 20px; background:transparent; border:1px solid var(--border);">View Work</button></a>
     </div>
 
-    <!-- RIGHT VISUAL -->
     <div style="flex:1; min-width:280px; text-align:center;">
-        <div style="
-            width:100%;
-            height:300px;
-            border-radius:16px;
-            background:rgba(255,255,255,0.05);
-            border:1px solid var(--border);
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            color:var(--muted);
-        ">
-            Project Preview / Mockup
-        </div>
+        <img src="images/services-preview.png" alt="MillieDev Services Overview" style="width:100%; max-width:500px; height:auto; border-radius:16px; border:1px solid var(--border);">
     </div>
-
 </section>
 
-<!-- ================= TRUST BAR ================= -->
 <section style="padding:20px 5%;">
-
     <div class="grid">
-
-        <div class="card">
-            <h3>50+</h3>
-            <p>Projects Completed</p>
-        </div>
-
-        <div class="card">
-            <h3>30+</h3>
-            <p>Happy Clients</p>
-        </div>
-
-        <div class="card">
-            <h3>3+ Years</h3>
-            <p>Experience</p>
-        </div>
-
-        <div class="card">
-            <h3>100%</h3>
-            <p>Client Satisfaction</p>
-        </div>
-
+        <div class="card"><h3>50+</h3><p>Projects Completed</p></div>
+        <div class="card"><h3>30+</h3><p>Happy Clients</p></div>
+        <div class="card"><h3>3+ Years</h3><p>Experience</p></div>
+        <div class="card"><h3>100%</h3><p>Client Satisfaction</p></div>
     </div>
-
 </section>
 
-<!-- ================= SERVICES PREVIEW ================= -->
 <section style="padding:60px 5%;">
-
     <h2 style="text-align:center; margin-bottom:30px;">Services I Offer</h2>
-
     <div class="grid">
-
-        <div class="card">
-            <h3>Web Design</h3>
-            <p>Clean modern responsive websites.</p>
-        </div>
-
-        <div class="card">
-            <h3>E-Commerce</h3>
-            <p>Online stores with payment systems.</p>
-        </div>
-
-        <div class="card">
-            <h3>Custom Systems</h3>
-            <p>Full business software solutions.</p>
-        </div>
-
-        <div class="card">
-            <h3>Tech Courses</h3>
-            <p>Learn to build digital products.</p>
-        </div>
-
+        <div class="card"><h3>Web Design</h3><p>Clean modern responsive websites.</p></div>
+        <div class="card"><h3>E-Commerce</h3><p>Online stores with payment systems.</p></div>
+        <div class="card"><h3>Custom Systems</h3><p>Full business software solutions.</p></div>
+        <div class="card"><h3>Tech Courses</h3><p>Learn to build digital products.</p></div>
     </div>
-
 </section>
 
-<!-- ================= PROJECTS ================= -->
 <section style="padding:60px 5%;">
-
     <h2 style="text-align:center; margin-bottom:30px;">Featured Projects</h2>
-
     <div class="grid">
-
-        <div class="card">
-            <h3>Booking System</h3>
-            <p>Full backend-powered booking platform.</p>
-        </div>
-
-        <div class="card">
-            <h3>Business Website</h3>
-            <p>High conversion landing site.</p>
-        </div>
-
-        <div class="card">
-            <h3>E-Commerce Store</h3>
-            <p>Modern online shop system.</p>
-        </div>
-
+        <div class="card"><h3>Booking System</h3><p>Full backend-powered booking platform.</p></div>
+        <div class="card"><h3>Business Website</h3><p>High conversion landing site.</p></div>
+        <div class="card"><h3>E-Commerce Store</h3><p>Modern online shop system.</p></div>
     </div>
-
 </section>
 
-<!-- ================= REVIEWS ================= -->
-<section style="padding:60px 5%;">
-
-    <h2 style="text-align:center; margin-bottom:30px;">What Clients Say</h2>
-
-    <div class="grid">
-
-        <div class="card">
-            <p>"Amazing work, very professional and fast."</p>
-            <h3>- Client A</h3>
-        </div>
-
-        <div class="card">
-            <p>"My website performance improved instantly."</p>
-            <h3>- Client B</h3>
-        </div>
-
-        <div class="card">
-            <p>"Highly recommend MillieDev for any project."</p>
-            <h3>- Client C</h3>
-        </div>
-
-    </div>
-
-</section>
-
-<!-- ================= CTA ================= -->
 <section style="text-align:center; padding:80px 5%;">
-
     <h2>Let’s Build Something Amazing</h2>
-
-    <p style="opacity:0.7; margin:20px 0;">
-        Have a project in mind? Let’s bring it to life.
-    </p>
-
-    <a href="booking.html">
-        <button style="max-width:250px;">Book a Service Now</button>
-    </a>
-
+    <p style="opacity:0.7; margin:20px 0;">Have a project in mind? Let’s bring it to life.</p>
+    <a href="booking.html"><button style="max-width:250px;">Book a Service Now</button></a>
 </section>
 
-<!-- ================= FOOTER ================= -->
 <footer style="text-align:center; padding:40px; opacity:0.6;">
     © 2026 MillieDev. All rights reserved.
 </footer>
 
-<!-- ================= SCRIPT ================= -->
 <script>
-
-function toggleMenu() {
-    document.getElementById("menu").classList.toggle("active");
-}
-
-function closeMenu() {
-    document.getElementById("menu").classList.remove("active");
-}
-
-window.addEventListener("load", () => {
-    document.getElementById("menu").classList.remove("active");
-});
-
-document.addEventListener("click", function(e) {
-
-    const menu = document.getElementById("menu");
-    const btn = document.querySelector(".menu-btn");
-
-    if (!menu.contains(e.target) && !btn.contains(e.target)) {
-        
+    function toggleMenu() {
+        document.getElementById("menu").classList.toggle("active");
     }
-});
 
-<div class="mockup">
-  <img src="https://raw.githubusercontent.com/snagfitms-spec/MILLIE.DAV-/main/file_00000000bf8c7243b4a450556ba07032.png">
-</div>
-    
+    function closeMenu() {
+        document.getElementById("menu").classList.remove("active");
+    }
+
+    window.addEventListener("load", () => {
+        document.getElementById("menu").classList.remove("active");
+    });
 </script>
 
 </body>
 </html>
-
-
