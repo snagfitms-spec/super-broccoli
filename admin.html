@@ -11,7 +11,6 @@
 </head>
 <body>
 
-    <!-- NAVBAR WITH SECURITY/AUTH AREA -->
     <div class="navbar">
         <div class="logo">MillieDev LIVE</div>
         <div class="nav-controls" style="display: flex; align-items: center; gap: 20px;">
@@ -22,7 +21,6 @@
         </div>
     </div>
 
-    <!-- STATS -->
     <div class="stats">
         <div class="card"><div class="icon blue"><i class="fa-solid fa-calendar-check"></i></div><h3>Bookings</h3><p id="bookings">0</p></div>
         <div class="card"><div class="icon pink"><i class="fa-solid fa-users"></i></div><h3>Users</h3><p id="users">0</p></div>
@@ -30,7 +28,6 @@
         <div class="card"><div class="icon orange"><i class="fa-solid fa-briefcase"></i></div><h3>Services</h3><p id="services">0</p></div>
     </div>
 
-    <!-- SERVICE PERFORMANCE & TREND -->
     <div class="grid">
         <div class="panel">
             <h3>Service Performance</h3>
@@ -40,7 +37,6 @@
                 <div class="bar">Landing Pages<div class="track"><div id="land" class="fill" style="background: #F59E0B;"></div></div></div>
                 <div class="bar">Custom Systems<div class="track"><div id="custom" class="fill" style="background: #FF4FD8;"></div></div></div>
             </div>
-
             <div class="donut-inner" style="position: relative; display: flex; justify-content: center; align-items: center; height: 180px; margin-top: 20px;">
                 <canvas id="chart"></canvas>
                 <div class="center-text" style="position: absolute; text-align: center; pointer-events: none;">
@@ -50,17 +46,17 @@
             </div>
         </div>
 
-        <div class="panel" style="height: 400px;">
-            <h3>Bookings Trend</h3>
-            <canvas id="bookingsTrendChart" style="max-height: 300px;"></canvas>
+        <!-- NEW LANDING ZONE FOR REAL BOOKINGS -->
+        <div class="panel" style="max-height: 400px; overflow-y: auto;">
+            <h3>Recent Booking Inquiries</h3>
+            <div id="booking-landing-zone">
+                <!-- Bookings land here -->
+            </div>
         </div>
     </div>
 
     <script>
-        // SECURITY GATEKEEPER
-        if (!sessionStorage.getItem("loggedIn")) {
-            window.location.href = "/login";
-        }
+        if (!sessionStorage.getItem("loggedIn")) { window.location.href = "/login"; }
 
         function logout() {
             if(confirm("Logout from MillieDev?")) {
@@ -69,23 +65,34 @@
             }
         }
 
-        const socket = io(window.location.origin);
+        const socket = io("https://millie-dav.onrender.com");
 
         const chart = new Chart(document.getElementById("chart"), {
             type: "doughnut",
             options: { cutout: '75%', plugins: { legend: { display: false } } },
-            data: { labels: ["Web", "Ecom", "Landing", "Custom"], datasets: [{ data: [25,25,25,25], backgroundColor: ["#22C55E","#38BDF8","#F59E0B","#FF4FD8"] }] }
+            data: { labels: ["Web", "Ecom", "Landing", "Custom"], datasets: [{ data: [0,0,0,0], backgroundColor: ["#22C55E","#38BDF8","#F59E0B","#FF4FD8"] }] }
         });
 
-        const trendChart = new Chart(document.getElementById("bookingsTrendChart"), {
-            type: "line",
-            options: { responsive: true, maintainAspectRatio: false },
-            data: { 
-                labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'], 
-                datasets: [{ label: 'Bookings', data: [10, 20, 15, 30, 25, 40, 35], borderColor: "#FF4FD8", fill: true, tension: 0.4 }] 
-            }
-        });
+        // Fetch real data for the landing zone
+        async function updateInbox() {
+            try {
+                const res = await fetch("https://millie-dav.onrender.com/bookings");
+                const bookings = await res.json();
+                const zone = document.getElementById("booking-landing-zone");
+                zone.innerHTML = bookings.map(b => `
+                    <div style="border-bottom: 1px solid #334155; padding: 10px 0;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <strong>${b.name}</strong>
+                            <small style="color: #94A3B8;">${new Date(b.createdAt).toLocaleDateString()}</small>
+                        </div>
+                        <p style="margin: 5px 0; color: #cbd5e1;">${b.service}</p>
+                        <p style="font-size: 0.85rem; color: #94A3B8;">${b.message}</p>
+                    </div>
+                `).join('');
+            } catch (err) { console.error("Inbox error:", err); }
+        }
 
+        // Live updates
         socket.on("dashboard:update", (d) => {
             document.getElementById("bookings").innerText = d.totalBookings || 0;
             document.getElementById("revenue").innerText = "$" + (d.totalRevenue || 0).toLocaleString();
@@ -96,9 +103,16 @@
             document.getElementById("eco").style.width = (b["E-commerce"]||0) + "%";
             document.getElementById("land").style.width = (b["Landing Pages"]||0) + "%";
             document.getElementById("custom").style.width = (b["Custom Systems"]||0) + "%";
+            
             chart.data.datasets[0].data = [b["Web Design"]||0, b["E-commerce"]||0, b["Landing Pages"]||0, b["Custom Systems"]||0];
             chart.update();
+
+            // Refresh the landing zone whenever server signals a change
+            updateInbox();
         });
+
+        // Initialize on load
+        updateInbox();
     </script>
 </body>
 </html>
