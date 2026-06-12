@@ -1,71 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MillieDev Admin Dashboard - LIVE</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-<style>
-    /* ... (Keep your existing CSS, I will help polish this next) ... */
-    .mobile.active { display: flex; } /* Added this to fix your menu toggle */
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MillieDev Admin Dashboard - LIVE</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- ... (Keep your Topbar, Stats, and Revenue HTML as you have them) ... -->
-
-<!-- BOOKINGS GRID -->
-<div class="grid">
-    <div class="panel">
-        <h3>Recent Bookings</h3>
-        <div id="list"></div>
+    <div class="navbar">
+        <div class="logo">MillieDev LIVE</div>
+        <div class="menu">
+            <a href="#">Dashboard</a>
+            <a href="#">Bookings</a>
+            <a href="#">Analytics</a>
+        </div>
+        <button class="menu-btn" onclick="toggle()">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="menu-container" id="mobile">
+            <a href="#">Dashboard</a>
+            <a href="#">Bookings</a>
+            <a href="#">Analytics</a>
+        </div>
     </div>
-    <div class="panel">
-        <h3>Bookings Overview</h3>
-        <canvas id="bookingsTrendChart"></canvas>
+
+    <div class="stats">
+        <div class="card"><div class="icon blue"></div><h3>Total Bookings</h3><p id="bookings">0</p></div>
+        <div class="card"><div class="icon pink"></div><h3>Users</h3><p id="users">0</p></div>
+        <div class="card"><div class="icon green"></div><h3>Revenue</h3><p id="revenue">$0</p></div>
+        <div class="card"><div class="icon orange"></div><h3>Services</h3><p id="services">0</p></div>
     </div>
-</div>
 
-<script>
-/* SOCKET CONNECTION */
-const socket = io(window.location.origin); 
+    <div class="revenue">
+        <div class="bars">
+            <h3>Service Performance</h3>
+            <div class="bar">Web Design<div class="track"><div id="web" class="fill"></div></div></div>
+            <div class="bar">E-commerce<div class="track"><div id="eco" class="fill"></div></div></div>
+            <div class="bar">Landing Pages<div class="track"><div id="land" class="fill"></div></div></div>
+            <div class="bar">Custom<div class="track"><div id="custom" class="fill"></div></div></div>
+        </div>
+        <div class="donut">
+            <canvas id="chart"></canvas>
+            <div class="center"><h2 id="centerMoney">$0</h2><p>Revenue</p></div>
+        </div>
+    </div>
 
-/* CHARTS INITIALIZATION */
-const ctx = document.getElementById("chart").getContext('2d');
-const chart = new Chart(ctx, {
-    type: "doughnut",
-    data: { labels: ["Web", "Ecom", "Landing", "Custom"], datasets: [{ data: [0,0,0,0], backgroundColor: ["#22C55E","#38BDF8","#F59E0B","#FF4FD8"] }] }
-});
+    <div class="grid">
+        <div class="panel"><h3>Recent Bookings</h3><div id="list"></div></div>
+        <div class="panel">
+            <h3>Bookings Overview</h3>
+            <canvas id="bookingsTrendChart"></canvas>
+        </div>
+    </div>
 
-const trendCtx = document.getElementById("bookingsTrendChart").getContext('2d');
-const trendChart = new Chart(trendCtx, {
-    type: "line",
-    data: { labels: ['May 1', 'May 8', 'May 15', 'May 22', 'May 29'], datasets: [{ data: [10, 25, 8, 35, 30], borderColor: "#FF4FD8", fill: true, tension: 0.4 }] },
-    options: { responsive: true, scales: { y: { beginAtZero: true } } }
-});
+    <script>
+        const socket = io(window.location.origin);
 
-/* LIVE UPDATES */
-socket.on("dashboard:update", (d) => {
-    // 1. Update Numbers
-    document.getElementById("bookings").innerText = d.totalBookings || 0;
-    document.getElementById("revenue").innerText = "$" + (d.totalRevenue || 0);
-    document.getElementById("centerMoney").innerText = "$" + (d.totalRevenue || 0);
+        // Donut Chart Initialization
+        const chart = new Chart(document.getElementById("chart"), {
+            type: "doughnut",
+            data: { labels: ["Web", "Ecom", "Landing", "Custom"], datasets: [{ data: [0,0,0,0], backgroundColor: ["#22C55E","#38BDF8","#F59E0B","#FF4FD8"] }] }
+        });
 
-    // 2. Update Progress Bars
-    d.breakdown.forEach(item => {
-        const idMap = { "Web Design": "web", "E-commerce": "eco", "Landing Pages": "land", "Custom": "custom" };
-        const el = document.getElementById(idMap[item._id]);
-        if (el) el.style.width = Math.min((item.total / (d.totalRevenue || 1)) * 100, 100) + "%";
-    });
+        // Bookings Trend Line Chart
+        const trendChart = new Chart(document.getElementById("bookingsTrendChart"), {
+            type: "line",
+            data: { 
+                labels: ['May 1', 'May 8', 'May 15', 'May 22', 'May 29'], 
+                datasets: [{ label: 'Bookings', data: [10, 25, 8, 35, 30], borderColor: "#FF4FD8", fill: true, tension: 0.4 }] 
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
 
-    // 3. Update Donut
-    chart.data.datasets[0].data = d.breakdown.map(i => i.total);
-    chart.update();
-});
+        // Socket Logic
+        socket.on("dashboard:update", (d) => {
+            document.getElementById("bookings").innerText = d.totalBookings || 0;
+            document.getElementById("revenue").innerText = "$" + (d.totalRevenue || 0);
+            document.getElementById("centerMoney").innerText = "$" + (d.totalRevenue || 0);
 
-/* MENU TOGGLE */
-function toggle(){ document.getElementById("mobile").classList.toggle("active"); }
-</script>
+            // Update Bars
+            const b = d.breakdown || {};
+            if(document.getElementById("web")) document.getElementById("web").style.width = (b["Web Design"]||0)+"%";
+            if(document.getElementById("eco")) document.getElementById("eco").style.width = (b["E-commerce"]||0)+"%";
+            if(document.getElementById("land")) document.getElementById("land").style.width = (b["Landing Pages"]||0)+"%";
+            if(document.getElementById("custom")) document.getElementById("custom").style.width = (b["Custom Systems"]||0)+"%";
+
+            chart.data.datasets[0].data = [b["Web Design"]||0, b["E-commerce"]||0, b["Landing Pages"]||0, b["Custom Systems"]||0];
+            chart.update();
+        });
+
+        function toggle(){ document.getElementById("mobile").classList.toggle("active"); }
+    </script>
 </body>
 </html>
