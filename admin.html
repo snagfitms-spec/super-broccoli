@@ -1,151 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>MillieDev Admin Dashboard - Layer 6</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MillieDev Admin Dashboard - LIVE</title>
 
-<!-- SOCKET.IO -->
-<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-
-<!-- CHART.JS -->
+<!-- CHART + SOCKET -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 
 <style>
 
 /* ================= DESIGN SYSTEM ================= */
 :root {
-    --bg:#0a0f1f;
-    --panel:#111a2e;
-    --text:#fff;
-    --muted:#94a3b8;
+    --bg: #0a0f1f;
+    --panel: #111a2e;
+    --text: #fff;
+    --muted: #94a3b8;
 
-    --blue:#38BDF8;
-    --green:#22C55E;
-    --orange:#F59E0B;
-    --pink:#FF4FD8;
-
-    --border: rgba(255,255,255,0.08);
+    --blue: #38BDF8;
+    --green: #22C55E;
+    --orange: #F59E0B;
+    --pink: #FF4FD8;
 }
 
+/* ================= BASE ================= */
 body {
-    margin:0;
-    font-family:Arial;
-    background:var(--bg);
-    color:var(--text);
+    margin: 0;
+    font-family: Arial;
+    background: var(--bg);
+    color: var(--text);
 }
 
 /* ================= TOPBAR ================= */
 .topbar {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:14px;
-    background:#0f1629;
-    position:sticky;
-    top:0;
-    z-index:1000;
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 18px;
+    background: #0f1629;
+    position: sticky;
+    top: 0;
 }
 
 .logo {
-    font-weight:bold;
-    color:var(--blue);
+    color: var(--blue);
+    font-weight: bold;
 }
 
-#status {
-    font-size:12px;
-    color:var(--muted);
+/* MENU */
+.menu {
+    display: flex;
+    gap: 15px;
+}
+
+.menu a {
+    color: var(--muted);
+    text-decoration: none;
+}
+
+/* HAMBURGER */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    cursor: pointer;
+}
+
+.hamburger span {
+    width: 22px;
+    height: 2px;
+    background: white;
+}
+
+.mobile {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    right: 10px;
+    top: 60px;
+    background: var(--panel);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.mobile a {
+    color: var(--muted);
+    padding: 8px;
+    text-decoration: none;
 }
 
 /* ================= STATS ================= */
 .stats {
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:12px;
-    padding:15px;
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 12px;
+    padding: 15px;
 }
 
 .card {
-    background:var(--panel);
-    padding:12px;
-    border-radius:10px;
-    border:1px solid var(--border);
+    background: var(--panel);
+    padding: 14px;
+    border-radius: 12px;
 }
 
-/* ================= REVENUE SECTION ================= */
+.icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+}
+
+.blue { background: var(--blue); }
+.green { background: var(--green); }
+.orange { background: var(--orange); }
+.pink { background: var(--pink); }
+
+/* ================= REVENUE ================= */
 .revenue {
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-    padding:15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 15px;
 }
 
-/* BARS */
+/* BARS LEFT */
 .bars {
-    background:var(--panel);
-    border-radius:12px;
-    padding:15px;
-    border:1px solid var(--border);
+    background: var(--panel);
+    padding: 15px;
+    border-radius: 12px;
 }
 
 .bar {
-    margin-bottom:12px;
+    margin-bottom: 12px;
 }
 
 .track {
-    height:6px;
-    background:#1f2937;
-    border-radius:10px;
-    overflow:hidden;
+    height: 6px;
+    background: #222;
+    border-radius: 20px;
 }
 
 .fill {
-    height:6px;
-    border-radius:10px;
+    height: 6px;
+    border-radius: 20px;
 }
 
-.blue{background:var(--blue);}
-.green{background:var(--green);}
-.orange{background:var(--orange);}
-.pink{background:var(--pink);}
-
-/* DONUT */
+/* DONUT RIGHT */
 .donut {
-    background:var(--panel);
-    border-radius:12px;
-    padding:15px;
-    border:1px solid var(--border);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    position:relative;
+    background: var(--panel);
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
 
-.center-text {
-    position:absolute;
-    text-align:center;
+.center {
+    position: absolute;
+    text-align: center;
 }
 
-/* BOOKINGS */
+.center h2 {
+    color: var(--blue);
+    margin: 0;
+}
+
+/* ================= BOOKINGS ================= */
+.grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 12px;
+    padding: 15px;
+}
+
 .panel {
-    background:var(--panel);
-    margin:15px;
-    padding:15px;
-    border-radius:12px;
-    border:1px solid var(--border);
+    background: var(--panel);
+    padding: 15px;
+    border-radius: 12px;
 }
 
-.booking {
-    background:#0f1629;
-    margin-bottom:10px;
-    padding:10px;
-    border-radius:8px;
-}
-
-/* MOBILE */
+/* ================= MOBILE ================= */
 @media(max-width:900px){
-    .stats{grid-template-columns:1fr 1fr;}
-    .revenue{grid-template-columns:1fr;}
+    .stats{grid-template-columns:1fr 1fr}
+    .revenue{grid-template-columns:1fr}
+    .grid{grid-template-columns:1fr}
+    .menu{display:none}
+    .hamburger{display:flex}
 }
 
 </style>
@@ -153,30 +192,51 @@ body {
 
 <body>
 
-<!-- TOPBAR -->
+<!-- TOP -->
 <div class="topbar">
-    <div class="logo">MillieDev Admin</div>
-    <div id="status">● Connecting...</div>
+
+    <div class="logo">MillieDev LIVE</div>
+
+    <div class="menu">
+        <a href="#">Dashboard</a>
+        <a href="#">Bookings</a>
+        <a href="#">Analytics</a>
+    </div>
+
+    <div class="hamburger" onclick="toggle()">
+        <span></span><span></span><span></span>
+    </div>
+
+    <div class="mobile" id="mobile">
+        <a href="#">Dashboard</a>
+        <a href="#">Bookings</a>
+        <a href="#">Analytics</a>
+    </div>
+
 </div>
 
 <!-- STATS -->
 <div class="stats">
     <div class="card">
+        <div class="icon blue"></div>
         <h3>Total Bookings</h3>
-        <p id="totalBookings">0</p>
+        <p id="bookings">0</p>
     </div>
 
     <div class="card">
+        <div class="icon pink"></div>
         <h3>Users</h3>
         <p id="users">0</p>
     </div>
 
     <div class="card">
+        <div class="icon green"></div>
         <h3>Revenue</h3>
         <p id="revenue">$0</p>
     </div>
 
     <div class="card">
+        <div class="icon orange"></div>
         <h3>Services</h3>
         <p id="services">0</p>
     </div>
@@ -185,69 +245,70 @@ body {
 <!-- REVENUE -->
 <div class="revenue">
 
-    <!-- LEFT: BARS -->
+    <!-- LEFT BARS -->
     <div class="bars">
         <h3>Service Performance</h3>
 
         <div class="bar">
-            <small>Web Design</small>
-            <div class="track"><div class="fill green" id="web"></div></div>
+            Web Design
+            <div class="track"><div id="web" class="fill green"></div></div>
         </div>
 
         <div class="bar">
-            <small>E-commerce</small>
-            <div class="track"><div class="fill blue" id="ecom"></div></div>
+            E-commerce
+            <div class="track"><div id="eco" class="fill blue"></div></div>
         </div>
 
         <div class="bar">
-            <small>Landing Pages</small>
-            <div class="track"><div class="fill orange" id="landing"></div></div>
+            Landing Pages
+            <div class="track"><div id="land" class="fill orange"></div></div>
         </div>
 
         <div class="bar">
-            <small>Custom Systems</small>
-            <div class="track"><div class="fill pink" id="custom"></div></div>
+            Custom
+            <div class="track"><div id="custom" class="fill pink"></div></div>
         </div>
     </div>
 
-    <!-- RIGHT: DONUT -->
+    <!-- RIGHT DONUT -->
     <div class="donut">
         <canvas id="chart"></canvas>
 
-        <div class="center-text">
-            <h2 id="centerRevenue">$0</h2>
-            <small style="color:var(--muted)">Total Revenue</small>
+        <div class="center">
+            <h2 id="centerMoney">$0</h2>
+            <p>Revenue</p>
         </div>
     </div>
 
 </div>
 
 <!-- BOOKINGS -->
-<div class="panel">
-    <h3>Live Bookings</h3>
-    <div id="bookings"></div>
+<div class="grid">
+
+    <div class="panel">
+        <h3>Live Bookings</h3>
+        <div id="list"></div>
+    </div>
+
+    <div class="panel">
+        <h3>Live Trend</h3>
+        <p>Socket.io ready</p>
+    </div>
+
 </div>
 
 <script>
 
-/* ================= SOCKET ================= */
+/* SOCKET */
 const socket = io("https://millie-dav.onrender.com");
 
-/* ================= STATUS ================= */
-socket.on("connect", () => {
-    document.getElementById("status").innerText = "● LIVE";
-    document.getElementById("status").style.color = "#22C55E";
-});
+/* MENU */
+function toggle(){
+    document.getElementById("mobile").classList.toggle("active");
+}
 
-socket.on("disconnect", () => {
-    document.getElementById("status").innerText = "● OFFLINE";
-    document.getElementById("status").style.color = "red";
-});
-
-/* ================= CHART ================= */
-const ctx = document.getElementById("chart");
-
-const chart = new Chart(ctx, {
+/* CHART */
+const chart = new Chart(document.getElementById("chart"), {
     type:"doughnut",
     data:{
         labels:["Web","Ecom","Landing","Custom"],
@@ -255,51 +316,31 @@ const chart = new Chart(ctx, {
             data:[0,0,0,0],
             backgroundColor:["#22C55E","#38BDF8","#F59E0B","#FF4FD8"]
         }]
-    },
-    options:{
-        cutout:"70%",
-        plugins:{ legend:{display:false} }
     }
 });
 
-/* ================= LIVE DASHBOARD ================= */
-socket.on("dashboard:update", (data) => {
+/* LIVE UPDATE */
+socket.on("dashboard:update",(d)=>{
 
-    document.getElementById("totalBookings").innerText = data.totalBookings || 0;
-    document.getElementById("users").innerText = data.users || 0;
-    document.getElementById("services").innerText = data.services || 0;
+    document.getElementById("bookings").innerText = d.totalBookings || 0;
+    document.getElementById("revenue").innerText = "$"+(d.totalRevenue || 0);
+    document.getElementById("centerMoney").innerText = "$"+(d.totalRevenue || 0);
 
-    document.getElementById("revenue").innerText = "$" + (data.totalRevenue || 0);
-    document.getElementById("centerRevenue").innerText = "$" + (data.totalRevenue || 0);
+    const b = d.breakdown || {};
 
-    /* chart update */
-    if (data.breakdown) {
-        chart.data.datasets[0].data = data.breakdown.map(x => x.total);
-        chart.update();
-    }
+    document.getElementById("web").style.width = (b["Web Design"]||0)+"%";
+    document.getElementById("eco").style.width = (b["E-commerce"]||0)+"%";
+    document.getElementById("land").style.width = (b["Landing Pages"]||0)+"%";
+    document.getElementById("custom").style.width = (b["Custom Systems"]||0)+"%";
 
-    /* bars update */
-    if (data.percent) {
-        document.getElementById("web").style.width = data.percent.web + "%";
-        document.getElementById("ecom").style.width = data.percent.ecom + "%";
-        document.getElementById("landing").style.width = data.percent.landing + "%";
-        document.getElementById("custom").style.width = data.percent.custom + "%";
-    }
-});
+    chart.data.datasets[0].data = [
+        b["Web Design"]||0,
+        b["E-commerce"]||0,
+        b["Landing Pages"]||0,
+        b["Custom Systems"]||0
+    ];
 
-/* ================= LIVE BOOKINGS ================= */
-socket.on("dashboard:newBooking", (b) => {
-
-    const div = document.createElement("div");
-    div.className = "booking";
-
-    div.innerHTML = `
-        <b>${b.name}</b><br/>
-        ${b.email}<br/>
-        <small>${b.service}</small>
-    `;
-
-    document.getElementById("bookings").prepend(div);
+    chart.update();
 });
 
 </script>
