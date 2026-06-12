@@ -1,244 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MillieDev Admin Dashboard (Layer 3)</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MillieDev Admin Dashboard - Layer 6</title>
 
-<!-- Chart.js -->
+<!-- SOCKET.IO -->
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+
+<!-- CHART.JS -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
 
 /* ================= DESIGN SYSTEM ================= */
 :root {
-    --bg: #0a0f1f;
-    --panel: #111a2e;
-    --text: #ffffff;
-    --muted: #94a3b8;
+    --bg:#0a0f1f;
+    --panel:#111a2e;
+    --text:#fff;
+    --muted:#94a3b8;
 
-    --blue: #38BDF8;
-    --green: #22C55E;
-    --orange: #F59E0B;
-    --pink: #FF4FD8;
+    --blue:#38BDF8;
+    --green:#22C55E;
+    --orange:#F59E0B;
+    --pink:#FF4FD8;
 
     --border: rgba(255,255,255,0.08);
 }
 
-/* ================= BASE ================= */
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: var(--bg);
-    color: var(--text);
+    margin:0;
+    font-family:Arial;
+    background:var(--bg);
+    color:var(--text);
 }
 
 /* ================= TOPBAR ================= */
 .topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 14px 18px;
-    background: #0f1629;
-
-    position: sticky;
-    top: 0;
-    z-index: 999;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px;
+    background:#0f1629;
+    position:sticky;
+    top:0;
+    z-index:1000;
 }
 
 .logo {
-    font-weight: bold;
-    color: var(--blue);
+    font-weight:bold;
+    color:var(--blue);
 }
 
-/* NAV LINKS (desktop) */
-.menu {
-    display: flex;
-    gap: 15px;
-}
-
-.menu a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 14px;
-}
-
-.menu a:hover {
-    color: white;
-}
-
-/* ================= HAMBURGER ================= */
-.hamburger {
-    display: none;
-    flex-direction: column;
-    cursor: pointer;
-    gap: 4px;
-}
-
-.hamburger span {
-    width: 22px;
-    height: 2px;
-    background: white;
-}
-
-/* MOBILE MENU */
-.mobile-menu {
-    display: none;
-    flex-direction: column;
-
-    position: absolute;
-    top: 60px;
-    right: 10px;
-
-    background: var(--panel);
-    border: 1px solid var(--border);
-    padding: 10px;
-    border-radius: 10px;
-}
-
-.mobile-menu a {
-    padding: 8px;
-    color: var(--muted);
-    text-decoration: none;
-}
-
-.mobile-menu.active {
-    display: flex;
+#status {
+    font-size:12px;
+    color:var(--muted);
 }
 
 /* ================= STATS ================= */
 .stats {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    padding: 15px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    padding:15px;
 }
 
 .card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    padding: 14px;
-    border-radius: 12px;
+    background:var(--panel);
+    padding:12px;
+    border-radius:10px;
+    border:1px solid var(--border);
 }
-
-.icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    margin-bottom: 8px;
-}
-
-.blue { background: var(--blue); }
-.green { background: var(--green); }
-.orange { background: var(--orange); }
-.pink { background: var(--pink); }
 
 /* ================= REVENUE SECTION ================= */
 .revenue {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* LEFT bars | RIGHT donut */
-    gap: 12px;
-    padding: 15px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    padding:15px;
 }
 
-/* LEFT: BARS */
+/* BARS */
 .bars {
-    background: var(--panel);
-    border-radius: 12px;
-    padding: 15px;
-    border: 1px solid var(--border);
+    background:var(--panel);
+    border-radius:12px;
+    padding:15px;
+    border:1px solid var(--border);
 }
 
 .bar {
-    margin-bottom: 12px;
-}
-
-.bar-title {
-    font-size: 13px;
-    color: var(--muted);
-    margin-bottom: 5px;
+    margin-bottom:12px;
 }
 
 .track {
-    height: 6px;
-    background: rgba(255,255,255,0.08);
-    border-radius: 20px;
-    overflow: hidden;
+    height:6px;
+    background:#1f2937;
+    border-radius:10px;
+    overflow:hidden;
 }
 
 .fill {
-    height: 6px;
-    border-radius: 20px;
+    height:6px;
+    border-radius:10px;
 }
 
-/* RIGHT: DONUT */
+.blue{background:var(--blue);}
+.green{background:var(--green);}
+.orange{background:var(--orange);}
+.pink{background:var(--pink);}
+
+/* DONUT */
 .donut {
-    background: var(--panel);
-    border-radius: 12px;
-    padding: 15px;
-    border: 1px solid var(--border);
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background:var(--panel);
+    border-radius:12px;
+    padding:15px;
+    border:1px solid var(--border);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
 }
 
 .center-text {
-    position: absolute;
-    text-align: center;
+    position:absolute;
+    text-align:center;
 }
 
-.center-text h2 {
-    margin: 0;
-    color: var(--blue);
-}
-
-/* ================= GRID ================= */
-.grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 12px;
-    padding: 15px;
-}
-
+/* BOOKINGS */
 .panel {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    padding: 15px;
-    border-radius: 12px;
+    background:var(--panel);
+    margin:15px;
+    padding:15px;
+    border-radius:12px;
+    border:1px solid var(--border);
 }
 
-/* ================= BOOKING ================= */
 .booking {
-    background: #0f1629;
-    padding: 10px;
-    border-radius: 10px;
-    margin-bottom: 10px;
+    background:#0f1629;
+    margin-bottom:10px;
+    padding:10px;
+    border-radius:8px;
 }
 
-/* ================= MOBILE ================= */
-@media (max-width: 900px) {
-
-    .stats {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .revenue {
-        grid-template-columns: 1fr;
-    }
-
-    .grid {
-        grid-template-columns: 1fr;
-    }
-
-    .menu {
-        display: none;
-    }
-
-    .hamburger {
-        display: flex;
-    }
+/* MOBILE */
+@media(max-width:900px){
+    .stats{grid-template-columns:1fr 1fr;}
+    .revenue{grid-template-columns:1fr;}
 }
 
 </style>
@@ -248,64 +155,34 @@ body {
 
 <!-- TOPBAR -->
 <div class="topbar">
-
     <div class="logo">MillieDev Admin</div>
-
-    <!-- DESKTOP MENU -->
-    <div class="menu">
-        <a href="#">Dashboard</a>
-        <a href="#">Bookings</a>
-        <a href="#">Analytics</a>
-        <a href="#">Settings</a>
-    </div>
-
-    <!-- HAMBURGER -->
-    <div class="hamburger" onclick="toggleMenu()">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-
-    <!-- MOBILE MENU -->
-    <div class="mobile-menu" id="mobileMenu">
-        <a href="#">Dashboard</a>
-        <a href="#">Bookings</a>
-        <a href="#">Analytics</a>
-        <a href="#">Settings</a>
-    </div>
-
+    <div id="status">● Connecting...</div>
 </div>
 
 <!-- STATS -->
 <div class="stats">
-
     <div class="card">
-        <div class="icon blue"></div>
         <h3>Total Bookings</h3>
         <p id="totalBookings">0</p>
     </div>
 
     <div class="card">
-        <div class="icon pink"></div>
         <h3>Users</h3>
-        <p>102</p>
+        <p id="users">0</p>
     </div>
 
     <div class="card">
-        <div class="icon green"></div>
         <h3>Revenue</h3>
-        <p id="revenueTotal">$0</p>
+        <p id="revenue">$0</p>
     </div>
 
     <div class="card">
-        <div class="icon orange"></div>
         <h3>Services</h3>
-        <p>4</p>
+        <p id="services">0</p>
     </div>
-
 </div>
 
-<!-- REVENUE SECTION -->
+<!-- REVENUE -->
 <div class="revenue">
 
     <!-- LEFT: BARS -->
@@ -313,136 +190,117 @@ body {
         <h3>Service Performance</h3>
 
         <div class="bar">
-            <div class="bar-title">Web Design</div>
-            <div class="track"><div class="fill green" style="width:70%"></div></div>
+            <small>Web Design</small>
+            <div class="track"><div class="fill green" id="web"></div></div>
         </div>
 
         <div class="bar">
-            <div class="bar-title">E-commerce</div>
-            <div class="track"><div class="fill blue" style="width:55%"></div></div>
+            <small>E-commerce</small>
+            <div class="track"><div class="fill blue" id="ecom"></div></div>
         </div>
 
         <div class="bar">
-            <div class="bar-title">Landing Pages</div>
-            <div class="track"><div class="fill orange" style="width:40%"></div></div>
+            <small>Landing Pages</small>
+            <div class="track"><div class="fill orange" id="landing"></div></div>
         </div>
 
         <div class="bar">
-            <div class="bar-title">Custom Systems</div>
-            <div class="track"><div class="fill pink" style="width:80%"></div></div>
+            <small>Custom Systems</small>
+            <div class="track"><div class="fill pink" id="custom"></div></div>
         </div>
     </div>
 
     <!-- RIGHT: DONUT -->
     <div class="donut">
-
-        <canvas id="revenueChart"></canvas>
+        <canvas id="chart"></canvas>
 
         <div class="center-text">
-            <h2 id="centerRevenue">$24,780</h2>
-            <p style="color:var(--muted);font-size:12px;">Total Revenue</p>
+            <h2 id="centerRevenue">$0</h2>
+            <small style="color:var(--muted)">Total Revenue</small>
         </div>
-
     </div>
 
 </div>
 
 <!-- BOOKINGS -->
-<div class="grid">
-
-    <div class="panel">
-        <h3>Recent Bookings</h3>
-        <div id="cards"></div>
-    </div>
-
-    <div class="panel">
-        <h3>Booking Trend (Ready for Live Chart)</h3>
-        <p style="color:var(--muted)">Socket.io + MongoDB stream will plug here next</p>
-    </div>
-
+<div class="panel">
+    <h3>Live Bookings</h3>
+    <div id="bookings"></div>
 </div>
 
 <script>
 
-/* ================= HAMBURGER ================= */
-function toggleMenu() {
-    document.getElementById("mobileMenu").classList.toggle("active");
-}
+/* ================= SOCKET ================= */
+const socket = io("https://millie-dav.onrender.com");
+
+/* ================= STATUS ================= */
+socket.on("connect", () => {
+    document.getElementById("status").innerText = "● LIVE";
+    document.getElementById("status").style.color = "#22C55E";
+});
+
+socket.on("disconnect", () => {
+    document.getElementById("status").innerText = "● OFFLINE";
+    document.getElementById("status").style.color = "red";
+});
 
 /* ================= CHART ================= */
-const ctx = document.getElementById("revenueChart");
+const ctx = document.getElementById("chart");
 
-new Chart(ctx, {
-    type: "doughnut",
-    data: {
-        labels: ["Web Design", "E-commerce", "Landing", "Custom"],
-        datasets: [{
-            data: [70, 55, 40, 80],
-            backgroundColor: ["#22C55E", "#38BDF8", "#F59E0B", "#FF4FD8"],
-            borderWidth: 0
+const chart = new Chart(ctx, {
+    type:"doughnut",
+    data:{
+        labels:["Web","Ecom","Landing","Custom"],
+        datasets:[{
+            data:[0,0,0,0],
+            backgroundColor:["#22C55E","#38BDF8","#F59E0B","#FF4FD8"]
         }]
     },
-    options: {
-        cutout: "70%",
-        plugins: {
-            legend: { display: false }
-        }
+    options:{
+        cutout:"70%",
+        plugins:{ legend:{display:false} }
     }
 });
 
-/* ================= BACKEND HOOK READY ================= */
-const API_URL = "https://millie-dav.onrender.com";
+/* ================= LIVE DASHBOARD ================= */
+socket.on("dashboard:update", (data) => {
 
-async function loadBookings() {
+    document.getElementById("totalBookings").innerText = data.totalBookings || 0;
+    document.getElementById("users").innerText = data.users || 0;
+    document.getElementById("services").innerText = data.services || 0;
 
-    try {
-        const token = localStorage.getItem("token");
+    document.getElementById("revenue").innerText = "$" + (data.totalRevenue || 0);
+    document.getElementById("centerRevenue").innerText = "$" + (data.totalRevenue || 0);
 
-        const res = await fetch(`${API_URL}/bookings`, {
-            headers: { Authorization: "Bearer " + token }
-        });
-
-        const data = await res.json();
-
-        document.getElementById("totalBookings").innerText = data.length;
-
-        const container = document.getElementById("cards");
-        container.innerHTML = "";
-
-        data.forEach(b => {
-
-            const div = document.createElement("div");
-            div.classList.add("booking");
-
-            div.innerHTML = `
-                <h4>${b.name}</h4>
-                <p>${b.email}</p>
-                <small>${b.service || "General"}</small>
-                <p>${b.message}</p>
-                <button onclick="deleteBooking('${b._id}')">Delete</button>
-            `;
-
-            container.appendChild(div);
-        });
-
-    } catch (err) {
-        console.log(err);
+    /* chart update */
+    if (data.breakdown) {
+        chart.data.datasets[0].data = data.breakdown.map(x => x.total);
+        chart.update();
     }
-}
 
-async function deleteBooking(id) {
+    /* bars update */
+    if (data.percent) {
+        document.getElementById("web").style.width = data.percent.web + "%";
+        document.getElementById("ecom").style.width = data.percent.ecom + "%";
+        document.getElementById("landing").style.width = data.percent.landing + "%";
+        document.getElementById("custom").style.width = data.percent.custom + "%";
+    }
+});
 
-    const token = localStorage.getItem("token");
+/* ================= LIVE BOOKINGS ================= */
+socket.on("dashboard:newBooking", (b) => {
 
-    await fetch(`${API_URL}/bookings/${id}`, {
-        method: "DELETE",
-        headers: { Authorization: "Bearer " + token }
-    });
+    const div = document.createElement("div");
+    div.className = "booking";
 
-    loadBookings();
-}
+    div.innerHTML = `
+        <b>${b.name}</b><br/>
+        ${b.email}<br/>
+        <small>${b.service}</small>
+    `;
 
-loadBookings();
+    document.getElementById("bookings").prepend(div);
+});
 
 </script>
 
