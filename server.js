@@ -8,29 +8,12 @@ const { Server } = require("socket.io");
 const app = express();
 const server = http.createServer(app);
 
-/* ================= SOCKET.IO SETUP ================= */
 const io = new Server(server, {
-  cors: {
-    origin: "*", 
-    methods: ["GET", "POST"]
-  }
+  cors: { origin: "*", methods: ["GET", "POST"] }
 });
 
 app.use(express.json());
 app.use(cors());
-
-// Fetch the list of bookings once when page loads
-fetch("https://millie-dav.onrender.com/bookings")
-    .then(res => res.json())
-    .then(data => {
-        const list = document.getElementById("booking-list");
-        list.innerHTML = data.map(b => `
-            <div class="booking-card">
-                <strong>${b.name}</strong> - ${b.service}<br>
-                <small>${b.message}</small>
-            </div>
-        `).join('');
-    });
 
 /* ================= DATABASE ================= */
 const mongoURI = process.env.MONGO_URI;
@@ -57,24 +40,14 @@ async function broadcastStats() {
                 count: { $sum: 1 }
             }}
         ]);
-        
         const totalRevenue = stats.reduce((acc, curr) => acc + curr.total, 0);
         const totalBookings = await Booking.countDocuments();
-
-        io.emit("dashboard:update", {
-            totalRevenue,
-            totalBookings,
-            breakdown: stats
-        });
-    } catch (err) {
-        console.error("Aggregation error:", err);
-    }
+        io.emit("dashboard:update", { totalRevenue, totalBookings, breakdown: stats });
+    } catch (err) { console.error("Aggregation error:", err); }
 }
 
-/* ================= SOCKET CONNECTION ================= */
 io.on("connection", (socket) => {
   console.log("⚡ Client connected:", socket.id);
-  // Send immediate data to newly connected admin
   broadcastStats();
 });
 
@@ -91,21 +64,17 @@ app.post("/admin/login", (req, res) => {
 app.post("/bookings", async (req, res) => {
   try {
     const booking = await Booking.create(req.body);
-    await broadcastStats(); // Update all dashboards
+    await broadcastStats();
     res.json(booking);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
 app.delete("/bookings/:id", async (req, res) => {
   try {
     await Booking.findByIdAndDelete(req.params.id);
-    await broadcastStats(); // Update all dashboards
+    await broadcastStats();
     res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
 app.get("/bookings", async (req, res) => {
@@ -113,7 +82,6 @@ app.get("/bookings", async (req, res) => {
   res.json(data);
 });
 
-/* ================= START SERVER ================= */
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
   console.log("🚀 Server running on port", PORT);
