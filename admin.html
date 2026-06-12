@@ -21,6 +21,7 @@
         </div>
     </div>
 
+    <!-- STATS -->
     <div class="stats">
         <div class="card"><div class="icon blue"><i class="fa-solid fa-calendar-check"></i></div><h3>Total Bookings</h3><p id="bookings">0</p></div>
         <div class="card"><div class="icon pink"><i class="fa-solid fa-users"></i></div><h3>Users</h3><p id="users">0</p></div>
@@ -28,9 +29,10 @@
         <div class="card"><div class="icon orange"><i class="fa-solid fa-briefcase"></i></div><h3>Services</h3><p id="services">0</p></div>
     </div>
 
+    <!-- SERVICE PERFORMANCE & DONUT TWIN LAYOUT -->
     <div class="grid">
         <div class="panel" style="grid-column: span 2;">
-            <h3>Revenue Overview</h3>
+            <h3>Service Performance</h3>
             <div class="revenue-wrapper">
                 <div class="bars-inner">
                     <div class="bar">Web Design<div class="track"><div id="web" class="fill"></div></div></div>
@@ -40,12 +42,16 @@
                 </div>
                 <div class="donut-inner">
                     <canvas id="chart"></canvas>
-                    <div class="center-text"><h2 id="centerMoney">$0</h2><p>Total Revenue</p></div>
+                    <div class="center-text" style="position: absolute; text-align: center; pointer-events: none;">
+                        <h2 id="centerMoney" style="font-size: 1.1rem; margin: 0;">$0</h2>
+                        <p style="font-size: 0.7rem; color: #94A3B8; margin: 0;">Revenue</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- BOOKINGS TREND -->
     <div class="grid">
         <div class="panel"><h3>Recent Bookings</h3><div id="list"></div></div>
         <div class="panel" style="height: 300px;">
@@ -57,7 +63,6 @@
     <script>
         const socket = io(window.location.origin);
 
-        // Charts
         const chart = new Chart(document.getElementById("chart"), {
             type: "doughnut",
             options: { cutout: '75%', plugins: { legend: { display: false } } },
@@ -78,7 +83,6 @@
             document.getElementById("revenue").innerText = "$" + (d.totalRevenue || 0).toLocaleString();
             document.getElementById("centerMoney").innerText = "$" + (d.totalRevenue || 0).toLocaleString();
             
-            // Bars & Donut update
             const b = d.breakdown || {};
             document.getElementById("web").style.width = (b["Web Design"]||0) + "%";
             document.getElementById("eco").style.width = (b["E-commerce"]||0) + "%";
