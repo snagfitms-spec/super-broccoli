@@ -11,56 +11,64 @@
 </head>
 <body>
 
+    <!-- NAVBAR WITH SECURITY/AUTH AREA -->
     <div class="navbar">
         <div class="logo">MillieDev LIVE</div>
-        <button class="menu-btn" onclick="toggle()"><span></span><span></span><span></span></button>
-        <div class="menu-container" id="mobile">
-            <a href="#">Dashboard</a>
-            <a href="#">Bookings</a>
-            <a href="#">Analytics</a>
+        <div class="nav-controls" style="display: flex; align-items: center; gap: 20px;">
+            <a href="#"><i class="fa-solid fa-bell"></i></a>
+            <div class="user-menu" style="cursor: pointer;" onclick="logout()">
+                <i class="fa-solid fa-user-circle"></i> Admin
+            </div>
         </div>
     </div>
 
     <!-- STATS -->
     <div class="stats">
-        <div class="card"><div class="icon blue"><i class="fa-solid fa-calendar-check"></i></div><h3>Total Bookings</h3><p id="bookings">0</p></div>
+        <div class="card"><div class="icon blue"><i class="fa-solid fa-calendar-check"></i></div><h3>Bookings</h3><p id="bookings">0</p></div>
         <div class="card"><div class="icon pink"><i class="fa-solid fa-users"></i></div><h3>Users</h3><p id="users">0</p></div>
         <div class="card"><div class="icon green"><i class="fa-solid fa-dollar-sign"></i></div><h3>Revenue</h3><p id="revenue">$0</p></div>
         <div class="card"><div class="icon orange"><i class="fa-solid fa-briefcase"></i></div><h3>Services</h3><p id="services">0</p></div>
     </div>
 
-    <!-- SERVICE PERFORMANCE & DONUT TWIN LAYOUT -->
+    <!-- SERVICE PERFORMANCE & TREND -->
     <div class="grid">
-        <div class="panel" style="grid-column: span 2;">
+        <div class="panel">
             <h3>Service Performance</h3>
-            <div class="revenue-wrapper">
-                <div class="bars-inner">
-                    <div class="bar">Web Design<div class="track"><div id="web" class="fill"></div></div></div>
-                    <div class="bar">E-commerce<div class="track"><div id="eco" class="fill"></div></div></div>
-                    <div class="bar">Landing Pages<div class="track"><div id="land" class="fill"></div></div></div>
-                    <div class="bar">Custom Systems<div class="track"><div id="custom" class="fill"></div></div></div>
-                </div>
-                <div class="donut-inner">
-                    <canvas id="chart"></canvas>
-                    <div class="center-text" style="position: absolute; text-align: center; pointer-events: none;">
-                        <h2 id="centerMoney" style="font-size: 1.1rem; margin: 0;">$0</h2>
-                        <p style="font-size: 0.7rem; color: #94A3B8; margin: 0;">Revenue</p>
-                    </div>
+            <div class="bars-inner" style="margin: 20px 0;">
+                <div class="bar">Web Design<div class="track"><div id="web" class="fill" style="background: #22C55E;"></div></div></div>
+                <div class="bar">E-commerce<div class="track"><div id="eco" class="fill" style="background: #38BDF8;"></div></div></div>
+                <div class="bar">Landing Pages<div class="track"><div id="land" class="fill" style="background: #F59E0B;"></div></div></div>
+                <div class="bar">Custom Systems<div class="track"><div id="custom" class="fill" style="background: #FF4FD8;"></div></div></div>
+            </div>
+
+            <div class="donut-inner" style="position: relative; display: flex; justify-content: center; align-items: center; height: 180px; margin-top: 20px;">
+                <canvas id="chart"></canvas>
+                <div class="center-text" style="position: absolute; text-align: center; pointer-events: none;">
+                    <h2 id="centerMoney" style="font-size: 1.4rem; color: #fff; margin: 0;">$0</h2>
+                    <p style="font-size: 0.8rem; color: #94A3B8; margin: 0;">Total Revenue</p>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- BOOKINGS TREND -->
-    <div class="grid">
-        <div class="panel"><h3>Recent Bookings</h3><div id="list"></div></div>
-        <div class="panel" style="height: 300px;">
+        <div class="panel" style="height: 400px;">
             <h3>Bookings Trend</h3>
-            <canvas id="bookingsTrendChart" style="max-height: 200px;"></canvas>
+            <canvas id="bookingsTrendChart" style="max-height: 300px;"></canvas>
         </div>
     </div>
 
     <script>
+        // SECURITY GATEKEEPER
+        if (!sessionStorage.getItem("loggedIn")) {
+            window.location.href = "/login";
+        }
+
+        function logout() {
+            if(confirm("Logout from MillieDev?")) {
+                sessionStorage.removeItem("loggedIn");
+                window.location.href = "/login";
+            }
+        }
+
         const socket = io(window.location.origin);
 
         const chart = new Chart(document.getElementById("chart"), {
@@ -91,8 +99,6 @@
             chart.data.datasets[0].data = [b["Web Design"]||0, b["E-commerce"]||0, b["Landing Pages"]||0, b["Custom Systems"]||0];
             chart.update();
         });
-
-        function toggle(){ document.getElementById("mobile").classList.toggle("active"); }
     </script>
 </body>
 </html>
