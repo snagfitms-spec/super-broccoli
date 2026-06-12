@@ -3,23 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MillieDev Admin Dashboard - LIVE</title>
+    <title>MillieDev Admin Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="navbar">
         <div class="logo">MillieDev LIVE</div>
-        <div class="menu">
-            <a href="#">Dashboard</a>
-            <a href="#">Bookings</a>
-            <a href="#">Analytics</a>
-        </div>
-        <button class="menu-btn" onclick="toggle()">
-            <span></span><span></span><span></span>
-        </button>
+        <button class="menu-btn" onclick="toggle()"><span></span><span></span><span></span></button>
         <div class="menu-container" id="mobile">
             <a href="#">Dashboard</a>
             <a href="#">Bookings</a>
@@ -28,66 +22,68 @@
     </div>
 
     <div class="stats">
-        <div class="card"><div class="icon blue"></div><h3>Total Bookings</h3><p id="bookings">0</p></div>
-        <div class="card"><div class="icon pink"></div><h3>Users</h3><p id="users">0</p></div>
-        <div class="card"><div class="icon green"></div><h3>Revenue</h3><p id="revenue">$0</p></div>
-        <div class="card"><div class="icon orange"></div><h3>Services</h3><p id="services">0</p></div>
+        <div class="card"><div class="icon blue"><i class="fa-solid fa-calendar-check"></i></div><h3>Total Bookings</h3><p id="bookings">0</p></div>
+        <div class="card"><div class="icon pink"><i class="fa-solid fa-users"></i></div><h3>Users</h3><p id="users">0</p></div>
+        <div class="card"><div class="icon green"><i class="fa-solid fa-dollar-sign"></i></div><h3>Revenue</h3><p id="revenue">$0</p></div>
+        <div class="card"><div class="icon orange"><i class="fa-solid fa-briefcase"></i></div><h3>Services</h3><p id="services">0</p></div>
     </div>
 
-    <div class="revenue">
-        <div class="bars">
-            <h3>Service Performance</h3>
-            <div class="bar">Web Design<div class="track"><div id="web" class="fill"></div></div></div>
-            <div class="bar">E-commerce<div class="track"><div id="eco" class="fill"></div></div></div>
-            <div class="bar">Landing Pages<div class="track"><div id="land" class="fill"></div></div></div>
-            <div class="bar">Custom<div class="track"><div id="custom" class="fill"></div></div></div>
-        </div>
-        <div class="donut">
-            <canvas id="chart"></canvas>
-            <div class="center"><h2 id="centerMoney">$0</h2><p>Revenue</p></div>
+    <div class="grid">
+        <div class="panel" style="grid-column: span 2;">
+            <h3>Revenue Overview</h3>
+            <div class="revenue-wrapper">
+                <div class="bars-inner">
+                    <div class="bar">Web Design<div class="track"><div id="web" class="fill"></div></div></div>
+                    <div class="bar">E-commerce<div class="track"><div id="eco" class="fill"></div></div></div>
+                    <div class="bar">Landing Pages<div class="track"><div id="land" class="fill"></div></div></div>
+                    <div class="bar">Custom Systems<div class="track"><div id="custom" class="fill"></div></div></div>
+                </div>
+                <div class="donut-inner">
+                    <canvas id="chart"></canvas>
+                    <div class="center-text"><h2 id="centerMoney">$0</h2><p>Total Revenue</p></div>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="grid">
         <div class="panel"><h3>Recent Bookings</h3><div id="list"></div></div>
-        <div class="panel">
-            <h3>Bookings Overview</h3>
-            <canvas id="bookingsTrendChart"></canvas>
+        <div class="panel" style="height: 300px;">
+            <h3>Bookings Trend</h3>
+            <canvas id="bookingsTrendChart" style="max-height: 200px;"></canvas>
         </div>
     </div>
 
     <script>
         const socket = io(window.location.origin);
 
-        // Donut Chart Initialization
+        // Charts
         const chart = new Chart(document.getElementById("chart"), {
             type: "doughnut",
-            data: { labels: ["Web", "Ecom", "Landing", "Custom"], datasets: [{ data: [0,0,0,0], backgroundColor: ["#22C55E","#38BDF8","#F59E0B","#FF4FD8"] }] }
+            options: { cutout: '75%', plugins: { legend: { display: false } } },
+            data: { labels: ["Web", "Ecom", "Landing", "Custom"], datasets: [{ data: [25,25,25,25], backgroundColor: ["#22C55E","#38BDF8","#F59E0B","#FF4FD8"] }] }
         });
 
-        // Bookings Trend Line Chart
         const trendChart = new Chart(document.getElementById("bookingsTrendChart"), {
             type: "line",
+            options: { responsive: true, maintainAspectRatio: false },
             data: { 
-                labels: ['May 1', 'May 8', 'May 15', 'May 22', 'May 29'], 
-                datasets: [{ label: 'Bookings', data: [10, 25, 8, 35, 30], borderColor: "#FF4FD8", fill: true, tension: 0.4 }] 
-            },
-            options: { responsive: true, maintainAspectRatio: false }
+                labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'], 
+                datasets: [{ label: 'Bookings', data: [10, 20, 15, 30, 25, 40, 35], borderColor: "#FF4FD8", fill: true, tension: 0.4 }] 
+            }
         });
 
-        // Socket Logic
         socket.on("dashboard:update", (d) => {
             document.getElementById("bookings").innerText = d.totalBookings || 0;
-            document.getElementById("revenue").innerText = "$" + (d.totalRevenue || 0);
-            document.getElementById("centerMoney").innerText = "$" + (d.totalRevenue || 0);
-
-            // Update Bars
+            document.getElementById("revenue").innerText = "$" + (d.totalRevenue || 0).toLocaleString();
+            document.getElementById("centerMoney").innerText = "$" + (d.totalRevenue || 0).toLocaleString();
+            
+            // Bars & Donut update
             const b = d.breakdown || {};
-            if(document.getElementById("web")) document.getElementById("web").style.width = (b["Web Design"]||0)+"%";
-            if(document.getElementById("eco")) document.getElementById("eco").style.width = (b["E-commerce"]||0)+"%";
-            if(document.getElementById("land")) document.getElementById("land").style.width = (b["Landing Pages"]||0)+"%";
-            if(document.getElementById("custom")) document.getElementById("custom").style.width = (b["Custom Systems"]||0)+"%";
-
+            document.getElementById("web").style.width = (b["Web Design"]||0) + "%";
+            document.getElementById("eco").style.width = (b["E-commerce"]||0) + "%";
+            document.getElementById("land").style.width = (b["Landing Pages"]||0) + "%";
+            document.getElementById("custom").style.width = (b["Custom Systems"]||0) + "%";
             chart.data.datasets[0].data = [b["Web Design"]||0, b["E-commerce"]||0, b["Landing Pages"]||0, b["Custom Systems"]||0];
             chart.update();
         });
