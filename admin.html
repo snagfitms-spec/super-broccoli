@@ -22,10 +22,22 @@
     </div>
 
     <div class="stats">
-        <div class="card"><div class="icon blue"><i class="fa-solid fa-calendar-check"></i></div><h3>Bookings</h3><p id="bookings">0</p></div>
-        <div class="card"><div class="icon pink"><i class="fa-solid fa-users"></i></div><h3>Users</h3><p id="users">0</p></div>
-        <div class="card"><div class="icon green"><i class="fa-solid fa-dollar-sign"></i></div><h3>Revenue</h3><p id="revenue">$0</p></div>
-        <div class="card"><div class="icon orange"><i class="fa-solid fa-briefcase"></i></div><h3>Services</h3><p id="services">0</p></div>
+        <div class="card glow-blue">
+            <div class="icon blue"><i class="fa-solid fa-calendar-check"></i></div>
+            <h3>Bookings</h3><p id="bookings">0</p>
+        </div>
+        <div class="card glow-pink">
+            <div class="icon pink"><i class="fa-solid fa-users"></i></div>
+            <h3>Users</h3><p id="users">0</p>
+        </div>
+        <div class="card glow-green">
+            <div class="icon green"><i class="fa-solid fa-dollar-sign"></i></div>
+            <h3>Revenue</h3><p id="revenue">$0</p>
+        </div>
+        <div class="card glow-orange">
+            <div class="icon orange"><i class="fa-solid fa-briefcase"></i></div>
+            <h3>Services</h3><p id="services">0</p>
+        </div>
     </div>
 
     <div class="grid">
@@ -46,11 +58,10 @@
             </div>
         </div>
 
-        <!-- NEW LANDING ZONE FOR REAL BOOKINGS -->
         <div class="panel" style="max-height: 400px; overflow-y: auto;">
             <h3>Recent Booking Inquiries</h3>
             <div id="booking-landing-zone">
-                <!-- Bookings land here -->
+                <!-- Bookings land here with Avatar/Snippet style -->
             </div>
         </div>
     </div>
@@ -73,26 +84,33 @@
             data: { labels: ["Web", "Ecom", "Landing", "Custom"], datasets: [{ data: [0,0,0,0], backgroundColor: ["#22C55E","#38BDF8","#F59E0B","#FF4FD8"] }] }
         });
 
-        // Fetch real data for the landing zone
+        // Consistent color generator for avatars
+        function getAvatarColor(name) {
+            const colors = ["#ef4444", "#f59e0b", "#10b981", "#3b82f6", "#8b5cf6", "#ec4899"];
+            const index = name.length % colors.length;
+            return colors[index];
+        }
+
         async function updateInbox() {
             try {
                 const res = await fetch("https://millie-dav.onrender.com/bookings");
                 const bookings = await res.json();
                 const zone = document.getElementById("booking-landing-zone");
+                
                 zone.innerHTML = bookings.map(b => `
-                    <div style="border-bottom: 1px solid #334155; padding: 10px 0;">
-                        <div style="display: flex; justify-content: space-between;">
-                            <strong>${b.name}</strong>
-                            <small style="color: #94A3B8;">${new Date(b.createdAt).toLocaleDateString()}</small>
+                    <div class="booking-item">
+                        <div class="avatar" style="background-color: ${getAvatarColor(b.name)}">
+                            ${b.name.charAt(0).toUpperCase()}
                         </div>
-                        <p style="margin: 5px 0; color: #cbd5e1;">${b.service}</p>
-                        <p style="font-size: 0.85rem; color: #94A3B8;">${b.message}</p>
+                        <div class="details">
+                            <div class="name">${b.name}</div>
+                            <div class="snippet">${b.message}</div>
+                        </div>
                     </div>
                 `).join('');
             } catch (err) { console.error("Inbox error:", err); }
         }
 
-        // Live updates
         socket.on("dashboard:update", (d) => {
             document.getElementById("bookings").innerText = d.totalBookings || 0;
             document.getElementById("revenue").innerText = "$" + (d.totalRevenue || 0).toLocaleString();
@@ -106,12 +124,9 @@
             
             chart.data.datasets[0].data = [b["Web Design"]||0, b["E-commerce"]||0, b["Landing Pages"]||0, b["Custom Systems"]||0];
             chart.update();
-
-            // Refresh the landing zone whenever server signals a change
             updateInbox();
         });
 
-        // Initialize on load
         updateInbox();
     </script>
 </body>
