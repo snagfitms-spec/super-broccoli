@@ -4,346 +4,68 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MillieDev Admin Dashboard - LIVE</title>
-
-<!-- CHART + SOCKET -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-
 <style>
-
-/* ================= DESIGN SYSTEM ================= */
-:root {
-    --bg: #0a0f1f;
-    --panel: #111a2e;
-    --text: #fff;
-    --muted: #94a3b8;
-
-    --blue: #38BDF8;
-    --green: #22C55E;
-    --orange: #F59E0B;
-    --pink: #FF4FD8;
-}
-
-/* ================= BASE ================= */
-body {
-    margin: 0;
-    font-family: Arial;
-    background: var(--bg);
-    color: var(--text);
-}
-
-/* ================= TOPBAR ================= */
-.topbar {
-    display: flex;
-    justify-content: space-between;
-    padding: 14px 18px;
-    background: #0f1629;
-    position: sticky;
-    top: 0;
-}
-
-.logo {
-    color: var(--blue);
-    font-weight: bold;
-}
-
-/* MENU */
-.menu {
-    display: flex;
-    gap: 15px;
-}
-
-.menu a {
-    color: var(--muted);
-    text-decoration: none;
-}
-
-/* HAMBURGER */
-.hamburger {
-    display: none;
-    flex-direction: column;
-    gap: 4px;
-    cursor: pointer;
-}
-
-.hamburger span {
-    width: 22px;
-    height: 2px;
-    background: white;
-}
-
-.mobile {
-    display: none;
-    flex-direction: column;
-    position: absolute;
-    right: 10px;
-    top: 60px;
-    background: var(--panel);
-    padding: 10px;
-    border-radius: 10px;
-}
-
-.mobile a {
-    color: var(--muted);
-    padding: 8px;
-    text-decoration: none;
-}
-
-/* ================= STATS ================= */
-.stats {
-    display: grid;
-    grid-template-columns: repeat(4,1fr);
-    gap: 12px;
-    padding: 15px;
-}
-
-.card {
-    background: var(--panel);
-    padding: 14px;
-    border-radius: 12px;
-}
-
-.icon {
-    width: 30px;
-    height: 30px;
-    border-radius: 6px;
-}
-
-.blue { background: var(--blue); }
-.green { background: var(--green); }
-.orange { background: var(--orange); }
-.pink { background: var(--pink); }
-
-/* ================= REVENUE ================= */
-.revenue {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    padding: 15px;
-}
-
-/* BARS LEFT */
-.bars {
-    background: var(--panel);
-    padding: 15px;
-    border-radius: 12px;
-}
-
-.bar {
-    margin-bottom: 12px;
-}
-
-.track {
-    height: 6px;
-    background: #222;
-    border-radius: 20px;
-}
-
-.fill {
-    height: 6px;
-    border-radius: 20px;
-}
-
-/* DONUT RIGHT */
-.donut {
-    background: var(--panel);
-    border-radius: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-}
-
-.center {
-    position: absolute;
-    text-align: center;
-}
-
-.center h2 {
-    color: var(--blue);
-    margin: 0;
-}
-
-/* ================= BOOKINGS ================= */
-.grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 12px;
-    padding: 15px;
-}
-
-.panel {
-    background: var(--panel);
-    padding: 15px;
-    border-radius: 12px;
-}
-
-/* ================= MOBILE ================= */
-@media(max-width:900px){
-    .stats{grid-template-columns:1fr 1fr}
-    .revenue{grid-template-columns:1fr}
-    .grid{grid-template-columns:1fr}
-    .menu{display:none}
-    .hamburger{display:flex}
-}
-
+    /* ... (Keep your existing CSS, I will help polish this next) ... */
+    .mobile.active { display: flex; } /* Added this to fix your menu toggle */
 </style>
 </head>
-
 <body>
 
-<!-- TOP -->
-<div class="topbar">
+<!-- ... (Keep your Topbar, Stats, and Revenue HTML as you have them) ... -->
 
-    <div class="logo">MillieDev LIVE</div>
-
-    <div class="menu">
-        <a href="#">Dashboard</a>
-        <a href="#">Bookings</a>
-        <a href="#">Analytics</a>
-    </div>
-
-    <div class="hamburger" onclick="toggle()">
-        <span></span><span></span><span></span>
-    </div>
-
-    <div class="mobile" id="mobile">
-        <a href="#">Dashboard</a>
-        <a href="#">Bookings</a>
-        <a href="#">Analytics</a>
-    </div>
-
-</div>
-
-<!-- STATS -->
-<div class="stats">
-    <div class="card">
-        <div class="icon blue"></div>
-        <h3>Total Bookings</h3>
-        <p id="bookings">0</p>
-    </div>
-
-    <div class="card">
-        <div class="icon pink"></div>
-        <h3>Users</h3>
-        <p id="users">0</p>
-    </div>
-
-    <div class="card">
-        <div class="icon green"></div>
-        <h3>Revenue</h3>
-        <p id="revenue">$0</p>
-    </div>
-
-    <div class="card">
-        <div class="icon orange"></div>
-        <h3>Services</h3>
-        <p id="services">0</p>
-    </div>
-</div>
-
-<!-- REVENUE -->
-<div class="revenue">
-
-    <!-- LEFT BARS -->
-    <div class="bars">
-        <h3>Service Performance</h3>
-
-        <div class="bar">
-            Web Design
-            <div class="track"><div id="web" class="fill green"></div></div>
-        </div>
-
-        <div class="bar">
-            E-commerce
-            <div class="track"><div id="eco" class="fill blue"></div></div>
-        </div>
-
-        <div class="bar">
-            Landing Pages
-            <div class="track"><div id="land" class="fill orange"></div></div>
-        </div>
-
-        <div class="bar">
-            Custom
-            <div class="track"><div id="custom" class="fill pink"></div></div>
-        </div>
-    </div>
-
-    <!-- RIGHT DONUT -->
-    <div class="donut">
-        <canvas id="chart"></canvas>
-
-        <div class="center">
-            <h2 id="centerMoney">$0</h2>
-            <p>Revenue</p>
-        </div>
-    </div>
-
-</div>
-
-<!-- BOOKINGS -->
+<!-- BOOKINGS GRID -->
 <div class="grid">
-
     <div class="panel">
-        <h3>Live Bookings</h3>
+        <h3>Recent Bookings</h3>
         <div id="list"></div>
     </div>
-
     <div class="panel">
-        <h3>Live Trend</h3>
-        <p>Socket.io ready</p>
+        <h3>Bookings Overview</h3>
+        <canvas id="bookingsTrendChart"></canvas>
     </div>
-
 </div>
 
 <script>
+/* SOCKET CONNECTION */
+const socket = io(window.location.origin); 
 
-/* SOCKET */
-const socket = io("https://millie-dav.onrender.com");
-
-/* MENU */
-function toggle(){
-    document.getElementById("mobile").classList.toggle("active");
-}
-
-/* CHART */
-const chart = new Chart(document.getElementById("chart"), {
-    type:"doughnut",
-    data:{
-        labels:["Web","Ecom","Landing","Custom"],
-        datasets:[{
-            data:[0,0,0,0],
-            backgroundColor:["#22C55E","#38BDF8","#F59E0B","#FF4FD8"]
-        }]
-    }
+/* CHARTS INITIALIZATION */
+const ctx = document.getElementById("chart").getContext('2d');
+const chart = new Chart(ctx, {
+    type: "doughnut",
+    data: { labels: ["Web", "Ecom", "Landing", "Custom"], datasets: [{ data: [0,0,0,0], backgroundColor: ["#22C55E","#38BDF8","#F59E0B","#FF4FD8"] }] }
 });
 
-/* LIVE UPDATE */
-socket.on("dashboard:update",(d)=>{
+const trendCtx = document.getElementById("bookingsTrendChart").getContext('2d');
+const trendChart = new Chart(trendCtx, {
+    type: "line",
+    data: { labels: ['May 1', 'May 8', 'May 15', 'May 22', 'May 29'], datasets: [{ data: [10, 25, 8, 35, 30], borderColor: "#FF4FD8", fill: true, tension: 0.4 }] },
+    options: { responsive: true, scales: { y: { beginAtZero: true } } }
+});
 
+/* LIVE UPDATES */
+socket.on("dashboard:update", (d) => {
+    // 1. Update Numbers
     document.getElementById("bookings").innerText = d.totalBookings || 0;
-    document.getElementById("revenue").innerText = "$"+(d.totalRevenue || 0);
-    document.getElementById("centerMoney").innerText = "$"+(d.totalRevenue || 0);
+    document.getElementById("revenue").innerText = "$" + (d.totalRevenue || 0);
+    document.getElementById("centerMoney").innerText = "$" + (d.totalRevenue || 0);
 
-    const b = d.breakdown || {};
+    // 2. Update Progress Bars
+    d.breakdown.forEach(item => {
+        const idMap = { "Web Design": "web", "E-commerce": "eco", "Landing Pages": "land", "Custom": "custom" };
+        const el = document.getElementById(idMap[item._id]);
+        if (el) el.style.width = Math.min((item.total / (d.totalRevenue || 1)) * 100, 100) + "%";
+    });
 
-    document.getElementById("web").style.width = (b["Web Design"]||0)+"%";
-    document.getElementById("eco").style.width = (b["E-commerce"]||0)+"%";
-    document.getElementById("land").style.width = (b["Landing Pages"]||0)+"%";
-    document.getElementById("custom").style.width = (b["Custom Systems"]||0)+"%";
-
-    chart.data.datasets[0].data = [
-        b["Web Design"]||0,
-        b["E-commerce"]||0,
-        b["Landing Pages"]||0,
-        b["Custom Systems"]||0
-    ];
-
+    // 3. Update Donut
+    chart.data.datasets[0].data = d.breakdown.map(i => i.total);
     chart.update();
 });
 
+/* MENU TOGGLE */
+function toggle(){ document.getElementById("mobile").classList.toggle("active"); }
 </script>
-
 </body>
 </html>
