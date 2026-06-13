@@ -11,17 +11,22 @@
 <style>
 
 /* =========================
-PRICING SYSTEM (LEVEL 8)
+LEVEL 8 GOLD PRICING SYSTEM
 ========================= */
 
+body{
+background:var(--bg);
+}
+
+/* HERO */
 .pricing-hero{
 text-align:center;
-padding:100px 5%;
+padding:100px 5% 60px;
 }
 
 .pricing-hero h1{
 font-size:3rem;
-margin-bottom:10px;
+margin-bottom:12px;
 }
 
 .pricing-hero p{
@@ -31,60 +36,101 @@ margin:auto;
 line-height:1.8;
 }
 
+/* GRID */
 .pricing-grid{
 display:grid;
 grid-template-columns:repeat(3,1fr);
 gap:25px;
-padding:60px 5%;
+padding:40px 5% 80px;
 }
 
+/* BASE CARD */
 .price-card{
 background:var(--panel);
 border:1px solid var(--border);
 border-radius:18px;
 padding:30px;
 text-align:center;
-transition:0.3s;
+transition:0.4s ease;
 position:relative;
 overflow:hidden;
 }
 
 .price-card:hover{
-transform:translateY(-8px);
-box-shadow:0 20px 40px rgba(0,0,0,0.4);
-border-color:rgba(56,189,248,0.4);
+transform:translateY(-10px);
+box-shadow:0 25px 60px rgba(0,0,0,0.5);
 }
 
+/* PRICE TEXT */
 .price{
-font-size:2.5rem;
-font-weight:bold;
-color:var(--primary);
+font-size:2.4rem;
+font-weight:800;
 margin:20px 0;
+color:var(--primary);
 }
 
+/* FEATURES */
 .feature{
 margin:10px 0;
 color:var(--muted);
 font-size:0.95rem;
 }
 
+/* BADGE */
 .badge{
 position:absolute;
 top:15px;
 right:15px;
-background:rgba(56,189,248,0.15);
-color:var(--primary);
-padding:5px 10px;
+padding:6px 12px;
 font-size:0.75rem;
-border-radius:8px;
-border:1px solid rgba(56,189,248,0.3);
+border-radius:10px;
+border:1px solid var(--border);
 }
 
+/* =========================
+PLAN STYLES
+========================= */
+
+/* BASIC */
+.basic{
+border-color:rgba(56,189,248,0.15);
+}
+
+.basic .badge{
+background:rgba(56,189,248,0.1);
+color:var(--primary);
+}
+
+/* PRO (BLUE GLOW) */
+.pro{
+border-color:rgba(56,189,248,0.25);
+box-shadow:0 0 25px rgba(56,189,248,0.08);
+}
+
+.pro .badge{
+background:rgba(56,189,248,0.15);
+color:var(--primary);
+}
+
+/* BUSINESS (GOLD PREMIUM) */
+.business{
+border-color:rgba(245, 158, 11, 0.4);
+box-shadow:0 0 40px rgba(245, 158, 11, 0.15);
+}
+
+.business .badge{
+background:rgba(245, 158, 11, 0.2);
+color:#FBBF24;
+border:1px solid rgba(245, 158, 11, 0.4);
+}
+
+/* BUTTON */
 button{
 margin-top:20px;
 width:100%;
 }
 
+/* RESPONSIVE */
 @media(max-width:900px){
 .pricing-grid{
 grid-template-columns:1fr;
@@ -121,21 +167,20 @@ grid-template-columns:1fr;
 <!-- HERO -->
 <section class="pricing-hero">
 
-<h1>Simple Pricing</h1>
+<h1>Choose Your Plan</h1>
 
 <p>
-Choose a plan that fits your goals.
-Everything is designed for scalability and future automation.
-Backend subscription system will be connected later.
+Simple, scalable pricing designed for creators, developers, and businesses.
+Upgrade anytime as your needs grow.
 </p>
 
 </section>
 
-<!-- PRICING CARDS -->
+<!-- PRICING -->
 <section class="pricing-grid">
 
 <!-- BASIC -->
-<div class="price-card">
+<div class="price-card basic">
 
 <div class="badge">Starter</div>
 
@@ -143,9 +188,10 @@ Backend subscription system will be connected later.
 
 <div class="price">$10 / month</div>
 
-<div class="feature">✔ Access to basic tools</div>
-<div class="feature">✔ Portfolio browsing</div>
-<div class="feature">✔ Email support</div>
+<div class="feature">✔ Limited tool access</div>
+<div class="feature">✔ Portfolio viewing</div>
+<div class="feature">✔ Basic website checks</div>
+<div class="feature">✔ Community support</div>
 
 <button onclick="selectPlan('basic')">
 Start Basic
@@ -154,7 +200,7 @@ Start Basic
 </div>
 
 <!-- PRO -->
-<div class="price-card">
+<div class="price-card pro">
 
 <div class="badge">Most Popular</div>
 
@@ -162,9 +208,11 @@ Start Basic
 
 <div class="price">$25 / month</div>
 
-<div class="feature">✔ All Basic features</div>
-<div class="feature">✔ Web Dev tools access</div>
-<div class="feature">✔ Priority support</div>
+<div class="feature">✔ Full web dev tools</div>
+<div class="feature">✔ API testing system</div>
+<div class="feature">✔ Project reports</div>
+<div class="feature">✔ Faster processing</div>
+<div class="feature">✔ No limitations on core tools</div>
 
 <button onclick="selectPlan('pro')">
 Go Pro
@@ -173,20 +221,25 @@ Go Pro
 </div>
 
 <!-- BUSINESS -->
-<div class="price-card">
+<div class="price-card business">
 
-<div class="badge">Premium</div>
+<div class="badge">Premium Gold</div>
 
 <h2>Business</h2>
 
-<div class="price">$50 / month</div>
+<div class="price" style="color:#FBBF24;">
+$50 / month
+</div>
 
-<div class="feature">✔ Full system access</div>
-<div class="feature">✔ API tools included</div>
-<div class="feature">✔ Advanced dashboard</div>
+<div class="feature">✔ Unlimited tool access</div>
+<div class="feature">✔ Advanced automation tools</div>
+<div class="feature">✔ Full system reports</div>
+<div class="feature">✔ Priority support</div>
+<div class="feature">✔ Early access features</div>
+<div class="feature">✔ Future dashboard unlock</div>
 
-<button onclick="selectPlan('business')">
-Get Business
+<button style="background:#FBBF24; color:#111827;" onclick="selectPlan('business')">
+Get Gold Access
 </button>
 
 </div>
@@ -208,12 +261,11 @@ function closeMenu(){
 document.getElementById("menu").classList.remove("active");
 }
 
-// temporary placeholder (backend later)
 function selectPlan(plan){
-alert("Selected plan: " + plan + " (backend will connect later)");
+alert("Selected: " + plan + " (backend will activate later)");
 }
 
 </script>
 
 </body>
-                    </html>
+</html>
