@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Pricing | MillieDev</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+/* =========================
+PRICING SYSTEM (LEVEL 8)
+========================= */
+
+.pricing-hero{
+text-align:center;
+padding:100px 5%;
+}
+
+.pricing-hero h1{
+font-size:3rem;
+margin-bottom:10px;
+}
+
+.pricing-hero p{
+opacity:0.7;
+max-width:700px;
+margin:auto;
+line-height:1.8;
+}
+
+.pricing-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:25px;
+padding:60px 5%;
+}
+
+.price-card{
+background:var(--panel);
+border:1px solid var(--border);
+border-radius:18px;
+padding:30px;
+text-align:center;
+transition:0.3s;
+position:relative;
+overflow:hidden;
+}
+
+.price-card:hover{
+transform:translateY(-8px);
+box-shadow:0 20px 40px rgba(0,0,0,0.4);
+border-color:rgba(56,189,248,0.4);
+}
+
+.price{
+font-size:2.5rem;
+font-weight:bold;
+color:var(--primary);
+margin:20px 0;
+}
+
+.feature{
+margin:10px 0;
+color:var(--muted);
+font-size:0.95rem;
+}
+
+.badge{
+position:absolute;
+top:15px;
+right:15px;
+background:rgba(56,189,248,0.15);
+color:var(--primary);
+padding:5px 10px;
+font-size:0.75rem;
+border-radius:8px;
+border:1px solid rgba(56,189,248,0.3);
+}
+
+button{
+margin-top:20px;
+width:100%;
+}
+
+@media(max-width:900px){
+.pricing-grid{
+grid-template-columns:1fr;
+}
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+
+<div class="logo">MillieDev</div>
+
+<div class="menu-btn" onclick="toggleMenu()">
+<span></span>
+<span></span>
+<span></span>
+</div>
+
+<div class="menu-container" id="menu">
+<a href="index.html" onclick="closeMenu()">Home</a>
+<a href="portfolio.html" onclick="closeMenu()">Portfolio</a>
+<a href="pricing.html" onclick="closeMenu()">Pricing</a>
+<a href="about.html" onclick="closeMenu()">About</a>
+<a href="booking.html" onclick="closeMenu()">Booking</a>
+</div>
+
+</nav>
+
+<!-- HERO -->
+<section class="pricing-hero">
+
+<h1>Simple Pricing</h1>
+
+<p>
+Choose a plan that fits your goals.
+Everything is designed for scalability and future automation.
+Backend subscription system will be connected later.
+</p>
+
+</section>
+
+<!-- PRICING CARDS -->
+<section class="pricing-grid">
+
+<!-- BASIC -->
+<div class="price-card">
+
+<div class="badge">Starter</div>
+
+<h2>Basic</h2>
+
+<div class="price">$10 / month</div>
+
+<div class="feature">✔ Access to basic tools</div>
+<div class="feature">✔ Portfolio browsing</div>
+<div class="feature">✔ Email support</div>
+
+<button onclick="selectPlan('basic')">
+Start Basic
+</button>
+
+</div>
+
+<!-- PRO -->
+<div class="price-card">
+
+<div class="badge">Most Popular</div>
+
+<h2>Pro</h2>
+
+<div class="price">$25 / month</div>
+
+<div class="feature">✔ All Basic features</div>
+<div class="feature">✔ Web Dev tools access</div>
+<div class="feature">✔ Priority support</div>
+
+<button onclick="selectPlan('pro')">
+Go Pro
+</button>
+
+</div>
+
+<!-- BUSINESS -->
+<div class="price-card">
+
+<div class="badge">Premium</div>
+
+<h2>Business</h2>
+
+<div class="price">$50 / month</div>
+
+<div class="feature">✔ Full system access</div>
+<div class="feature">✔ API tools included</div>
+<div class="feature">✔ Advanced dashboard</div>
+
+<button onclick="selectPlan('business')">
+Get Business
+</button>
+
+</div>
+
+</section>
+
+<!-- FOOTER -->
+<footer style="text-align:center; padding:40px; opacity:0.6;">
+© 2026 MillieDev Pricing System
+</footer>
+
+<script>
+
+function toggleMenu(){
+document.getElementById("menu").classList.toggle("active");
+}
+
+function closeMenu(){
+document.getElementById("menu").classList.remove("active");
+}
+
+// temporary placeholder (backend later)
+function selectPlan(plan){
+alert("Selected plan: " + plan + " (backend will connect later)");
+}
+
+</script>
+
+</body>
+                    </html>
