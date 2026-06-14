@@ -7,89 +7,156 @@
 <title>Course | MillieDev</title>
 
 <link rel="stylesheet" href="style.css">
-<script src="coursesData.js"></script>
+
+<style>
+
+/* ================= COURSE VIEWER LEVEL 10 ================= */
+
+body {
+    background: var(--bg);
+}
+
+/* HERO */
+.course-header {
+    padding: 90px 5%;
+    text-align: center;
+}
+
+.course-title {
+    font-size: 2.8rem;
+    font-weight: 700;
+}
+
+.course-badge {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    background: rgba(255,255,255,0.08);
+}
+
+/* DESCRIPTION */
+.course-desc {
+    max-width: 700px;
+    margin: 20px auto;
+    opacity: 0.75;
+}
+
+/* MODULES */
+.module {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    margin: 15px auto;
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 900px;
+    transition: 0.3s ease;
+    cursor: pointer;
+}
+
+.module:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+}
+
+/* LESSONS */
+.lessons {
+    margin-top: 10px;
+    padding-left: 15px;
+    display: none;
+}
+
+.module.active .lessons {
+    display: block;
+}
+
+.lesson {
+    padding: 6px 0;
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.lesson:hover {
+    color: var(--primary);
+}
+
+/* BACK BUTTON */
+.back-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: var(--primary);
+    color: black;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+</style>
+
 </head>
 
 <body>
 
-<nav class="navbar">
+<div class="back-btn" onclick="history.back()">← Back</div>
 
-    <div class="logo">MillieDev</div>
+<!-- COURSE HEADER -->
+<div class="course-header">
 
-    <div class="menu-btn" onclick="toggleMenu()">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
+    <h1 class="course-title" id="title">Loading...</h1>
 
-    <div class="menu-container" id="menu">
-        <a href="index.html">Home</a>
-        <a href="courses.html">Courses</a>
-        <a href="services.html">Services</a>
-        <a href="portfolio.html">Portfolio</a>
-        <a href="about.html">About</a>
-        <a href="booking.html">Booking</a>
-    </div>
+    <div class="course-badge" id="level"></div>
 
-</nav>
+    <p class="course-desc" id="desc"></p>
 
-<section class="hero" style="padding:100px 5%; text-align:center;">
+</div>
 
-    <h1 id="courseTitle"></h1>
+<!-- MODULE CONTAINER -->
+<div id="modules"></div>
 
-    <p id="courseDescription"
-       style="max-width:700px; margin:20px auto; opacity:.8;">
-    </p>
-
-</section>
-
-<section style="padding:40px 5%;">
-
-    <div id="modulesContainer" class="grid">
-
-    </div>
-
-</section>
+<script src="coursesData.js"></script>
 
 <script>
 
-function toggleMenu() {
-    document.getElementById("menu").classList.toggle("active");
-}
+/* ================= LOAD COURSE ================= */
 
 const params = new URLSearchParams(window.location.search);
-
 const courseId = params.get("id");
 
-if(courses[courseId]) {
+const course = courses[courseId];
 
-    const course = courses[courseId];
+if (!course) {
+    document.getElementById("title").innerText = "Course Not Found";
+} else {
 
-    document.getElementById("courseTitle").innerText =
-        course.title;
+    document.getElementById("title").innerText = course.title;
+    document.getElementById("level").innerText = course.level;
+    document.getElementById("desc").innerText = course.description;
 
-    document.getElementById("courseDescription").innerText =
-        course.description;
+    const container = document.getElementById("modules");
 
-    const container =
-        document.getElementById("modulesContainer");
+    course.modules.forEach((mod, index) => {
 
-    course.modules.forEach(module => {
+        const div = document.createElement("div");
+        div.className = "module";
 
-        container.innerHTML += `
-            <div class="card">
-                <h3>${module.title}</h3>
-                <p>${module.description}</p>
+        div.innerHTML = `
+            <h3>${mod.title}</h3>
+            <p style="opacity:0.7;">${mod.description || ""}</p>
+
+            <div class="lessons">
+                ${mod.lessons.map(l => `<div class="lesson">• ${l}</div>`).join("")}
             </div>
         `;
 
+        div.addEventListener("click", () => {
+            div.classList.toggle("active");
+        });
+
+        container.appendChild(div);
     });
-
-} else {
-
-    document.getElementById("courseTitle").innerText =
-        "Course Not Found";
-
 }
 
 </script>
