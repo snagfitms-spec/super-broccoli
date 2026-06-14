@@ -12,84 +12,96 @@
 
 /* ================= LEVEL 12 LESSON ENGINE ================= */
 
-body {
-    background: var(--bg);
-    margin: 0;
+.lesson-container{
+    max-width: 900px;
+    margin: auto;
+    padding: 80px 5%;
 }
 
-/* TOP NAV BAR */
-.topbar {
+.lesson-title{
+    font-size: 2.2rem;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.lesson-meta{
+    opacity: 0.6;
+    margin-bottom: 25px;
+}
+
+/* CONTENT BOX */
+.lesson-box{
+    background: var(--panel);
+    padding: 25px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    line-height: 1.7;
+}
+
+/* QUIZ */
+.quiz-box{
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.03);
+}
+
+.quiz-option{
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.quiz-option:hover{
+    background: rgba(255,255,255,0.05);
+}
+
+.quiz-option.correct{
+    background: rgba(34,197,94,0.2);
+    border-color: #22C55E;
+}
+
+.quiz-option.wrong{
+    background: rgba(239,68,68,0.2);
+    border-color: #EF4444;
+}
+
+/* NAV */
+.lesson-nav{
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 18px 5%;
-    border-bottom: 1px solid var(--border);
-    background: rgba(15, 23, 42, 0.6);
-    backdrop-filter: blur(12px);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-/* BACK BUTTON */
-.back {
-    color: var(--primary);
-    cursor: pointer;
-    font-weight: 600;
-}
-
-/* NAV BUTTONS */
-.nav-buttons {
-    display: flex;
+    margin-top: 40px;
     gap: 10px;
 }
 
-button {
-    padding: 8px 12px;
-    border-radius: 8px;
+.lesson-nav button{
+    flex: 1;
+    padding: 12px;
     border: none;
+    border-radius: 10px;
+    background: var(--primary);
     cursor: pointer;
     font-weight: 600;
-    transition: 0.3s ease;
 }
 
-button:hover {
-    transform: translateY(-2px);
+/* PROGRESS BAR */
+.progress-bar{
+    height: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50px;
+    margin-bottom: 20px;
+    overflow: hidden;
 }
 
-/* PRIMARY BUTTON */
-.primary {
+.progress-fill{
+    height: 100%;
+    width: 0%;
     background: var(--primary);
-    color: #0a0f1f;
-}
-
-/* CONTENT AREA */
-.lesson-wrapper {
-    max-width: 900px;
-    margin: auto;
-    padding: 40px 5%;
-}
-
-/* TITLE */
-.lesson-title {
-    font-size: 2.2rem;
-    margin-bottom: 10px;
-}
-
-/* BOX */
-.lesson-box {
-    margin-top: 20px;
-    padding: 25px;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-}
-
-/* STATUS */
-.status {
-    margin-top: 15px;
-    opacity: 0.7;
-    font-size: 0.9rem;
+    transition: 0.4s;
 }
 
 </style>
@@ -98,31 +110,35 @@ button:hover {
 
 <body>
 
-<!-- ================= TOP BAR ================= -->
-<div class="topbar">
+<nav class="navbar">
+    <div class="logo">MillieDev</div>
+</nav>
 
-    <div class="back" onclick="goBack()">
-        ← Back to Course
+<!-- PROGRESS -->
+<div class="lesson-container">
+
+    <div class="progress-bar">
+        <div class="progress-fill" id="progress"></div>
     </div>
-
-    <div class="nav-buttons">
-        <button onclick="prevLesson()">Prev</button>
-        <button onclick="nextLesson()">Next</button>
-        <button class="primary" onclick="completeLesson()">Complete</button>
-    </div>
-
-</div>
-
-<!-- ================= LESSON CONTENT ================= -->
-<div class="lesson-wrapper">
 
     <h1 class="lesson-title" id="title">Loading...</h1>
+    <div class="lesson-meta" id="meta"></div>
 
     <div class="lesson-box" id="content">
-        Loading lesson content...
+        Loading lesson...
     </div>
 
-    <div class="status" id="status"></div>
+    <!-- QUIZ -->
+    <div class="quiz-box" id="quizBox" style="display:none;">
+        <h3>Quick Quiz</h3>
+        <div id="quiz"></div>
+    </div>
+
+    <!-- NAV -->
+    <div class="lesson-nav">
+        <button onclick="prevLesson()">Previous</button>
+        <button onclick="nextLesson()">Next</button>
+    </div>
 
 </div>
 
@@ -130,99 +146,138 @@ button:hover {
 
 <script>
 
-/* ================= LEVEL 12 LESSON ENGINE ================= */
+/* ================= STATE ================= */
 
 const params = new URLSearchParams(window.location.search);
 
 const courseId = params.get("course");
-const moduleIndex = parseInt(params.get("m"));
-const lessonIndex = parseInt(params.get("l"));
+const moduleId = params.get("module");
+const lessonId = params.get("lesson");
 
-const course = courses[courseId];
+let course, module, lessonIndex;
 
-if (!course) {
+/* ================= INIT ================= */
 
-    document.getElementById("title").innerText = "Course Not Found";
-    document.getElementById("content").innerText = "Invalid course link.";
+window.onload = () => {
 
-} else {
+    course = courses[courseId];
+    module = course.modules.find(m => m.id === moduleId);
 
-    const module = course.modules[moduleIndex];
+    lessonIndex = module.lessons.findIndex(l => l.id === lessonId);
+
+    loadLesson();
+    updateProgress();
+};
+
+/* ================= LOAD LESSON ================= */
+
+function loadLesson(){
+
     const lesson = module.lessons[lessonIndex];
 
-    document.getElementById("title").innerText = lesson;
+    document.getElementById("title").innerText = lesson.title;
+    document.getElementById("meta").innerText =
+        course.title + " → " + module.title;
 
-    document.getElementById("content").innerHTML = `
-        <h3>${module.title}</h3>
-        <p style="opacity:0.7; margin-top:10px;">
-            ${module.description}
-        </p>
+    document.getElementById("content").innerHTML =
+        lesson.content?.text || "Lesson content loading...";
 
-        <hr style="margin:20px 0; border:1px solid var(--border);">
+    loadQuiz(lesson);
+}
 
-        <p>
-            📘 Lesson: <strong>${lesson}</strong>
-        </p>
+/* ================= QUIZ SYSTEM ================= */
 
-        <p style="opacity:0.7; margin-top:10px;">
-            This is your learning space. Future upgrades will include videos, quizzes, and interactive coding blocks.
-        </p>
-    `;
+function loadQuiz(lesson){
 
-    updateProgress();
-    showProgress();
+    const quizBox = document.getElementById("quizBox");
+    const quiz = document.getElementById("quiz");
+
+    quiz.innerHTML = "";
+
+    if(!lesson.quiz){
+        quizBox.style.display = "none";
+        return;
+    }
+
+    quizBox.style.display = "block";
+
+    lesson.quiz.forEach((q, index) => {
+
+        const div = document.createElement("div");
+        div.innerText = q.question;
+        div.style.marginBottom = "10px";
+
+        quiz.appendChild(div);
+
+        q.options.forEach(opt => {
+
+            const btn = document.createElement("div");
+            btn.className = "quiz-option";
+            btn.innerText = opt;
+
+            btn.onclick = () => {
+
+                if(opt === q.answer){
+                    btn.classList.add("correct");
+                    saveProgress(true);
+                } else {
+                    btn.classList.add("wrong");
+                }
+            };
+
+            quiz.appendChild(btn);
+        });
+    });
 }
 
 /* ================= PROGRESS SYSTEM ================= */
 
-function updateProgress() {
+function updateProgress(){
 
-    const key = `progress_${courseId}`;
+    let key = courseId + "-" + moduleId + "-" + lessonId;
 
-    let data = JSON.parse(localStorage.getItem(key)) || {};
+    let progress = localStorage.getItem("progress-" + key);
 
-    data[`${moduleIndex}-${lessonIndex}`] = true;
-
-    localStorage.setItem(key, JSON.stringify(data));
+    if(progress){
+        document.getElementById("progress").style.width = "100%";
+    }
 }
 
-/* ================= SHOW PROGRESS ================= */
+/* save completion */
+function saveProgress(done){
 
-function showProgress() {
+    if(done){
+        let key = courseId + "-" + moduleId + "-" + lessonId;
+        localStorage.setItem("progress-" + key, "completed");
 
-    const key = `progress_${courseId}`;
-    const data = JSON.parse(localStorage.getItem(key)) || {};
-
-    const completed = Object.keys(data).length;
-
-    document.getElementById("status").innerText =
-        `Progress: ${completed} lesson(s) completed`;
+        document.getElementById("progress").style.width = "100%";
+    }
 }
 
-/* ================= NAVIGATION ================= */
+/* ================= NAV ================= */
 
-function nextLesson() {
+function nextLesson(){
+
+    if(lessonIndex < module.lessons.length - 1){
+        lessonIndex++;
+        redirect();
+    }
+}
+
+function prevLesson(){
+
+    if(lessonIndex > 0){
+        lessonIndex--;
+        redirect();
+    }
+}
+
+function redirect(){
+
+    const l = module.lessons[lessonIndex];
+
     window.location.href =
-        `lesson.html?course=${courseId}&m=${moduleIndex}&l=${lessonIndex + 1}`;
-}
-
-function prevLesson() {
-    window.location.href =
-        `lesson.html?course=${courseId}&m=${moduleIndex}&l=${lessonIndex - 1}`;
-}
-
-/* ================= COMPLETE LESSON ================= */
-
-function completeLesson() {
-    alert("Lesson completed ✔");
-    updateProgress();
-    showProgress();
-}
-
-/* ================= BACK ================= */
-
-function goBack() {
-    window.location.href = `course.html?id=${courseId}`;
+        `lesson.html?course=${courseId}&module=${moduleId}&lesson=${l.id}`;
 }
 
 </script>
