@@ -32,7 +32,7 @@
     </div>
 </nav>
 
-<!-- ================= HERO ================= -->
+<!-- ================= HERO (LEVEL 10 ENHANCED) ================= -->
 <section class="hero animate-left"
 style="padding:100px 5%; text-align:center;">
 
@@ -40,11 +40,26 @@ style="padding:100px 5%; text-align:center;">
         Selected Projects
     </h1>
 
-    <p style="max-width:800px; margin:auto; opacity:.8; font-size:1.1rem;">
-        Every project represents a real problem solved through thoughtful design,
-        clean architecture, and practical development. These case studies show how
-        ideas are transformed into digital systems that actually work.
-    </p>
+    <!-- LEVEL 10 ADDITION: soft glow ONLY behind description -->
+    <div style="
+        max-width:800px;
+        margin:auto;
+        padding:20px;
+        border-radius:16px;
+        background: radial-gradient(circle at top,
+            rgba(56,189,248,0.12),
+            rgba(255,79,216,0.06),
+            transparent 70%);
+        backdrop-filter: blur(6px);
+    ">
+
+        <p style="opacity:.85; font-size:1.1rem; line-height:1.7;">
+            Every project represents a real problem solved through thoughtful design,
+            clean architecture, and practical development. These case studies show how
+            ideas are transformed into digital systems that actually work.
+        </p>
+
+    </div>
 
 </section>
 
@@ -165,8 +180,6 @@ function closeMenu() {
 
 window.addEventListener("load", () => {
     document.getElementById("menu").classList.remove("active");
-
-    // trigger scroll animations on load
     revealOnScroll();
 });
 
@@ -181,7 +194,7 @@ document.addEventListener("click", function(e){
     }
 });
 
-/* LEVEL 9 SCROLL ENGINE (MATCHING HOMEPAGE) */
+/* LEVEL 10 SCROLL ENGINE (SAFE UPGRADE) */
 function revealOnScroll() {
     const elements = document.querySelectorAll(".fade-up");
 
