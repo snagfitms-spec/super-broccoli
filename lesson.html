@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Lesson | MillieDev</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+/* ================= LEVEL 11 LESSON ENGINE ================= */
+
+body {
+    background: var(--bg);
+}
+
+/* HEADER */
+.lesson-header {
+    padding: 60px 5% 30px 5%;
+    max-width: 900px;
+    margin: auto;
+}
+
+.lesson-title {
+    font-size: 2.4rem;
+    font-weight: 700;
+}
+
+.lesson-meta {
+    opacity: 0.6;
+    margin-top: 10px;
+}
+
+/* CONTENT */
+.lesson-content {
+    max-width: 900px;
+    margin: auto;
+    padding: 30px 5%;
+}
+
+.lesson-box {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 25px;
+    line-height: 1.8;
+    animation: fadeIn 0.5s ease;
+}
+
+/* NAVIGATION */
+.lesson-nav {
+    display: flex;
+    justify-content: space-between;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 5%;
+}
+
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: var(--primary);
+    color: black;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+/* FADE */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- BACK -->
+<div style="padding:20px 5%;">
+    <button onclick="history.back()">← Back</button>
+</div>
+
+<!-- HEADER -->
+<div class="lesson-header">
+
+    <div class="lesson-title" id="title">Loading...</div>
+
+    <div class="lesson-meta" id="meta"></div>
+
+</div>
+
+<!-- CONTENT -->
+<div class="lesson-content">
+    <div class="lesson-box" id="content">
+        Loading lesson...
+    </div>
+</div>
+
+<!-- NAV -->
+<div class="lesson-nav">
+    <button onclick="prevLesson()">← Previous</button>
+    <button onclick="nextLesson()">Next →</button>
+</div>
+
+<script src="coursesData.js"></script>
+
+<script>
+
+/* ================= LEVEL 11 ENGINE ================= */
+
+const params = new URLSearchParams(window.location.search);
+
+const courseId = params.get("course");
+const moduleIndex = parseInt(params.get("module"));
+const lessonIndex = parseInt(params.get("lesson"));
+
+const course = courses[courseId];
+
+if (!course) {
+
+    document.getElementById("title").innerText = "Course Not Found";
+
+} else {
+
+    const module = course.modules[moduleIndex];
+    const lesson = module.lessons[lessonIndex];
+
+    document.getElementById("title").innerText = lesson;
+    document.getElementById("meta").innerText =
+        `${course.title} → ${module.title}`;
+
+    document.getElementById("content").innerText =
+        "This is where full lesson content will be rendered (Level 11 engine ready).";
+}
+
+/* ================= NAVIGATION ================= */
+
+function nextLesson() {
+    window.location.href =
+        `lesson.html?course=${courseId}&module=${moduleIndex}&lesson=${lessonIndex + 1}`;
+}
+
+function prevLesson() {
+    window.location.href =
+        `lesson.html?course=${courseId}&module=${moduleIndex}&lesson=${lessonIndex - 1}`;
+}
+
+</script>
+
+</body>
+</html>
