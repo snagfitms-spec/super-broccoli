@@ -35,13 +35,19 @@
 <section class="hero"
 style="padding:80px 5%; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:60px;">
 
-    <!-- TEXT SIDE -->
+    <!-- HERO LEFT (HEADLINE ONLY) -->
     <div class="animate-left"
     style="flex:1; min-width:300px; max-width:600px;">
 
         <h1 style="font-size:2.7rem; margin-bottom:15px;">
             Building Digital Systems That Scale Your Business
         </h1>
+
+    </div>
+
+    <!-- HERO RIGHT (SUBTEXT + BUTTONS) -->
+    <div class="animate-right"
+    style="flex:1; min-width:300px; max-width:600px;">
 
         <p style="opacity:0.75; margin-bottom:25px;">
             Modern websites, SaaS tools, and automation systems designed to convert users into customers.
@@ -52,7 +58,6 @@ style="padding:80px 5%; display:flex; flex-wrap:wrap; align-items:center; justif
         </a>
 
         <a href="portfolio.html">
-            <!-- FIXED: outline button now matches Level 9 system -->
             <button class="outline">View Work</button>
         </a>
 
@@ -62,7 +67,7 @@ style="padding:80px 5%; display:flex; flex-wrap:wrap; align-items:center; justif
 
     </div>
 
-    <!-- IMAGE SIDE -->
+    <!-- FLOATING IMAGE (UNCHANGED SYSTEM SAFE) -->
     <div class="animate-right"
     style="flex:1; min-width:300px; display:flex; justify-content:center; align-items:center;">
 
@@ -70,7 +75,6 @@ style="padding:80px 5%; display:flex; flex-wrap:wrap; align-items:center; justif
         alt="MillieDev Services Overview"
         class="floating-element"
         style="width:100%; max-width:500px; height:auto; border:none;">
-
     </div>
 
 </section>
@@ -137,9 +141,14 @@ style="padding:80px 5%; display:flex; flex-wrap:wrap; align-items:center; justif
 
 <!-- ================= CTA ================= -->
 <section style="text-align:center; padding:80px 5%;">
+
     <h2>Ready to Build Something Powerful?</h2>
 
-    <div style="margin-top:20px;">
+    <p style="opacity:0.7; margin:20px 0;">
+        Let’s turn your idea into a scalable digital system.
+    </p>
+
+    <div>
         <a href="pricing.html">
             <button style="margin-right:10px;">View Pricing</button>
         </a>
@@ -148,6 +157,7 @@ style="padding:80px 5%; display:flex; flex-wrap:wrap; align-items:center; justif
             <button>Start Project</button>
         </a>
     </div>
+
 </section>
 
 <!-- ================= FOOTER ================= -->
@@ -155,7 +165,7 @@ style="padding:80px 5%; display:flex; flex-wrap:wrap; align-items:center; justif
     © 2026 MillieDev SaaS System
 </footer>
 
-<!-- ================= SCRIPT (FIXED LEVEL 9 SCROLL ENGINE) ================= -->
+<!-- ================= SCRIPT ================= -->
 <script>
 
 function toggleMenu(){
@@ -166,29 +176,26 @@ function closeMenu(){
     document.getElementById("menu").classList.remove("active");
 }
 
-/* =========================
-LEVEL 9 SCROLL REVEAL FIX
-========================= */
-
+/* HERO + SCROLL SYSTEM */
 function revealOnScroll() {
     const elements = document.querySelectorAll(".fade-up");
 
-    for (let i = 0; i < elements.length; i++) {
+    elements.forEach(el => {
+        const top = el.getBoundingClientRect().top;
         const windowHeight = window.innerHeight;
-        const elementTop = elements[i].getBoundingClientRect().top;
 
-        if (elementTop < windowHeight - 80) {
-            elements[i].classList.add("active");
+        if (top < windowHeight - 80) {
+            el.classList.add("active");
         }
-    }
+    });
 }
 
-/* Run on scroll + initial load */
-window.addEventListener("scroll", revealOnScroll);
 window.addEventListener("load", () => {
     document.getElementById("menu").classList.remove("active");
     revealOnScroll();
 });
+
+window.addEventListener("scroll", revealOnScroll);
 
 </script>
 
