@@ -1,6 +1,6 @@
 /* =========================
-LEVEL 9 DESIGN SYSTEM
-MILLIEDEV PREMIUM UI ENGINE
+LEVEL 10 DESIGN SYSTEM
+MILLIEDEV - PREMIUM SaaS UI ENGINE
 ========================= */
 
 :root {
@@ -8,15 +8,18 @@ MILLIEDEV PREMIUM UI ENGINE
     --panel: #0F172A;
     --text: #E6EDF7;
     --muted: #94A3B8;
+
     --primary: #38BDF8;
     --accent: #FF4FD8;
     --success: #22C55E;
     --warning: #F59E0B;
+
     --border: rgba(255,255,255,0.08);
+    --glass: rgba(255,255,255,0.04);
 }
 
 /* =========================
-RESET
+RESET + BASE SYSTEM
 ========================= */
 
 * {
@@ -30,23 +33,35 @@ body {
     background: var(--bg);
     color: var(--text);
     line-height: 1.6;
+    overflow-x: hidden;
 }
 
 /* =========================
-ANIMATION ENGINE (LEVEL 9)
+GLOBAL ANIMATION ENGINE
 ========================= */
 
-/* Floating image */
+/* Floating Hero Image */
 @keyframes floatY {
     0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
+    50% { transform: translateY(-18px); }
 }
 
 .floating-element {
-    animation: floatY 5s ease-in-out infinite;
+    animation: floatY 6s ease-in-out infinite;
+    will-change: transform;
 }
 
-/* HERO ENTRY */
+/* HERO ENTRANCE */
+@keyframes slideLeft {
+    from { opacity:0; transform:translateX(-80px); }
+    to { opacity:1; transform:translateX(0); }
+}
+
+@keyframes slideRight {
+    from { opacity:0; transform:translateX(80px); }
+    to { opacity:1; transform:translateX(0); }
+}
+
 .animate-left {
     animation: slideLeft 1s ease forwards;
 }
@@ -55,17 +70,7 @@ ANIMATION ENGINE (LEVEL 9)
     animation: slideRight 1s ease forwards;
 }
 
-@keyframes slideLeft {
-    from { opacity:0; transform:translateX(-60px); }
-    to { opacity:1; transform:translateX(0); }
-}
-
-@keyframes slideRight {
-    from { opacity:0; transform:translateX(60px); }
-    to { opacity:1; transform:translateX(0); }
-}
-
-/* SCROLL REVEAL SYSTEM */
+/* SCROLL SYSTEM (FIXED - REAL LEVEL 10 BEHAVIOR) */
 .fade-up {
     opacity: 0;
     transform: translateY(40px);
@@ -78,7 +83,7 @@ ANIMATION ENGINE (LEVEL 9)
 }
 
 /* =========================
-NAVBAR SYSTEM
+NAVBAR SYSTEM (LEVEL 10)
 ========================= */
 
 .navbar {
@@ -88,7 +93,7 @@ NAVBAR SYSTEM
     padding: 20px 5%;
     border-bottom: 1px solid var(--border);
     background: rgba(15, 23, 42, 0.6);
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(18px);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -100,6 +105,7 @@ NAVBAR SYSTEM
     color: var(--primary);
 }
 
+/* hamburger */
 .menu-btn {
     display: flex;
     flex-direction: column;
@@ -114,18 +120,19 @@ NAVBAR SYSTEM
     border-radius: 5px;
 }
 
+/* dropdown */
 .menu-container {
     position: absolute;
     top: 70px;
     right: 5%;
     background: var(--panel);
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 10px;
+    border-radius: 14px;
+    padding: 12px;
     display: none;
     flex-direction: column;
     gap: 10px;
-    min-width: 180px;
+    min-width: 190px;
 }
 
 .menu-container.active {
@@ -140,18 +147,18 @@ NAVBAR SYSTEM
 }
 
 .menu-container a:hover {
-    background: rgba(56, 189, 248, 0.1);
+    background: rgba(56, 189, 248, 0.12);
     color: var(--primary);
 }
 
 /* =========================
-GRID SYSTEM
+GRID SYSTEM (LEVEL 10 FIX)
 ========================= */
 
 .grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+    gap: 22px;
     padding: 20px;
 }
 
@@ -162,30 +169,36 @@ GRID SYSTEM
 }
 
 /* =========================
-CARD SYSTEM (LEVEL 9)
+CARD SYSTEM (LEVEL 10 PREMIUM)
 ========================= */
 
 .card {
-    background: #111827;
+    background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
     border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    transition: all 0.4s ease;
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    transition: all 0.35s ease;
+    position: relative;
+    overflow: hidden;
 }
 
+/* glow hover */
 .card:hover {
-    transform: translateY(-8px);
+    transform: translateY(-10px);
     border-color: var(--primary);
-    box-shadow: 0 25px 60px rgba(56,189,248,0.15);
+    box-shadow:
+        0 25px 60px rgba(56,189,248,0.18),
+        0 0 25px rgba(56,189,248,0.08);
 }
 
+/* active click feel */
 .card:active {
     transform: scale(0.98);
 }
 
 /* =========================
-PORTFOLIO SYSTEM (LEVEL 9)
+PORTFOLIO SYSTEM (LEVEL 10 FIXED)
 ========================= */
 
 .portfolio-grid {
@@ -196,38 +209,37 @@ PORTFOLIO SYSTEM (LEVEL 9)
 }
 
 .portfolio-card {
-    background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
     border: 1px solid var(--border);
     border-radius: 24px;
     padding: 30px;
     cursor: pointer;
     transition: all 0.4s ease;
     position: relative;
+    overflow: hidden;
 }
 
 .portfolio-card:hover {
-    transform: translateY(-10px);
+    transform: translateY(-12px);
     border-color: var(--primary);
     box-shadow:
-        0 25px 60px rgba(56,189,248,0.15),
-        0 0 20px rgba(56,189,248,0.1);
+        0 30px 70px rgba(56,189,248,0.18),
+        0 0 30px rgba(56,189,248,0.1);
 }
 
-.portfolio-card:active {
-    transform: scale(0.98);
-}
-
+/* fix text highlight effect */
+.portfolio-card:hover h2,
 .portfolio-card:hover h3 {
     color: var(--primary);
 }
 
 /* =========================
-BUTTON SYSTEM (FIXED VIEW WORK ISSUE)
+BUTTON SYSTEM (LEVEL 10 FIX)
 ========================= */
 
 button {
     background: var(--primary);
-    color: #0a0f1f;
+    color: #06121f;
     border: none;
     padding: 10px 18px;
     border-radius: 10px;
@@ -236,27 +248,31 @@ button {
     transition: all 0.3s ease;
 }
 
+/* MAIN BUTTON HOVER */
 button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(56,189,248,0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(56,189,248,0.3);
 }
 
-/* OUTLINE BUTTON (View Work FIX) */
+/* OUTLINE BUTTON (FIXED VIEW WORK ISSUE) */
 button.outline {
     background: transparent;
     border: 1px solid var(--border);
     color: var(--text);
     opacity: 0.9;
+    transition: all 0.3s ease;
 }
 
+/* IMPORTANT FIX: View Work visibility */
 button.outline:hover {
     border-color: var(--primary);
     color: var(--primary);
     opacity: 1;
+    text-shadow: 0 0 10px rgba(56,189,248,0.4);
 }
 
 /* =========================
-GLOBAL LINKS
+LINK SYSTEM
 ========================= */
 
 a {
@@ -268,8 +284,17 @@ a:hover {
     color: var(--primary);
 }
 
+/* =========================
+IMAGE SYSTEM (FLOAT FIX SAFE)
+========================= */
+
 img {
     max-width: 100%;
     height: auto;
     display: block;
+}
+
+/* extra safety for hero floating system */
+.hero img {
+    will-change: transform;
 }
