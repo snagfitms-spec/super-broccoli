@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Services | MillieDev</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
+<title>Services | MillieDev</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
 </head>
 
 <body>
 
-<!-- ================= NAVIGATION (UNIFIED SYSTEM) ================= -->
+<!-- ================= NAVIGATION ================= -->
 <nav class="navbar">
 
     <div class="logo">MillieDev</div>
@@ -33,131 +34,161 @@
 
 </nav>
 
-<!-- ================= HERO SECTION ================= -->
-<section class="hero">
+<!-- ================= HERO ================= -->
+<section class="hero animate-left"
+style="text-align:center; padding:100px 5%;">
 
-    <h1>My Premium Services</h1>
-    <p style="text-align:center; opacity:0.7; max-width:600px; margin:auto;">
-        I build high-performance digital solutions designed to grow your business, attract clients, and convert traffic.
+    <h1 style="font-size:3rem;">
+        My Premium Services
+    </h1>
+
+    <p style="opacity:0.75; max-width:650px; margin:15px auto;">
+        High-performance digital systems designed to grow businesses, increase conversions, and build scalable online presence.
     </p>
 
 </section>
 
-<!-- ================= SERVICE CATEGORIES ================= -->
+<!-- ================= BUILD SECTION ================= -->
+<section class="animate-right" style="padding:40px 5%;">
 
-<section>
-
-    <!-- BUILD -->
     <h2 style="color:var(--primary); margin-bottom:20px;">Build</h2>
 
     <div class="grid">
-        <div class="card">
+
+        <div class="card fade-up">
             <h3>Custom Web Design</h3>
-            <p>Modern, responsive, high-converting websites.</p>
+            <p>Modern, responsive, high-converting websites built for businesses.</p>
         </div>
 
-        <div class="card">
+        <div class="card fade-up">
             <h3>Landing Pages</h3>
-            <p>Conversion-focused pages that drive results.</p>
+            <p>Sales-focused pages designed to maximize conversions and leads.</p>
         </div>
 
-        <div class="card">
-            <h3>E-Commerce Sites</h3>
-            <p>Fully functional online stores built for sales.</p>
+        <div class="card fade-up">
+            <h3>E-Commerce Systems</h3>
+            <p>Fully functional online stores with payment integration and automation.</p>
         </div>
+
     </div>
 
 </section>
 
-<section>
+<!-- ================= SCALE SECTION ================= -->
+<section class="animate-left" style="padding:40px 5%;">
 
-    <!-- SCALE -->
     <h2 style="color:var(--accent); margin-bottom:20px;">Scale</h2>
 
     <div class="grid">
-        <div class="card">
+
+        <div class="card fade-up">
             <h3>Custom Development</h3>
-            <p>Full-stack software solutions for your brand.</p>
+            <p>Full-stack systems designed for performance and scalability.</p>
         </div>
 
-        <div class="card">
-            <h3>UI/UX Design</h3>
-            <p>Beautiful, user-friendly digital experiences.</p>
+        <div class="card fade-up">
+            <h3>UI / UX Design</h3>
+            <p>Beautiful interfaces focused on user experience and engagement.</p>
         </div>
 
-        <div class="card">
-            <h3>Performance SEO</h3>
-            <p>Improve rankings and increase traffic.</p>
+        <div class="card fade-up">
+            <h3>SEO Optimization</h3>
+            <p>Increase visibility, ranking, and organic traffic growth.</p>
         </div>
+
     </div>
 
 </section>
 
-<section>
+<!-- ================= SUPPORT SECTION ================= -->
+<section class="animate-right" style="padding:40px 5%;">
 
-    <!-- SUPPORT -->
     <h2 style="color:var(--muted); margin-bottom:20px;">Support</h2>
 
     <div class="grid">
-        <div class="card">
+
+        <div class="card fade-up">
             <h3>Technical Support</h3>
-            <p>Reliable support for your digital systems.</p>
+            <p>Reliable maintenance and system support for your platform.</p>
         </div>
 
-        <div class="card">
+        <div class="card fade-up">
             <h3>Online Courses</h3>
-            <p>Learn modern digital skills and business growth.</p>
+            <p>Learn modern web development and digital business skills.</p>
         </div>
+
     </div>
 
 </section>
 
-<!-- ================= CTA SECTION ================= -->
-<section style="text-align:center; padding:80px 5%;">
+<!-- ================= CTA ================= -->
+<section class="fade-up"
+style="text-align:center; padding:90px 5%;">
 
     <h2>Ready to build something powerful?</h2>
 
     <p style="opacity:0.7; margin:20px 0;">
-        Let’s turn your idea into a high-converting digital product.
+        Let’s turn your idea into a high-converting digital system.
     </p>
 
     <a href="booking.html">
-        <button style="max-width:250px;">Book a Service</button>
+        <button>Book a Service</button>
     </a>
 
 </section>
 
 <!-- ================= FOOTER ================= -->
 <footer style="text-align:center; padding:40px; opacity:0.6;">
-    © 2026 MillieDev Portfolio System
+© 2026 MillieDev Portfolio System
 </footer>
 
-<!-- ================= MENU SCRIPT ================= -->
+<!-- ================= SCRIPT ================= -->
 <script>
 
-function toggleMenu() {
+function toggleMenu(){
     document.getElementById("menu").classList.toggle("active");
 }
 
-function closeMenu() {
+function closeMenu(){
     document.getElementById("menu").classList.remove("active");
 }
 
-/* ALWAYS RESET MENU STATE */
 window.addEventListener("load", () => {
     document.getElementById("menu").classList.remove("active");
 });
 
-/* CLOSE ON OUTSIDE CLICK */
-document.addEventListener("click", function(e) {
+/* OUTSIDE CLICK CLOSE */
+document.addEventListener("click", function(e){
 
     const menu = document.getElementById("menu");
     const btn = document.querySelector(".menu-btn");
 
-    if (!menu.contains(e.target) && !btn.contains(e.target)) {
+    if(!menu.contains(e.target) && !btn.contains(e.target)){
         menu.classList.remove("active");
     }
+
 });
+
+/* LEVEL 9 SCROLL ENGINE */
+function revealOnScroll(){
+
+    const elements = document.querySelectorAll(".fade-up");
+
+    elements.forEach(el => {
+
+        const top = el.getBoundingClientRect().top;
+        const windowHeight = window.innerHeight;
+
+        if(top < windowHeight - 80){
+            el.style.opacity = "1";
+        }
+
+    });
+
+}
+
+window.addEventListener("scroll", revealOnScroll);
+window.addEventListener("load", revealOnScroll);
 
 </script>
 
