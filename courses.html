@@ -8,6 +8,90 @@
 
 <link rel="stylesheet" href="style.css">
 <link rel="manifest" href="manifest.json">
+
+<style>
+/* ================= LEVEL 10 COURSE SYSTEM ================= */
+
+/* COURSE COLOR TOKENS */
+:root{
+    --html: #38BDF8;
+    --js: #FACC15;
+    --stack: #A855F7;
+    --responsive: #22C55E;
+    --deploy: #F97316;
+    --freelance: #EC4899;
+}
+
+/* HERO TEXT ENHANCEMENT */
+.course-hero h1{
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* PREMIUM CARD UPGRADE */
+.course-card{
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    cursor: pointer;
+}
+
+.course-card::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    width:4px;
+    height:100%;
+    background: var(--primary);
+}
+
+/* COLOR VARIANTS */
+.html::before{ background: var(--html); }
+.js::before{ background: var(--js); }
+.stack::before{ background: var(--stack); }
+.responsive::before{ background: var(--responsive); }
+.deploy::before{ background: var(--deploy); }
+.freelance::before{ background: var(--freelance); }
+
+/* HOVER GLOW */
+.course-card:hover{
+    transform: translateY(-10px);
+    box-shadow: 0 20px 60px rgba(56,189,248,0.15);
+}
+
+/* TEXT EMPHASIS */
+.course-card h3{
+    transition: 0.3s ease;
+}
+
+.course-card:hover h3{
+    color: var(--primary);
+}
+
+/* STAGGER ANIMATION */
+.course-card{
+    opacity: 0;
+    transform: translateY(30px);
+    animation: popIn 0.8s forwards;
+}
+
+.course-card:nth-child(1){ animation-delay:0.1s; }
+.course-card:nth-child(2){ animation-delay:0.2s; }
+.course-card:nth-child(3){ animation-delay:0.3s; }
+.course-card:nth-child(4){ animation-delay:0.4s; }
+.course-card:nth-child(5){ animation-delay:0.5s; }
+.course-card:nth-child(6){ animation-delay:0.6s; }
+
+@keyframes popIn{
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+</style>
+
 </head>
 
 <body>
@@ -34,8 +118,8 @@
 
 </nav>
 
-<!-- ================= HERO (LEVEL 9 ANIMATED) ================= -->
-<section class="hero animate-left"
+<!-- ================= HERO ================= -->
+<section class="hero course-hero animate-left"
 style="padding:100px 5%; text-align:center;">
 
     <h1 style="font-size:3rem; margin-bottom:20px;">
@@ -43,8 +127,7 @@ style="padding:100px 5%; text-align:center;">
     </h1>
 
     <p style="opacity:0.75; max-width:650px; margin:15px auto;">
-        Learn web development, design, digital business, and practical skills
-        step by step to build real-world systems.
+        Learn web development, design, digital business, and practical skills step by step.
     </p>
 
 </section>
@@ -54,35 +137,35 @@ style="padding:100px 5%; text-align:center;">
 
     <div class="grid">
 
-        <div class="card fade-up">
+        <a href="course-html-css.html" class="card course-card html">
             <h3>HTML & CSS Basics</h3>
-            <p>Master the building blocks of the web and understand structure + styling.</p>
-        </div>
+            <p>Master structure, layout, and modern web styling.</p>
+        </a>
 
-        <div class="card fade-up">
+        <a href="course-js.html" class="card course-card js">
             <h3>JavaScript Fundamentals</h3>
-            <p>Learn logic, events, functions, and interactivity for web apps.</p>
-        </div>
+            <p>Logic, functions, events, and interactive web apps.</p>
+        </a>
 
-        <div class="card fade-up">
+        <a href="course-fullstack.html" class="card course-card stack">
             <h3>Full Stack Introduction</h3>
-            <p>Understand frontend + backend systems and how real apps are built.</p>
-        </div>
+            <p>Frontend + backend systems and real-world apps.</p>
+        </a>
 
-        <div class="card fade-up">
+        <a href="course-responsive.html" class="card course-card responsive">
             <h3>Responsive Design</h3>
-            <p>Build websites that adapt perfectly to all devices and screens.</p>
-        </div>
+            <p>Build websites that adapt to all devices.</p>
+        </a>
 
-        <div class="card fade-up">
+        <a href="course-deploy.html" class="card course-card deploy">
             <h3>Website Deployment</h3>
-            <p>Publish real websites using hosting platforms and live domains.</p>
-        </div>
+            <p>Publish websites using hosting & domains.</p>
+        </a>
 
-        <div class="card fade-up">
+        <a href="course-freelance.html" class="card course-card freelance">
             <h3>Freelancing & Clients</h3>
-            <p>Learn how to get clients, manage work, and earn online income.</p>
-        </div>
+            <p>Get clients and earn from your skills.</p>
+        </a>
 
     </div>
 
@@ -106,7 +189,7 @@ style="text-align:center; padding:70px 5%;">
 
 <!-- ================= FOOTER ================= -->
 <footer style="text-align:center; padding:40px; opacity:0.6;">
-    © 2026 MillieDev Portfolio System
+    © 2026 MillieDev Learning System
 </footer>
 
 <!-- ================= MENU SCRIPT ================= -->
@@ -122,14 +205,11 @@ function closeMenu() {
 
 window.addEventListener("load", () => {
     const menu = document.getElementById("menu");
-
     if (menu) menu.classList.remove("active");
-
-    revealOnScroll();
 });
 
+/* click outside close */
 document.addEventListener("click", function(e) {
-
     const menu = document.getElementById("menu");
     const btn = document.querySelector(".menu-btn");
 
@@ -138,25 +218,7 @@ document.addEventListener("click", function(e) {
     if (!menu.contains(e.target) && !btn.contains(e.target)) {
         menu.classList.remove("active");
     }
-
 });
-
-/* ================= LEVEL 9 SCROLL ENGINE ================= */
-function revealOnScroll() {
-
-    const elements = document.querySelectorAll(".fade-up");
-
-    elements.forEach(el => {
-        const top = el.getBoundingClientRect().top;
-        const windowHeight = window.innerHeight;
-
-        if (top < windowHeight - 80) {
-            el.classList.add("active");
-        }
-    });
-}
-
-window.addEventListener("scroll", revealOnScroll);
 
 </script>
 
