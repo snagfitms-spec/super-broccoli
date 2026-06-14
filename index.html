@@ -7,16 +7,19 @@
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
 </head>
+
 <body>
 
 <!-- ================= NAVBAR ================= -->
 <nav class="navbar">
     <div class="logo">MillieDev</div>
+
     <div class="menu-btn" onclick="toggleMenu()">
         <span></span>
         <span></span>
         <span></span>
     </div>
+
     <div class="menu-container" id="menu">
         <a href="index.html" onclick="closeMenu()">Home</a>
         <a href="portfolio.html" onclick="closeMenu()">Portfolio</a>
@@ -29,79 +32,164 @@
 </nav>
 
 <!-- ================= HERO ================= -->
-<section class="hero" style="padding:80px 5%; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:60px;">
+<section class="hero"
+style="padding:80px 5%; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:60px;">
 
-    <!-- Left side: Text -->
-    <div class="animate-left" style="flex:1; min-width:300px; max-width:600px;">
+    <!-- TEXT SIDE -->
+    <div class="animate-left"
+    style="flex:1; min-width:300px; max-width:600px;">
+
         <h1 style="font-size:2.7rem; margin-bottom:15px;">
             Building Digital Systems That Scale Your Business
         </h1>
+
         <p style="opacity:0.75; margin-bottom:25px;">
             Modern websites, SaaS tools, and automation systems designed to convert users into customers.
         </p>
 
-        <a href="booking.html"><button style="margin-right:10px;">Book Service</button></a>
-        <a href="portfolio.html"><button style="background:transparent; border:1px solid var(--border); color:var(--text); font-weight:600; opacity:0.85; letter-spacing:0.3px;">View Work</button></a>
-        <a href="pricing.html"><button style="margin-left:10px;">View Pricing</button></a>
+        <a href="booking.html">
+            <button style="margin-right:10px;">Book Service</button>
+        </a>
+
+        <a href="portfolio.html">
+            <!-- FIXED: outline button now matches Level 9 system -->
+            <button class="outline">View Work</button>
+        </a>
+
+        <a href="pricing.html">
+            <button style="margin-left:10px;">View Pricing</button>
+        </a>
+
     </div>
 
-    <!-- Right side: Floating Image with your RAW link -->
-    <div class="animate-right" style="flex:1; min-width:300px; display:flex; justify-content:center; align-items:center;">
-        <img src="https://raw.githubusercontent.com/snagfitms-spec/Millie-Dev/main/file_00000000bf8c7243b4a450556ba07032.png" 
-             alt="MillieDev Services Overview"
-             class="floating-element"
-             style="width:100%; max-width:500px; height:auto; display:block; border:none; box-shadow: 0 20px 40px rgba(0,0,0,0.2);">
+    <!-- IMAGE SIDE -->
+    <div class="animate-right"
+    style="flex:1; min-width:300px; display:flex; justify-content:center; align-items:center;">
+
+        <img src="https://raw.githubusercontent.com/snagfitms-spec/Millie-Dev/main/file_00000000bf8c7243b4a450556ba07032.png"
+        alt="MillieDev Services Overview"
+        class="floating-element"
+        style="width:100%; max-width:500px; height:auto; border:none;">
+
     </div>
+
 </section>
 
 <!-- ================= STATS ================= -->
 <section style="padding:20px 5%;">
     <div class="grid">
-        <div class="card fade-up"><h3>💻</h3><h3>50+</h3><p>Projects Completed</p></div>
-        <div class="card fade-up"><h3>👥</h3><h3>30+</h3><p>Happy Clients</p></div>
-        <div class="card fade-up"><h3>🚀</h3><h3>3+ Years</h3><p>Experience</p></div>
-        <div class="card fade-up"><h3>⭐</h3><h3>100%</h3><p>Client Satisfaction</p></div>
+
+        <div class="card fade-up">
+            <h3>💻</h3>
+            <h3>50+</h3>
+            <p>Projects Completed</p>
+        </div>
+
+        <div class="card fade-up">
+            <h3>👥</h3>
+            <h3>30+</h3>
+            <p>Happy Clients</p>
+        </div>
+
+        <div class="card fade-up">
+            <h3>🚀</h3>
+            <h3>3+ Years</h3>
+            <p>Experience</p>
+        </div>
+
+        <div class="card fade-up">
+            <h3>⭐</h3>
+            <h3>100%</h3>
+            <p>Client Satisfaction</p>
+        </div>
+
     </div>
 </section>
 
 <!-- ================= SERVICES ================= -->
 <section style="padding:60px 5%;">
     <h2 style="text-align:center; margin-bottom:30px;">Services</h2>
+
     <div class="grid">
-        <div class="card fade-up"><h3>Web Design</h3><p>Modern responsive websites.</p></div>
-        <div class="card fade-up"><h3>E-Commerce</h3><p>Online stores with payment integration.</p></div>
-        <div class="card fade-up"><h3>Automation Systems</h3><p>SaaS tools and backend systems.</p></div>
-        <div class="card fade-up"><h3>Tech Courses</h3><p>Learn how to build real products.</p></div>
+
+        <div class="card fade-up">
+            <h3>Web Design</h3>
+            <p>Modern responsive websites.</p>
+        </div>
+
+        <div class="card fade-up">
+            <h3>E-Commerce</h3>
+            <p>Online stores with payment integration.</p>
+        </div>
+
+        <div class="card fade-up">
+            <h3>Automation Systems</h3>
+            <p>SaaS tools and backend systems.</p>
+        </div>
+
+        <div class="card fade-up">
+            <h3>Tech Courses</h3>
+            <p>Learn how to build real products.</p>
+        </div>
+
     </div>
 </section>
 
 <!-- ================= CTA ================= -->
 <section style="text-align:center; padding:80px 5%;">
     <h2>Ready to Build Something Powerful?</h2>
-    <a href="pricing.html"><button style="margin-right:10px;">View Pricing</button></a>
-    <a href="booking.html"><button>Start Project</button></a>
+
+    <div style="margin-top:20px;">
+        <a href="pricing.html">
+            <button style="margin-right:10px;">View Pricing</button>
+        </a>
+
+        <a href="booking.html">
+            <button>Start Project</button>
+        </a>
+    </div>
 </section>
 
-<footer style="text-align:center; padding:40px; opacity:0.6;">© 2026 MillieDev SaaS System</footer>
+<!-- ================= FOOTER ================= -->
+<footer style="text-align:center; padding:40px; opacity:0.6;">
+    © 2026 MillieDev SaaS System
+</footer>
 
+<!-- ================= SCRIPT (FIXED LEVEL 9 SCROLL ENGINE) ================= -->
 <script>
-    function toggleMenu(){ document.getElementById("menu").classList.toggle("active"); }
-    function closeMenu(){ document.getElementById("menu").classList.remove("active"); }
-    window.addEventListener("load", () => { document.getElementById("menu").classList.remove("active"); });
-    
-    /* Scroll Reveal Script */
-    function revealOnScroll() {
-        var reveals = document.querySelectorAll(".fade-up");
-        for (var i = 0; i < reveals.length; i++) {
-            var windowHeight = window.innerHeight;
-            var elementTop = reveals[i].getBoundingClientRect().top;
-            if (elementTop < windowHeight - 100) {
-                reveals[i].style.opacity = "1";
-            }
+
+function toggleMenu(){
+    document.getElementById("menu").classList.toggle("active");
+}
+
+function closeMenu(){
+    document.getElementById("menu").classList.remove("active");
+}
+
+/* =========================
+LEVEL 9 SCROLL REVEAL FIX
+========================= */
+
+function revealOnScroll() {
+    const elements = document.querySelectorAll(".fade-up");
+
+    for (let i = 0; i < elements.length; i++) {
+        const windowHeight = window.innerHeight;
+        const elementTop = elements[i].getBoundingClientRect().top;
+
+        if (elementTop < windowHeight - 80) {
+            elements[i].classList.add("active");
         }
     }
-    window.addEventListener("scroll", revealOnScroll);
+}
+
+/* Run on scroll + initial load */
+window.addEventListener("scroll", revealOnScroll);
+window.addEventListener("load", () => {
+    document.getElementById("menu").classList.remove("active");
     revealOnScroll();
+});
+
 </script>
 
 </body>
